@@ -1,9 +1,7 @@
 <?php
 
-$composer_autoload = __DIR__ . '/vendor/autoload.php';
-if ( file_exists( $composer_autoload ) ) {
-	require_once $composer_autoload;
-}
+namespace App;
 
-// Skeleton activate core
-new SkeletonTheme\Core();
+use App\Core\Bootstrap;
+
+Bootstrap::getInstance()->boot();

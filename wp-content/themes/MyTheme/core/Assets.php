@@ -1,68 +1,104 @@
-<?php 
-
-namespace MyTheme\Core;
+<?php
 
 /**
- * Клас для роботи з ассетами, скомпільованими за допомогою Vite.
- * Використовує файл manifest.json для визначення URI.
+ * Assets class
+ * 
+ * Handles Vite-compiled assets using manifest.json.
+ * Provides URI resolution for compiled files.
+ *
+ * @package App\Core
+ * @since 1.0.0
  */
-class Assets {
-    
-    // Шлях до маніфесту від кореня теми
-    const MANIFEST_PATH = '/dist/.vit/manifest.json'; 
 
-    private static $manifest = null;
+namespace App\Core;
+
+class Assets
+{
+    /**
+     * Path to manifest from theme root
+     */
+    private const MANIFEST_PATH = '/dist/.vite/manifest.json';
 
     /**
-     * Завантажує та повертає масив маніфесту.
-     * @return array Масив маніфесту або порожній масив у разі помилки.
+     * Cached manifest data
+     *
+     * @var array|null
      */
-    private static function getManifest(): array {
+    private static ?array $manifest = null;
+
+    /**
+     * Get the manifest array
+     *
+     * @return array Manifest data or empty array on error
+     */
+    public static function getManifest(): array
+    {
         if (self::$manifest !== null) {
             return self::$manifest;
         }
 
-        // 1. Формуємо повний шлях до маніфесту
-        $path = get_template_directory() . self::MANIFEST_PATH;
-        $manifest_content = @file_get_contents($path);
+        $path = get_template_directory() .self::MANIFEST_PATH;
 
-        // 2. Обробка помилки: Файл не знайдено
-        if (!$manifest_content) {
-            // У режимі розробки можна вивести error_log, щоб не засмічувати фронтенд
-            error_log("Assets Error: Manifest not found at " . $path);
+        if (!file_exists($path)) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log("Assets Error: Manifest not found at {$path}");
+            }
             return [];
         }
 
-        // 3. Декодування JSON
-        self::$manifest = json_decode($manifest_content, true);
-        
-        // 4. Обробка помилки: Помилка декодування
+        $content = file_get_contents($path);
+        self::$manifest = json_decode($content, true);
+
         if (json_last_error() !== JSON_ERROR_NONE) {
-            error_log("Assets Error: JSON decoding failed: " . json_last_error_msg());
-            return [];
+            error_log("Assets Error: JSON decode failed - " .json_last_error_msg());
+            self::$manifest = [];
         }
-        
+
         return self::$manifest;
     }
 
     /**
-     * Повертає повний URI скомпільованого ассету за ключем маніфесту.
-     * @param string $key Ключ ассету (наприклад, 'blocks/Hero/index.js' або 'node_modules/@wordpress/interactivity/build-module/index.js').
-     * @return string|null Повний URI ассету або null, якщо ключ не знайдено.
+     * Get full URI for an asset by manifest key
+     *
+     * @param string $key Asset key (e.g., 'blocks/Hero/index.js')
+     * @return string|null Full URI or null if not found
      */
-    public static function getUri(string $key): ?string {
+    public static function getUri(string $key): ?string
+    {
         $manifest = self::getManifest();
 
-        // 1. Шукаємо точне співпадіння ключа
-        if (isset($manifest[$key])) {
-            $file = $manifest[$key]['file'];
-            
-            // 2. Формуємо повний URI: (шлях до теми) + (директорія dist/.vit) + (ім'я файлу)
-            $base_uri = get_template_directory_uri() . dirname(self::MANIFEST_PATH);
-            
-            return $base_uri . '/' . $file;
+        if (! isset($manifest[$key]['file'])) {
+            return null;
         }
 
-        return null;
+        return get_template_directory_uri() .'/dist/' .$manifest[$key]['file'];
+    }
+
+    /**
+     * Get CSS files associated with a JS entry
+     *
+     * @param string $key JS asset key
+     * @return array Array of CSS URIs
+     */
+    public static function getCssUris(string $key): array
+    {
+        $manifest = self::getManifest();
+        $css_files = $manifest[$key]['css'] ?? [];
+
+        return array_map(function ($file) {
+            return get_template_directory_uri() .'/dist/' .$file;
+        }, $css_files);
+    }
+
+    /**
+     * Check if asset exists in manifest
+     *
+     * @param string $key Asset key
+     * @return bool
+     */
+    public static function exists(string $key): bool
+    {
+        $manifest = self::getManifest();
+        return isset($manifest[$key]);
     }
 }

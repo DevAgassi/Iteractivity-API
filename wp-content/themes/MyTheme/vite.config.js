@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import { wordpressPlugin } from "@roots/vite-plugin";
-import { globSync } from "glob";
+import fg from "fast-glob";
+import externalGlobals from "rollup-plugin-external-globals";
 
 /* -------------------------------------------------------------------------- */
 /* Block Entries */
@@ -12,12 +13,12 @@ import { globSync } from "glob";
 const blockEntries = {};
 
 // JS block files
-globSync.sync("blocks/*/index.js", { nodir: true }).forEach((file) => {
+fg.sync("blocks/*/index.js", { nodir: true }).forEach((file) => {
   blockEntries[file] = file;
 });
 
 // SCSS block files
-globSync.sync("blocks/*/index.scss", { nodir: true }).forEach((file) => {
+fg.sync("blocks/*/index.scss", { nodir: true }).forEach((file) => {
   blockEntries[file] = file;
 });
 
@@ -35,7 +36,7 @@ export default defineConfig({
     host: true,
     proxy: {
       "/": {
-        target: "http://localhost:9000",
+        target: "http://localhost:80",
         changeOrigin: true,
         secure: false,
       },
@@ -44,18 +45,14 @@ export default defineConfig({
   },
 
   /* ------------------------------------------------------------------------ */
-  /* Dependency Optimization */
-  /* ------------------------------------------------------------------------ */
-  optimizeDeps: {
-    esbuildOptions: {
-      target: "esnext",
-    },
-  },
-
-  /* ------------------------------------------------------------------------ */
   /* Plugins */
   /* ------------------------------------------------------------------------ */
-  plugins: [wordpressPlugin()],
+  plugins: [
+    //wordpressPlugin(),
+    // externalGlobals({
+    //   "@wordpress/interactivity": "wp.interactivity",
+    // }),
+  ],
 
   /* ------------------------------------------------------------------------ */
   /* Module Resolution */

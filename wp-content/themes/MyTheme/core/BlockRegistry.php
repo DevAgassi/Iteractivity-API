@@ -1,6 +1,6 @@
 <?php
 
-namespace MyTheme\Core;
+namespace App\Core;
 
 /**
  * Class BlockRegistry
@@ -21,7 +21,7 @@ class BlockRegistry
     /**
      * Namespace for all blocks
      */
-    const BLOCKS_NAMESPACE = 'MyTheme\\Blocks';
+    const BLOCKS_NAMESPACE = 'App\\Blocks';
 
     /**
      * Supported tags in DocBlock/JSON for ACF
@@ -38,14 +38,13 @@ class BlockRegistry
     public static function autoDiscoverAndRegister(): void
     {
         $blocks_dir = get_template_directory() . '/blocks/';
-        $block_files = glob($blocks_dir . '*/*block.php');
+        $block_files = glob($blocks_dir . '*/*Block.php');
 
         foreach ($block_files as $file) {
-            $class_name_short = basename($file, '.php');
             $folder_name = basename(dirname($file));
-            $fqcn = self::BLOCKS_NAMESPACE . '\\' . $folder_name . '\\' . $class_name_short;
+            $fqcn = self::BLOCKS_NAMESPACE . '\\' . $folder_name . '\\Block';
 
-            if (class_exists($fqcn) && is_subclass_of($fqcn, Block::class)) {
+            if (class_exists($fqcn) && is_subclass_of($fqcn, BaseBlock::class)) {
                 self::registerBlock($fqcn, $folder_name, $blocks_dir);
             } else {
                 error_log("Block registration failed: Class $fqcn not valid.");
@@ -88,8 +87,9 @@ class BlockRegistry
             'category'        => $gt_option['category'] ?? 'layout',
             'mode'            => $gt_option['mode'] ?? 'auto',
             'icon'            => $gt_option['icon'] ?? 'star-filled',
-            'keywords'        => $gt_option['keywords'] ?? 'main',
+            'keywords'        => $gt_option['keywords'] ?? [],
             'supports'        => $gt_option['supports'] ?? ["align" => true],
+            'align'           => $gt_option['align'] ?? '',
 
             /**
              * Render callback
@@ -102,6 +102,10 @@ class BlockRegistry
              */
             'render_callback' => function ($block, $content, $is_preview, $post_id) use ($class_name, $gt_option, $folder_name) {
                 $block_instance = new $class_name();
+                $block_instance->setFolder($folder_name);
+                //$block_instance->setBlockData($block);
+                // $block_instance->setContent($content);
+                //  $block_instance->setIsPreview($is_preview);
                 $base_dependencies = [];
 
                 $manifest_path = get_template_directory() . '/dist/.vite/manifest.json';
@@ -116,10 +120,13 @@ class BlockRegistry
                     if ($js_file && file_exists(get_template_directory() . '/dist/' . $js_file)) {
                         $handle = 'mytheme-block-' . $gt_option['name'] . '-view';
 
-                        if (!empty($gt_option['interactivity'])) {
-                            $base_dependencies[] = ['id' => '@wordpress/interactivity'];
-                        }
-                        wp_enqueue_script_module($handle, get_template_directory_uri() . '/dist/' . $js_file, $base_dependencies);
+                        wp_enqueue_script_module(
+                            $handle,
+                            get_template_directory_uri() . '/dist/' . $js_file,
+                            array('@wordpress/interactivity'),
+                            '1.0.0',
+                            array('in_footer' => false)
+                        );
                     }
                 }
 

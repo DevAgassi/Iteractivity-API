@@ -1,0 +1,19 @@
+{
+  "name": "Hero",
+  "title": "HeroBlock",
+  "description": "HeroBlock block",
+  "category": "custom-blocks",
+  "icon": "wordpress-alt",
+  "keywords": ["hero", "block"],
+  "supports": {
+    "anchor": true,
+    "customClassName": true,
+    "multiple": true,
+    "reusable": true,
+    "jsx": false,
+    "interactivity": true,
+    "align": ["left", "center", "right", "wide", "full"]
+  },
+  "mode": "edit",
+  "align": "full"
+}

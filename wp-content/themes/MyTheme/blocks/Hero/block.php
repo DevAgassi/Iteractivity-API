@@ -1,20 +1,35 @@
 <?php
 
-use MyTheme\Core\Block;
+namespace App\Blocks\hero;
 
-class HeroBlock extends Block
+use App\Core\BaseBlock;
+
+class Block extends BaseBlock
 {
-    public function render(): void
+    /**
+     * Interactivity API namespace
+     */
+    protected ? string $interactivity_namespace = 'hero-section';
+
+    /**
+     * Global state (shared across all instances)
+     */
+    public function getInitialState(): array
     {
-        $this->context['fields'] = get_fields();
+        $fields = get_fields() ?: [];
 
-
-        $this->context['initial_state'] = [
-            'is_modal_open' => false,
-            'cta_text' => $this->context['fields']['cta_button'] ?? 'Деталі',
+        return [
+            'buttonText' => $fields['cta_text'] ?? 'Learn More',
         ];
+    }
 
-
-        $this->renderTwig('hero.twig');
+    /**
+     * Per-instance context
+     */
+    protected function getInitialContext(): array
+    {
+        return [
+            'is_modal_open' => false,
+        ];
     }
 }

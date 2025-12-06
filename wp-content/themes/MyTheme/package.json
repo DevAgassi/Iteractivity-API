@@ -9,11 +9,15 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "rollup-plugin-external-globals": "^0.13.0",
     "typescript": "~5.9.3",
-    "vite": "npm:rolldown-vite@7.2.5",
-        "@roots/vite-plugin": "^1.2.3"
+    "vite": "npm:rolldown-vite@7.2.5"
   },
   "overrides": {
     "vite": "npm:rolldown-vite@7.2.5"
+  },
+  "dependencies": {
+    "@wordpress/interactivity": "^6.36.0",
+    "fast-glob": "^3.3.3"
   }
 }
