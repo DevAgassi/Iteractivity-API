@@ -1,0 +1,15 @@
+<section id="hero-block" class="hero-section" data-wp-interactive="hero-section" data-wp-context="{{ initial_state|json_encode }}">
+	<div class="hero-content">
+		<h1>{{ fields.main_title|striptags|e }}</h1>
+
+
+		<div class="description">
+			{{ fields.content }}
+		</div>
+
+
+		<button data-wp-on--click="actions.openModal" data-wp-text="state.buttonText">
+			{{ fields.cta_text|default('Learn More') }}
+		</button>
+	</div>
+</section>

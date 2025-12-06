@@ -1,0 +1,39 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "${NGINX_PORT:-80}:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ../wp-content:/var/www/html/wp-content
+      - ../config/wp-config.php:/var/www/html/wp-config.php
+      - wp-core:/var/www/html
+    depends_on:
+      - wordpress
+
+  wordpress:
+    image: wordpress:php8.2-fpm
+    volumes:
+      - ../wp-content:/var/www/html/wp-content
+      - ../config/wp-config.php:/var/www/html/wp-config.php
+      - wp-core:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: ${DB_HOST}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+      WP_ENV: ${WP_ENV}
+
+  db:
+    image: mariadb:10.6
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+
+volumes:
+  wp-core:
+  db_data:
