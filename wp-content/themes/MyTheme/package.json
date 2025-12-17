@@ -5,11 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:watch": "vite --strictPort false",
     "build": "vite build",
-    "preview": "vite preview"
+    "build:watch": "vite build --watch",
+    "preview": "vite build && vite preview",
+    "core": "node core/.vite/index.js"
   },
   "devDependencies": {
+    "esbuild": "^0.25.12",
     "rollup-plugin-external-globals": "^0.13.0",
+    "sass-embedded": "^1.96.0",
     "typescript": "~5.9.3",
     "vite": "npm:rolldown-vite@7.2.5"
   },
@@ -17,7 +22,13 @@
     "vite": "npm:rolldown-vite@7.2.5"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/vite": "^4.1.18",
     "@wordpress/interactivity": "^6.36.0",
-    "fast-glob": "^3.3.3"
+    "fast-glob": "^3.3.3",
+    "node-fetch": "^3.3.2",
+    "postcss": "^8.5.6",
+    "swiper": "^12.0.3",
+    "tailwindcss": "^4.1.18"
   }
 }

@@ -151,6 +151,74 @@ case "$1" in
     echo "Cleanup complete!"
     ;;
 
+  # ---------------------------------------------------------------------------
+  # Development Commands
+  # ---------------------------------------------------------------------------
+
+  ##
+  # Start Vite dev server with watch mode and HMR
+  # Запускає одночасно dev server та build:watch для CSS/JS
+  #
+  # Usage:
+  #   ./wp.sh dev
+  ##
+  dev)
+    cd wp-content/themes/MyTheme
+    echo "🚀 Запуск Vite dev сервера з watch режимом..."
+    echo "📡 HMR активний на порту 5173"
+    echo "📦 Build watch для CSS/JS активний"
+    echo "👀 Watch режим слідкує за:"
+    echo "   • blocks/**/*.{js,scss,twig}"
+    echo "   • views/**/*.twig"
+    echo ""
+    echo "Доступно на: http://localhost:5173"
+    echo "Ctrl+C для завершення"
+    echo ""
+    
+    # Запускаємо dev server
+    npm run dev &
+    DEV_PID=$!
+    
+    # Запускаємо build watch для перебудови CSS/JS
+    npm run build:watch &
+    BUILD_PID=$!
+    
+    # Обробляємо Ctrl+C
+    trap "kill $DEV_PID $BUILD_PID 2>/dev/null; exit" INT TERM
+    wait
+    ;;
+
+  ##
+  # Preview режим - як production з HMR (гарячі оновлення)
+  # Робить build один раз, потім слухає для змін через HMR
+  #
+  # Usage:
+  #   ./wp.sh preview
+  ##
+  preview)
+    cd wp-content/themes/MyTheme
+    echo "🎬 Запуск Vite preview режиму..."
+    echo "📡 HMR активний на порту 5173"
+    echo "⚡ Preview режим - як production з гарячими оновленнями"
+    echo ""
+    echo "Доступно на: http://localhost:5173"
+    echo "Ctrl+C для завершення"
+    echo ""
+    
+    npm run preview
+    ;;
+
+  ##
+  # Install npm dependencies in theme
+  #
+  # Usage:
+  #   ./wp.sh npm install
+  ##
+  npm)
+    cd wp-content/themes/MyTheme
+    npm "${@:2}"
+    ;;
+
   ## CUSTOM COMMANDS CAN BE ADDED HERE ##
 
 
@@ -183,6 +251,12 @@ case "$1" in
     echo "  update      Run composer update"
     echo "  require     Add package (./wp.sh require vendor/package)"
     echo "  composer    Any command (./wp.sh composer dump-autoload)"
+    echo ""
+    echo "---------------------------------------------------------------------------"
+    echo " Development Commands"
+    echo "---------------------------------------------------------------------------"
+    echo "  dev         Start Vite dev server with watch mode & HMR"
+    echo "  npm         Run npm command in theme (./wp.sh npm install)"
     echo ""
     echo "---------------------------------------------------------------------------"
     echo " Examples"

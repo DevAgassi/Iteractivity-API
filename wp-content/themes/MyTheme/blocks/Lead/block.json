@@ -1,10 +1,10 @@
 {
-  "name": "acf/hero",
-  "title": "HeroBlock",
-  "description": "HeroBlock block",
+  "name": "acf/lead",
+  "title": "LeadBlock",
+  "description": "LeadBlock block",
   "category": "custom-blocks",
   "icon": "wordpress-alt",
-  "keywords": ["hero", "block"],
+  "keywords": ["lead", "block"],
   "apiVersion": 3,
   "supports": {
     "anchor": true,

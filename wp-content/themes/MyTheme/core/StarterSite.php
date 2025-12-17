@@ -63,16 +63,35 @@ class StarterSite extends Site
      */
     public function enqueue_styles(): void
     {
-        $main_stylesheet = '/assets/styles/main.css';
-        $stylesheet_path = get_template_directory() .$main_stylesheet;
+        // $main_stylesheet = '/assets/styles/main.css';
+        // $stylesheet_path = get_template_directory() .$main_stylesheet;
 
-        if (file_exists($stylesheet_path)) {
-            wp_enqueue_style(
-                'theme-main-style',
-                get_template_directory_uri() .$main_stylesheet,
-                [],
-                filemtime($stylesheet_path)
-            );
+        // if (file_exists($stylesheet_path)) {
+        //     wp_enqueue_style(
+        //         'theme-main-style',
+        //         get_template_directory_uri() .$main_stylesheet,
+        //         [],
+        //         filemtime($stylesheet_path)
+        //     );
+        // }
+
+        $manifest_path = get_template_directory() . '/dist/.vite/manifest.json';
+        $manifest = [];
+
+        if (file_exists($manifest_path)) {
+            $manifest = json_decode(file_get_contents($manifest_path), true);
+        }
+
+        // Завантажуємо глобальні стилі (якщо є)
+        $css_file = $manifest['assets/styles/main.css']['file'];      
+        if (isset($manifest['assets/styles/main.css'])) {
+            wp_enqueue_style('main', get_template_directory_uri() . '/dist/' . $css_file);
+        }
+
+        // Завантажуємо глобальні js залежності
+        $js_file = $manifest['assets/scripts/main.js']['file'];
+        if (isset($manifest['assets/scripts/main.js'])) {
+            wp_enqueue_script('main', get_template_directory_uri() . '/dist/' . $js_file);
         }
     }
 
@@ -224,7 +243,7 @@ class StarterSite extends Site
      */
     public function filter_myfoo(string $text): string
     {
-        return $text .' bar!';
+        return $text . ' bar!';
     }
 
     /*
@@ -256,6 +275,25 @@ class StarterSite extends Site
             ],
             'dump' => [
                 'callable' => [$this, 'twig_dump'],
+            ],
+            'timer_start' => [
+                'callable' => function ($key) {
+                    if (!isset($GLOBALS['twig_timers'])) {
+                        $GLOBALS['twig_timers'] = [];
+                    }
+                    $GLOBALS['twig_timers'][$key]['start'] = microtime(true);
+                },
+            ],
+            'timer_end' => [
+                'callable' => function ($key) {
+                    if (isset($GLOBALS['twig_timers'][$key]['start'])) {
+                        $start = $GLOBALS['twig_timers'][$key]['start'];
+                        $end = microtime(true);
+                        $GLOBALS['twig_timers'][$key]['duration'] = $end - $start;
+                        return "<!-- Twig [$key] render time: " . round($GLOBALS['twig_timers'][$key]['duration'] * 1000, 2) . " ms -->";
+                    }
+                    return '';
+                },
             ],
         ];
 
@@ -301,8 +339,21 @@ class StarterSite extends Site
      */
     public function update_twig_environment_options(array $options): array
     {
-        // $options['autoescape'] = 'html';
-        // $options['debug'] = WP_DEBUG;
+        // $cache_dir = get_template_directory() . '/cache/twig';
+
+        // // Створюємо папку кешу якщо не існує
+        // if (! file_exists($cache_dir)) {
+        //     mkdir($cache_dir, 0777, true);
+        // }
+
+        // // Увімкнути кешування Twig
+        // $options['cache'] = $cache_dir;
+
+        // // У dev можна додати debug та auto_reload
+        // if (WP_ENVIRONMENT_TYPE === 'local') {
+        //     $options['debug'] = true;
+        //     $options['auto_reload'] = true; // Twig буде перезавантажувати шаблони при зміні файлу
+        // }
 
         return $options;
     }

@@ -11,6 +11,8 @@ define('DB_COLLATE', '');
 $env = getenv('WP_ENV') ?: 'local';
 define('WP_DEBUG', $env === 'local');
 define('WP_DEBUG_LOG', $env === 'local');
+define('WP_ENVIRONMENT_TYPE', $env); // Встановлюємо тип середовища для wp_get_environment_type()
+define('WP_DEVELOPMENT_MODE', 'theme');
 
 // Ключі (згенеруй свої на https://api.wordpress.org/secret-key/1.1/salt/)
 define('AUTH_KEY',         'J%cOlT5}Sx3|#xQt9~0i)8X,HpfbD`R:8Uoh:HZD`o-zXR *jtyR#|KNUCoS1k?0');

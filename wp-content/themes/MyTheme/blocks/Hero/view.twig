@@ -1,13 +1,21 @@
-<section id="hero-block" class="hero-section" {{ interactivity_attrs|raw }}>
-    <div class="hero-content">
-        <h1>{{ fields.title|striptags|e }}</h1>
+{% import 'ui/button.twig' as ui %}
 
-        <div class="description">
-            {{ fields.content }}
-        </div>
+{% if is_preview %}
+	{% set state = interactivity_attrs|raw %}
+{% endif %}
 
-        <button data-wp-on--click="actions.openModal" data-wp-text="state.buttonText">
-            {{ fields.cta_text|default('Learn More') }}
-        </button>
-    </div>
+<section id="hero-block" class="hero-section" {{ interactivity_attrs|raw }} data-unique-id="{{ unique_id }}">
+	<div class="hero-content flex flex-col items-center justify-center text-center gap-6">
+		<h1>{{ fields.title|striptags|e }}</h1>
+		<button type="button" class="rounded-xl font-semibold text-white bg-primary-500 hover:bg-primary-600 transition px-4 py-2 text-base">asda</button>
+		{{ ui.button(
+        fields.cta_text|default('Learn More'),
+        'primary',
+        'md',
+        {
+            'data-wp-on--click': 'actions.openModal',
+            'data-wp-text': 'state.buttonText'
+        }
+    	) }}
+	</div>
 </section>

@@ -1,0 +1,16 @@
+{% macro button(text, color='primary', size='md', attributes={}) %}
+  {% set sizeClass = {
+      'sm': 'px-3 py-1 text-sm',
+      'md': 'px-4 py-2 text-base',
+      'lg': 'px-6 py-3 text-lg'
+  }[size] | default('px-4 py-2 text-base') %}
+
+  <button
+      class="rounded-xl border-solid border-2 font-semibold text-white bg-{{ color }}-500 hover:bg-{{ color }}-600 transition {{ sizeClass }}"
+      {% for name, value in attributes %}
+        {{ name }}="{{ value }}"
+      {% endfor %}
+  >
+    {{ text }}
+  </button>
+{% endmacro %}

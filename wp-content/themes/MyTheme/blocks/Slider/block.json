@@ -1,10 +1,10 @@
 {
-  "name": "acf/hero",
-  "title": "HeroBlock",
-  "description": "HeroBlock block",
+  "name": "acf/slider",
+  "title": "Slider",
+  "description": "Slider block",
   "category": "custom-blocks",
   "icon": "wordpress-alt",
-  "keywords": ["hero", "block"],
+  "keywords": ["slider", "block"],
   "apiVersion": 3,
   "supports": {
     "anchor": true,
