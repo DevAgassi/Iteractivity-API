@@ -4,7 +4,6 @@
   "description": "HeroBlock block",
   "category": "custom-blocks",
   "icon": "wordpress-alt",
-  "keywords": ["hero", "block"],
   "apiVersion": 3,
   "supports": {
     "anchor": true,
@@ -13,7 +12,7 @@
     "reusable": true,
     "jsx": false,
     "align": ["left", "center", "right", "wide", "full"],
-    "interactivity": true
+    "interactivity": false
   },
   "attributes": {
     "align": {
@@ -22,7 +21,6 @@
     }
   },
   "acf": {
-    "mode": "edit",
-    "blockVersion": 3
+    "mode": "preview"
   }
 }

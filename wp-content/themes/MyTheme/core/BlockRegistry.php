@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use stdClass;
+
 /**
  * Class BlockRegistry
  *
@@ -69,7 +71,7 @@ class BlockRegistry
         $start_time = microtime(true);
 
         foreach (self::getBlocksData() as $block_data) {
-            self::registerBlock($block_data['folder_path'], $block_data['folder_name']);
+            self::registerBlock($block_data['folder_path'], $block_data['folder_name'], $block_data['metadata']);
         }
 
         $end_time = microtime(true);
@@ -77,7 +79,8 @@ class BlockRegistry
         error_log("<!-- WP Register blocks time: " . round($duration * 1000, 2) . " ms -->");
 
         // Hook assets enqueueing to wp_enqueue_scripts
-        add_action('wp_enqueue_scripts', [self::class, 'enqueueBlockAssets']);
+        add_action('wp_enqueue_scripts', [self::class, 'enqueueBlockAssets']); // TODO need remove?
+        add_action('enqueue_block_assets', [self::class, 'enqueueBlockAssets']);
     }
 
     /**
@@ -105,38 +108,42 @@ class BlockRegistry
         foreach (self::getBlocksData() as $block_data) {
             $folder_name = $block_data['folder_name'];
             $class_name = $block_data['class_name'];
+            $acf_block_name = 'acf/' . $block_data['metadata']['name'];
 
-            // Start with empty dependencies (don't bloat with wp-blocks)
-            $script_dependencies = [];
+            // Backend: enqueue всі стилі для редактора
+            if (is_admin()) {
+                self::enqueueBlockStyle($folder_name, $manifest);
+            } else {
+                // Frontend: enqueue тільки якщо блок є на сторінці
+                if (!has_block($acf_block_name)) {
+                    continue;
+                }
 
-            if (class_exists($class_name)) {
-                $block_instance = new $class_name();
+                // Enqueue block CSS
+                self::enqueueBlockStyle($folder_name, $manifest);
 
-                // Enqueue dependencies FIRST and collect handles
-                foreach ($block_instance->getDependencies() as $dep) {
-                    // Only enqueue each dependency once
-                    if (!isset($enqueued_deps[$dep])) {
-                        $dep_handle = self::getDependencyHandle($dep);
-                        // Enqueue the dependency itself
-                       
-                        self::enqueueDependency($dep, $manifest);
-                        if ($dep_handle) {
-                            $enqueued_deps[$dep] = $dep_handle;
+                // Enqueue block JS dependencies
+                $script_dependencies = [];
+                if (class_exists($class_name)) {
+                    $block_instance = new $class_name();
+
+                    foreach ($block_instance->getDependencies() as $dep) {
+                        if (!isset($enqueued_deps[$dep])) {
+                            $dep_handle = self::getDependencyHandle($dep);
+                            self::enqueueDependency($dep, $manifest);
+                            if ($dep_handle) {
+                                $enqueued_deps[$dep] = $dep_handle;
+                            }
+                        }
+                        if (isset($enqueued_deps[$dep])) {
+                            $script_dependencies[] = $enqueued_deps[$dep];
                         }
                     }
-    
-                    // Add to block's script dependencies
-                    if (isset($enqueued_deps[$dep])) {
-                        $script_dependencies[] = $enqueued_deps[$dep];
-                    }
                 }
+
+                // Enqueue block JS
+                self::enqueueBlockScript($folder_name, $script_dependencies, $manifest);
             }
-
-            // Enqueue block CSS
-            self::enqueueBlockStyle($folder_name, $manifest);
-
-            // Enqueue block JS with dependency ordering
-            self::enqueueBlockScript($folder_name, $script_dependencies, $manifest);
         }
     }
 
@@ -261,6 +268,9 @@ class BlockRegistry
      */
     private static function enqueueBlockScript(string $folder_name, array $script_dependencies, array $manifest): void
     {
+        if (is_admin()) {
+            return;
+        }
         $js_key = "blocks/{$folder_name}/index.js";
 
         if (!isset($manifest[$js_key])) {
@@ -274,20 +284,20 @@ class BlockRegistry
 
         // Check if block uses Interactivity API
         $uses_interactivity = in_array('wp-interactivity', $script_dependencies);
-                             
+
         // For blocks using Interactivity API, use wp_enqueue_script_module
-        if ($uses_interactivity && function_exists('wp_enqueue_script_module')) {
+        if (!is_admin() && $uses_interactivity && function_exists('wp_enqueue_script_module')) {
             // Convert handles to module handles (add @ prefix for WordPress modules)
             $module_dependencies = array_map(function ($dep) {
                 return str_starts_with($dep, '@') ? $dep : '@wordpress/interactivity';
             }, $script_dependencies);
- 
+
             wp_enqueue_script_module(
                 $script_handle,
                 get_template_directory_uri() . '/dist/' . $manifest[$js_key]['file'],
                 $module_dependencies,
                 '1.0.0',
-              array('in_footer' => false)
+                array('in_footer' => false)
             );
         } else {
             // Regular script registration for non-interactivity blocks
@@ -334,15 +344,22 @@ class BlockRegistry
      * @param string $folder_name Block folder name
      * @return void
      */
-    private static function registerBlock(string $folder_path, string $folder_name): void
+    private static function registerBlock(string $folder_path, string $folder_name, array $metadata): void
     {
         $class_name = self::BLOCKS_NAMESPACE . '\\' . $folder_name . '\\Block';
 
-        register_block_type($folder_path, [
-            'style' => null,       // Assets enqueued on wp_enqueue_scripts hook
-            'view_script' => null, // Assets enqueued on wp_enqueue_scripts hook
-            'render_callback' => function ($attributes, $content, $is_preview, $post_id, $block) use ($folder_name, $class_name) {
-                return self::renderBlock($class_name, $folder_name, $block, $is_preview);
+        if (isset($metadata['supports'])) {
+            $metadata['supports']['interactivity'] = ! is_admin();
+        }
+
+        acf_register_block_type([
+            ...$metadata,
+            'render_callback' => function (
+                $block,
+                $post_id,
+                $content,
+            ) use ($folder_name, $class_name) {
+                self::renderBlock($class_name, $folder_name, $block, $post_id, $content);
             },
         ]);
     }
@@ -360,25 +377,21 @@ class BlockRegistry
      * @param bool $is_preview Whether rendering in preview mode
      * @return string Rendered block HTML
      */
-    private static function renderBlock(string $class_name, string $folder_name, object $block, bool $is_preview): string
+    private static function renderBlock($class_name, $folder_name, $block, $id, $content): void
     {
         if (!class_exists($class_name)) {
-            return "Block class $class_name not found.";
+            error_log("Block class $class_name not found.");
         }
 
         try {
             $block_instance = new $class_name();
             $block_instance->setFolder($folder_name);
-            $block_instance->setBlock($block->parsed_block);
-            $block_instance->setIsPreview($is_preview);
+            $block_instance->setBlock($block);
+            $block_instance->setIsPreview('true');
 
-            $rendered = $block_instance->render();
-
-            // Ensure return value is always a string
-            return is_string($rendered) ? $rendered : '';
+            $block_instance->render();
         } catch (\Exception $e) {
             error_log("Block rendering error for {$class_name}: " . $e->getMessage());
-            return '';
         }
     }
 
@@ -412,6 +425,7 @@ class BlockRegistry
      */
     private static function enqueueSwiperDependency(array $manifest): void
     {
+
         if (!isset($manifest['assets/scripts/swiper-global.js'])) {
             error_log("Swiper global script not found in manifest");
             return;
@@ -426,8 +440,10 @@ class BlockRegistry
             null,
             true // Load in footer
         );
+        if (!is_admin()) {
+            wp_enqueue_script('swiper-global');
+        }
 
-        wp_enqueue_script('swiper-global');
 
         // Enqueue Swiper CSS
         if (isset($manifest['assets/styles/swiper-global.css'])) {

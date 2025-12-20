@@ -1,28 +1,20 @@
 {
-  "name": "acf/lead",
+  "name": "lead",
   "title": "LeadBlock",
   "description": "LeadBlock block",
   "category": "custom-blocks",
   "icon": "wordpress-alt",
-  "keywords": ["lead", "block"],
   "apiVersion": 3,
+  "acf_block_version": 3,
   "supports": {
-    "anchor": true,
-    "customClassName": true,
-    "multiple": true,
-    "reusable": true,
-    "jsx": false,
-    "align": ["left", "center", "right", "wide", "full"],
-    "interactivity": true
+    "align": true
   },
-  "attributes": {
-    "align": {
-      "type": "string",
-      "default": "full"
+  "example": {
+    "attributes": {
+      "mode": "preview",
+      "data": {
+        "title": "This is an example lead text."
+      }
     }
-  },
-  "acf": {
-    "mode": "edit",
-    "blockVersion": 3
   }
 }

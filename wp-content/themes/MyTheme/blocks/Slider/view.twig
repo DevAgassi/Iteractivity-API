@@ -1,27 +1,28 @@
-<section class="swiper-slider" {{ interactivity_attrs|raw }}>
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            {% for slide in fields.slides %}
-                <div class="swiper-slide">
-                    {% if slide.image %}
-                        <img src="{{ slide.image.url }}" alt="{{ slide.image.alt|default('') }}">
-                    {% endif %}
-                    {% if slide.title %}
-                        <h3>{{ slide.title }}</h3>
-                    {% endif %}
-                    {% if slide.description %}
-                        <p>{{ slide.description }}</p>
-                    {% endif %}
-                    {% if slide.cta_link and slide.cta_text %}
-                        <a href="{{ slide.cta_link }}" class="btn btn-primary">{{ slide.cta_text }}</a>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
+<section class="swiper-slider" {{ is_preview ? 'data-preview="true"' : '' }}>
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			{% for slide in fields.slides %}
+				<div class="swiper-slide">
+					{% if slide.image %}
+						<img src="{{ slide.image.url }}" alt="{{ slide.image.alt|default('') }}">
+					{% endif %}
+					{% if slide.title %}
+						<h3>{{ slide.title }}</h3>
+					{% endif %}
+					{% if slide.description %}
+						<p>{{ slide.description }}</p>
+					{% endif %}
+					{% if slide.cta_link and slide.cta_text %}
+						<a href="{{ slide.cta_link }}" class="btn btn-primary">{{ slide.cta_text }}</a>
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div>
 
-        <!-- Optional navigation -->
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-pagination"></div>
-    </div>
+		<!-- Optional navigation -->
+		<div class="swiper-button-next"></div>
+		<div class="swiper-button-prev"></div>
+		<div class="swiper-pagination"></div>
+	</div>
 </section>
+<InnerBlocks />

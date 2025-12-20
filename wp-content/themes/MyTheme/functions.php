@@ -17,4 +17,4 @@ add_action('wp_head', function () {
 
 add_filter( 'should_load_separate_core_block_assets', '__return_true' );
 // Допомагає WP знайти блоки в закешованому Timber-контенті
-//add_filter( 'timber/post/content/apply_filters', '__return_true' );
+add_filter( 'timber/post/content/apply_filters', '__return_true' );

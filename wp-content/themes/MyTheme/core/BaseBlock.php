@@ -63,13 +63,14 @@ abstract class BaseBlock
     }
 
     public function setBlock(array $block): void
-    {
+    { 
         $this->block = $block;
         if ($this->dto_class && class_exists($this->dto_class)) {
             $dto = new $this->dto_class($block);
             // Тут BaseBlock не знає що саме всередині
             $this->timber_context['fields'] = $dto->toArray();
         }
+       
     }
 
     public function setFolder(string $folder): void

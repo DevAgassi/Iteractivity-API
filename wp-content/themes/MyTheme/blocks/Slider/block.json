@@ -1,28 +1,12 @@
 {
   "name": "acf/slider",
   "title": "Slider",
-  "description": "Slider block",
-  "category": "custom-blocks",
-  "icon": "wordpress-alt",
-  "keywords": ["slider", "block"],
   "apiVersion": 3,
+  "acf_block_version": 3,
+  "mode": "preview",
   "supports": {
-    "anchor": true,
-    "customClassName": true,
-    "multiple": true,
-    "reusable": true,
-    "jsx": false,
-    "align": ["left", "center", "right", "wide", "full"],
-    "interactivity": true
-  },
-  "attributes": {
-    "align": {
-      "type": "string",
-      "default": "full"
-    }
-  },
-  "acf": {
-    "mode": "edit",
-    "blockVersion": 3
+    "align": true,
+    "mode": false,
+    "jsx": true
   }
 }
