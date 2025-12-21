@@ -16,9 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "wp-content/themes/MyTheme/",
-      "Blocks\\": "wp-content/themes/MyTheme/blocks/",
-      "Core\\": "wp-content/themes/MyTheme/core/"
+      "App\\": "wp-content/themes/MyTheme/"
     }
   },
   "extra": {

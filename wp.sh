@@ -188,6 +188,30 @@ case "$1" in
     wait
     ;;
 
+  # ---------------------------------------------------------------------------
+  # Build Commands
+  # ---------------------------------------------------------------------------
+
+  ##
+  # Start Vite build watch for CSS/JS
+  # Запускає одночасно dev server та build:watch для CSS/JS
+  #
+  # Usage:
+  #   ./wp.sh build
+  ##
+  build)
+    cd wp-content/themes/MyTheme
+    echo "🚀 Запуск Vite dev сервера з watch режимом..."
+    echo "📡 HMR активний на порту 5173"
+    echo "📦 Build watch для CSS/JS активний"
+    echo ""
+    echo ""
+    
+    # Запускаємо dev server
+    npm run build
+    DEV_PID=$!
+    ;;
+
   ##
   # Preview режим - як production з HMR (гарячі оновлення)
   # Робить build один раз, потім слухає для змін через HMR

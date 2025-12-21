@@ -10,12 +10,10 @@ class Block extends BaseBlock
     /**
      * Global state (shared across all instances)
      */
-    public function getInitialState(): array
+    protected function getContext(): array
     {
-        $fields = get_fields() ?: [];
-        
         return [
-            'title' => $fields['title'] ?? '',
+            'title' => $this->timber_context['fields']['title'] ?? '',
         ];
     }
 }

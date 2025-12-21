@@ -11,6 +11,7 @@ define('DB_COLLATE', '');
 $env = getenv('WP_ENV') ?: 'local';
 define('WP_DEBUG', $env === 'local');
 define('WP_DEBUG_LOG', $env === 'local');
+define('SAVEQUERIES', $env === 'local'); // Enable query logging for debug mode
 define('WP_ENVIRONMENT_TYPE', $env); // Встановлюємо тип середовища для wp_get_environment_type()
 define('WP_DEVELOPMENT_MODE', 'theme');
 

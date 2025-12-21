@@ -1,6 +1,8 @@
 import { getEntries } from "./entries.js";
 import { outputConfig } from "./output.js";
 import { watchConfig } from "./watch.js";
+import { getServerConfig } from "./server.js";
+import { staticCopyPlugin } from "./staticCopy.js";
 import { twigScanPlugin } from "./twigScan.js";
 
 export default function coreVite(options = {}) {
@@ -12,9 +14,7 @@ export default function coreVite(options = {}) {
       const hasEntries = Object.keys(entries).length > 0;
 
       return {
-        // server: {
-        //   watch: watchConfig,
-        // },
+        server: getServerConfig(options.server || {}),
 
         build: {
           rollupOptions: {
@@ -30,5 +30,6 @@ export default function coreVite(options = {}) {
       };
     },
     ...twigScanPlugin(),
+    ...staticCopyPlugin(),
   };
 }

@@ -56,15 +56,42 @@ class Bootstrap
      * Boot the application
      * 
      * Initializes Timber and all core services.
+     * 
+     * Options:
+     * - 'theme': Theme class name (default: Tailwind::class)
+     * - 'debug': Enable debug mode for development (default: WP_DEBUG)
      *
      * @since 1.0.0
      * @return void
      */
-    public function boot(): void
+    public function boot(array $options = []): void
     {
+        // Initialize debug mode
+        $debug_enabled = $options['debug'] ?? (defined('WP_DEBUG') && WP_DEBUG);
+        
+        if ($debug_enabled) {
+            $this->enableDebugMode();
+        }
+        
         $this->initTimber();
-        $this->registerServices();
+        $this->registerServices($options);
         $this->bootServices();
+    }
+
+    /**
+     * Enable debug mode
+     * 
+     * Initializes the Debug service for tracking performance metrics.
+     *
+     * @return void
+     */
+    private function enableDebugMode(): void
+    {
+        // Define debug constant for use throughout the theme
+        define('THEME_DEBUG', true);
+        
+        // Initialize Debug service
+        Debug::init();
     }
 
     /**
@@ -89,13 +116,14 @@ class Bootstrap
      *
      * @return void
      */
-    private function registerServices(): void
+    private function registerServices(array $options = []): void
     {
         $this->services = [
             'site'      => StarterSite::class,
             'assets'    => Assets::class,
             'blocks'    => BlockRegistry::class,
             'templates' => TemplateRegistry::class,
+            'tailwind'  => $options['tailwind'] ?? Tailwind::class,
         ];
 
         /**
@@ -113,9 +141,18 @@ class Bootstrap
      */
     private function bootServices(): void
     {
-        // BlockRegistry - register on acf/init
+        // BlockRegistry - register on acf/init with debug timing if enabled
         if (isset($this->services['blocks']) && function_exists('acf_register_block_type')) {
-            add_action('acf/init', [$this->services['blocks'], 'autoDiscoverAndRegister']);
+            if (Debug::isEnabled()) {
+                add_action('acf/init', function() {
+                    call_user_func([$this->services['blocks'], 'autoDiscoverAndRegister']);
+                });
+                
+                // Log page completion in footer
+                add_action('wp_footer', [Debug::class, 'logPageComplete'], 999);
+            } else {
+                add_action('acf/init', [$this->services['blocks'], 'autoDiscoverAndRegister']);
+            }
         }
 
         // StarterSite - instantiate

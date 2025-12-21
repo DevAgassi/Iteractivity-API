@@ -1,7 +1,9 @@
-<section class="swiper-slider" {{ is_preview ? 'data-preview="true"' : '' }}>
-	<div class="swiper-container">
+{% set limit = is_preview ? 1 : null %}
+
+<section class="swiper-slider">
+	<div class="swiper-container" {{ is_preview ? 'data-preview="true"' : '' }}>
 		<div class="swiper-wrapper">
-			{% for slide in fields.slides %}
+			{% for slide in fields.slides|slice(0, limit) %}
 				<div class="swiper-slide">
 					{% if slide.image %}
 						<img src="{{ slide.image.url }}" alt="{{ slide.image.alt|default('') }}">

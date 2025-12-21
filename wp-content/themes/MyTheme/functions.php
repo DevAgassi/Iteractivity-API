@@ -4,13 +4,16 @@ namespace App;
 
 use App\Core\Bootstrap;
 
-Bootstrap::getInstance()->boot();
+Bootstrap::getInstance()->boot([
+    'theme'=> 'tailwind',
+    'debug' => true
+]);
 
 add_action('wp_head', function () {
     if (WP_ENVIRONMENT_TYPE === 'local') :
         $vite_dev_server_url = 'http://localhost:3030';
-    //    echo '<script type="module" src="' . esc_url($vite_dev_server_url . '/@vite/client') . '"></script>' . "\n";
-    //    echo '<script type="module" src="' . esc_url($vite_dev_server_url . '/assets/scripts/main.js') . '"></script>';
+        echo '<script type="module" src="' . esc_url($vite_dev_server_url . '/@vite/client') . '"></script>' . "\n";
+        echo '<script type="module" src="' . esc_url($vite_dev_server_url . '/assets/scripts/main.js') . '"></script>';
     endif;
 }, 1);
 

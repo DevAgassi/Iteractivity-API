@@ -28,7 +28,7 @@ $end_time = microtime(true);
 $duration = $end_time - $start_time;
 echo "<!-- WP Context time: " . round($duration * 1000, 2) . " ms -->";
 $start_time = microtime(true);
-Timber::render('index.twig', $context);
+Timber::render('index.twig', $context, 1000);
 
 $end_time = microtime(true);
 $duration = $end_time - $start_time;

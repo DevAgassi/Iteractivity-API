@@ -1,0 +1,16 @@
+{
+  "name": "hero",
+  "title": "HeroBlock",
+  "description": "HeroBlock block",
+  "category": "custom-blocks",
+  "icon": "wordpress-alt",
+  "apiVersion": 3,
+  "acf_block_version": 3,
+  "mode": "preview",
+  "supports": {
+    "align": true,
+    "mode": false,
+    "jsx": true,
+    "interactive": true
+  }
+}

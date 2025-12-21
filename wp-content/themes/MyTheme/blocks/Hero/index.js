@@ -1,4 +1,4 @@
-import { store, getContext, useState } from "@wordpress/interactivity";
+import { store, getContext } from "@wordpress/interactivity";
 
 store("hero-section", {
   state: {
@@ -13,6 +13,7 @@ store("hero-section", {
 
   actions: {
     openModal() {
+      console.log("asdad")
       // Оновлюємо реактивний server-side state
       const ctx = getContext();
       ctx.is_modal_open = !ctx.is_modal_open;

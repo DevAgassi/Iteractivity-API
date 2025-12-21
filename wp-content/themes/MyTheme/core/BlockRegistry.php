@@ -68,18 +68,20 @@ class BlockRegistry
      */
     public static function autoDiscoverAndRegister(): void
     {
-        $start_time = microtime(true);
+        $start_time = Debug::isEnabled() ? microtime(true) : null;
 
-        foreach (self::getBlocksData() as $block_data) {
-            self::registerBlock($block_data['folder_path'], $block_data['folder_name'], $block_data['metadata']);
+        $blocks_data = self::getBlocksData();
+        foreach ($blocks_data as $block_data) {
+            self::registerBlock($block_data['folder_name'], $block_data['metadata']);
         }
 
-        $end_time = microtime(true);
-        $duration = $end_time - $start_time;
-        error_log("<!-- WP Register blocks time: " . round($duration * 1000, 2) . " ms -->");
+        if ($start_time !== null) {
+            $duration = (microtime(true) - $start_time) * 1000;
+            Debug::logBlockDiscovery(count($blocks_data), $duration);
+        }
 
         // Hook assets enqueueing to wp_enqueue_scripts
-        add_action('wp_enqueue_scripts', [self::class, 'enqueueBlockAssets']); // TODO need remove?
+        add_action('wp_enqueue_scripts', [self::class, 'enqueueBlockAssets']);
         add_action('enqueue_block_assets', [self::class, 'enqueueBlockAssets']);
     }
 
@@ -102,6 +104,8 @@ class BlockRegistry
      */
     public static function enqueueBlockAssets(): void
     {
+        $start_time = Debug::isEnabled() ? microtime(true) : null;
+
         $manifest = self::loadManifest();
         $enqueued_deps = [];
 
@@ -128,6 +132,7 @@ class BlockRegistry
                     $block_instance = new $class_name();
 
                     foreach ($block_instance->getDependencies() as $dep) {
+
                         if (!isset($enqueued_deps[$dep])) {
                             $dep_handle = self::getDependencyHandle($dep);
                             self::enqueueDependency($dep, $manifest);
@@ -144,6 +149,11 @@ class BlockRegistry
                 // Enqueue block JS
                 self::enqueueBlockScript($folder_name, $script_dependencies, $manifest);
             }
+        }
+
+        if ($start_time !== null) {
+            $duration = (microtime(true) - $start_time) * 1000;
+            Debug::logBlockAssets($duration);
         }
     }
 
@@ -172,8 +182,8 @@ class BlockRegistry
             $class_name = self::BLOCKS_NAMESPACE . '\\' . $folder_name . '\\Block';
 
             if (class_exists($class_name)) {
-                $metadata = json_decode(file_get_contents($file), true);
 
+                $metadata = json_decode(file_get_contents($file), true);
                 $blocks_data[] = [
                     'folder_path' => $folder_path,
                     'folder_name' => $folder_name,
@@ -184,7 +194,6 @@ class BlockRegistry
                 error_log("Block class $class_name not found in $folder_path");
             }
         }
-
         self::$blocksDataCache = $blocks_data;
         return $blocks_data;
     }
@@ -326,7 +335,7 @@ class BlockRegistry
         return match ($dep) {
             'swiper' => 'swiper-global',
             'jquery' => 'jquery',
-            'wp-interactivity' => 'wp-interactivity',
+            'interactivity' => 'wp-interactivity',
             default => null,
         };
     }
@@ -340,11 +349,11 @@ class BlockRegistry
      * Assets (style/view_script) are NOT set here because they're enqueued
      * on wp_enqueue_scripts hook instead of during block rendering.
      *
-     * @param string $folder_path Absolute path to block folder
      * @param string $folder_name Block folder name
+     * @param array $metadata Block metadata from block.json
      * @return void
      */
-    private static function registerBlock(string $folder_path, string $folder_name, array $metadata): void
+    private static function registerBlock(string $folder_name, array $metadata): void
     {
         $class_name = self::BLOCKS_NAMESPACE . '\\' . $folder_name . '\\Block';
 
@@ -356,8 +365,10 @@ class BlockRegistry
             ...$metadata,
             'render_callback' => function (
                 $block,
-                $post_id,
                 $content,
+                $_,
+                $post_id,
+                $d
             ) use ($folder_name, $class_name) {
                 self::renderBlock($class_name, $folder_name, $block, $post_id, $content);
             },
@@ -370,24 +381,28 @@ class BlockRegistry
      * Creates a block instance, sets its data from the block object,
      * and calls its render method. The block class should return a string
      * from its render() method, not echo.
+     * 
+     * In debug mode, logs:
+     * - Block rendering start/completion time
+     * - ACF fields loaded for the block
+     * - SQL queries executed during block rendering
      *
      * @param string $class_name Fully qualified block class name
      * @param string $folder_name Block folder name
      * @param object $block WordPress block object with parsed_block data
-     * @param bool $is_preview Whether rendering in preview mode
-     * @return string Rendered block HTML
+     * @param int $post_id Post ID the block is being rendered for
+     * @param string $content Block inner content
+     * @return void
      */
-    private static function renderBlock($class_name, $folder_name, $block, $id, $content): void
+    private static function renderBlock($class_name, $folder_name, $block, $post_id, $content): void
     {
-        if (!class_exists($class_name)) {
-            error_log("Block class $class_name not found.");
-        }
-
         try {
-            $block_instance = new $class_name();
-            $block_instance->setFolder($folder_name);
-            $block_instance->setBlock($block);
-            $block_instance->setIsPreview('true');
+            if (!class_exists($class_name)) {
+                error_log("Block class $class_name not found.");
+                return;
+            }
+
+            $block_instance = (new $class_name())->init($block, '/blocks/' . $folder_name, $post_id, $content);
 
             $block_instance->render();
         } catch (\Exception $e) {

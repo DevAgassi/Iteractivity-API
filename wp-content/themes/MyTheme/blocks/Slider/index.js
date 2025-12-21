@@ -12,13 +12,12 @@ function initSlider() {
 
   const { Navigation, Pagination } = window.SwiperModules;
   const block = document.querySelector(".swiper-container");
+  const is_preview = block.getAttribute("data-preview") || false;
 
-  if (!block) {
+  if (!block || is_preview) {
     console.warn("Slider block container not found");
     return;
   }
-
-  const is_preview = JSON.parse($container.attr("data-preview") || "false");
 
   const swiper = new window.Swiper(block, {
     modules: [Navigation, Pagination],

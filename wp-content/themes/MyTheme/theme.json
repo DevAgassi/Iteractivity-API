@@ -4,23 +4,6 @@
 	"styles": {
 		"elements": {
 			"textInput": {
-				"border": {
-					"color": "#d5dae2",
-					"style": "solid",
-					"width": "1px",
-					"radius": "0.75rem"
-				},
-				"color": {
-					"background": "#eceff2",
-					"text": "#22272f"
-				},
-				"outline": {
-					"color": "transparent",
-					"offset": "2px",
-					"style": "solid",
-					"width": "2px"
-				},
-				"shadow": "0 10px 15px -3px #0000001A, 0 4px 6px -4px #0000001A",
 				"spacing": {
 					"padding": {
 						"top": "var(--wp--preset--spacing--10)",
