@@ -14,6 +14,7 @@ abstract class BaseBlock
     protected array $context = [];
     protected string $content = '';
     protected array $fields = [];
+    protected string $classes = '';
 
     /**
      * Масив глобальних залежностей блоку
@@ -61,7 +62,7 @@ abstract class BaseBlock
         return "{$this->folder}/view.twig";
     }
 
-    public function init($block, $folder_name, $id, $content = ''): self
+    public function init($block, $folder_name, $id, $content = ''): void
     {
         $this->block = $block;
         $this->folder = $folder_name;
@@ -69,17 +70,18 @@ abstract class BaseBlock
         $this->content = $content;
 
         $fields_timing_start = Debug::isEnabled() ? microtime(true) : null;
-        
+
         if ($this->dto_class && class_exists($this->dto_class)) {
             $dto = new $this->dto_class($block);
             // Transform Native Block Data To Understandable Fields
             $this->fields = $dto->toArray();
-            
+
             if (Debug::isEnabled()) {
                 $duration = (microtime(true) - $fields_timing_start) * 1000;
                 Debug::log(
-                    sprintf('Loaded fields via DTO (%s): %s (%.2f ms)', 
-                        basename($this->dto_class), 
+                    sprintf(
+                        'Loaded fields via DTO (%s): %s (%.2f ms)',
+                        basename($this->dto_class),
                         implode(', ', array_keys($this->fields)),
                         $duration
                     ),
@@ -88,11 +90,12 @@ abstract class BaseBlock
             }
         } else {
             $this->fields = get_fields() ?: [];
-            
+
             if (Debug::isEnabled()) {
                 $duration = (microtime(true) - $fields_timing_start) * 1000;
                 Debug::log(
-                    sprintf('Loaded %d ACF fields: %s (%.2f ms)',
+                    sprintf(
+                        'Loaded %d ACF fields: %s (%.2f ms)',
                         count($this->fields),
                         !empty($this->fields) ? implode(', ', array_keys($this->fields)) : '(none)',
                         $duration
@@ -106,7 +109,7 @@ abstract class BaseBlock
             'fields' => $this->fields,
         ]);
 
-        return $this;
+        $this->render();
     }
 
     /**
@@ -129,32 +132,38 @@ abstract class BaseBlock
     /**
      * Register block state for interactivity/Nantive //TODO переробити в два окремі методи, білш чисту архитектуру
      */
-    protected function registerState(): void
+    protected function registerContext(): void
     {
-        $this->timber_context['context'] = $this->getContext();
+        $this->timber_context = [
+            ...$this->timber_context,
+            'context' => $this->getContext(),
+            'unique_id' => $this->getUniqueId(),
+            'is_preview' => is_admin() && !wp_doing_ajax(),
+            'attrs' => get_block_wrapper_attributes([
+                'data-unique-id' => $this->unique_id,
+                'class' => $this->classes,
+            ])
+        ];
 
-        if (! $this->interactivity_namespace) {
-            return;
-        }
+        $this->registerState();
+    }
 
+    protected function registerState()
+    {
+        if ($this->interactivity_namespace) {
+            // autoregister interactivity dependency
+            $this->dependencies[] = 'interactivity';
+            
+            $this->timber_context['attrs'] .= ' '
+                . wp_interactivity_data_wp_context($this->timber_context['context'])
+                . ' data-wp-interactive="' . esc_attr($this->interactivity_namespace) . '"';
 
-        $this->timber_context['interactivity_attrs'] = get_block_wrapper_attributes([
-            'data-unique-id' => $this->unique_id,
-            'data-wp-interactive' => $this->interactivity_namespace,
-        ]);
-
-        if (!empty($this->timber_context['context'])) {
-            $this->timber_context['interactivity_attrs'] .= ' ' . wp_interactivity_data_wp_context($this->timber_context['context']);
-        }
-
-        // TODO: переробити в майбутньому
-        if (!empty($this->timber_context['context']) && function_exists('wp_interactivity_state')) {
-            //   $attrs =
-            //   $attrs .= sprintf(' data-wp-context=\'%s\'', wp_json_encode($this->timber_context['state']));
-            wp_interactivity_state(
-                $this->interactivity_namespace,
-                $this->timber_context['context']
-            );
+            if (function_exists('wp_interactivity_state')) {
+                wp_interactivity_state(
+                    $this->interactivity_namespace,
+                    $this->timber_context['context']
+                );
+            }
         }
     }
 
@@ -164,9 +173,7 @@ abstract class BaseBlock
     public function render(): void
     {
         // Load fields from RAM
-        $this->registerState();
-        $this->timber_context['unique_id'] = $this->getUniqueId();
-        $this->timber_context['is_preview'] = is_admin() && !wp_doing_ajax();
+        $this->registerContext();
 
         Timber::render($this->getTemplate(), $this->timber_context);
     }

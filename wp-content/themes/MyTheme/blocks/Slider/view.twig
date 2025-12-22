@@ -1,6 +1,6 @@
 {% set limit = is_preview ? 1 : null %}
 
-<section class="swiper-slider">
+<section class="swiper-slider" {{ attrs|raw }}>
 	<div class="swiper-container" {{ is_preview ? 'data-preview="true"' : '' }}>
 		<div class="swiper-wrapper">
 			{% for slide in fields.slides|slice(0, limit) %}
@@ -27,4 +27,4 @@
 		<div class="swiper-pagination"></div>
 	</div>
 </section>
-<InnerBlocks />
+<InnerBlocks/>

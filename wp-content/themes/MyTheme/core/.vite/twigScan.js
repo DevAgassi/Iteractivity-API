@@ -28,8 +28,8 @@ export function twigScanPlugin() {
     name: "core-wp-vite-twig-scan",
 
     buildStart() {
-      console.log("Twig files:", twigFiles);
-      console.log("JS/CSS/SCSS files:", styleFiles);
+      //console.log("Twig files:", twigFiles);
+      //console.log("JS/CSS/SCSS files:", styleFiles);
 
       // Додаємо всі Twig і стилі до watch
       [...twigFiles, ...styleFiles].forEach((file) => {
@@ -43,9 +43,7 @@ export function twigScanPlugin() {
         .relative(process.cwd(), file)
         .replace(/\\/g, "/");
       if (twigFiles.includes(relativePath)) {
-        console.log(
-          `[Twig HMR] ${relativePath} changed — triggering full reload`
-        );
+
         server.ws.send({ type: "full-reload", path: "*" });
         return [];
       }

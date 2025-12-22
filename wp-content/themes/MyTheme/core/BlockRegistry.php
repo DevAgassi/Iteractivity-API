@@ -402,9 +402,7 @@ class BlockRegistry
                 return;
             }
 
-            $block_instance = (new $class_name())->init($block, '/blocks/' . $folder_name, $post_id, $content);
-
-            $block_instance->render();
+            (new $class_name())->init($block, '/blocks/' . $folder_name, $post_id, $content);
         } catch (\Exception $e) {
             error_log("Block rendering error for {$class_name}: " . $e->getMessage());
         }

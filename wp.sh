@@ -165,13 +165,8 @@ case "$1" in
   dev)
     cd wp-content/themes/MyTheme
     echo "🚀 Запуск Vite dev сервера з watch режимом..."
-    echo "📡 HMR активний на порту 5173"
-    echo "📦 Build watch для CSS/JS активний"
-    echo "👀 Watch режим слідкує за:"
-    echo "   • blocks/**/*.{js,scss,twig}"
-    echo "   • views/**/*.twig"
-    echo ""
-    echo "Доступно на: http://localhost:5173"
+    echo "📡 HMR активний на порту 3030"
+    echo "Доступно на: http://localhost:3030"
     echo "Ctrl+C для завершення"
     echo ""
     
@@ -179,12 +174,8 @@ case "$1" in
     npm run dev &
     DEV_PID=$!
     
-    # Запускаємо build watch для перебудови CSS/JS
-    npm run build:watch &
-    BUILD_PID=$!
-    
     # Обробляємо Ctrl+C
-    trap "kill $DEV_PID $BUILD_PID 2>/dev/null; exit" INT TERM
+    trap "echo ''; echo '🧹 Hot file cleaned up'; rm -f dist/hot; kill $DEV_PID 2>/dev/null; exit" INT TERM
     wait
     ;;
 

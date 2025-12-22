@@ -7,7 +7,7 @@ store("hero-section", {
     },
     get buttonText() {
       // Динамічний текст на основі isModalOpen
-      return this.isModalOpen ? "Clicked!" : '111';
+      return this.isModalOpen ? "Clicked!!" : '111';
     },
   },
 

@@ -6,7 +6,6 @@ use App\Core\BaseBlock;
 
 class Block extends BaseBlock
 {
-    protected array $dependencies = ['interactivity'];
     protected ?string $interactivity_namespace = 'pizza-dough-calculator';
 
     // Per-instance context (ACF slides)

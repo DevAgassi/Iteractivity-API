@@ -13,6 +13,8 @@
 
 namespace App\Core;
 
+use Illuminate\Support\Facades\App;
+use Timber\Core;
 use Timber\Site;
 use Timber\Timber;
 
@@ -83,7 +85,7 @@ class StarterSite extends Site
         }
 
         // Завантажуємо глобальні стилі (якщо є)
-        $css_file = $manifest['assets/styles/main.css']['file'];      
+        $css_file = $manifest['assets/styles/main.css']['file'];
         if (isset($manifest['assets/styles/main.css'])) {
             wp_enqueue_style('main', get_template_directory_uri() . '/dist/' . $css_file);
         }
@@ -145,12 +147,12 @@ class StarterSite extends Site
     {
         $context['menu'] = Timber::get_menu('primary_navigation');
         $context['site'] = $this;
+        $context['vite'] = new Vite();
 
         return $context;
     }
 
     /*
-    |--------------------------------------------------------------------------
     | Theme Supports
     |--------------------------------------------------------------------------
     */
