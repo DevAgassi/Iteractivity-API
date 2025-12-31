@@ -1,10 +1,13 @@
-{% import 'ui/button.twig' as ui %}
-
 <section id="hero-block" class="hero-section" {{ attrs|raw }} data-wp-interactive="hero-section" data-unique-id="{{ unique_id }}">
 	<div class="hero-content flex flex-col items-center justify-center text-center gap-6">
 		<h1>{{ state.title|striptags|e }}</h1>
 		<button type="button" class="rounded-xl font-semibold text-black bg-primary-500 hover:bg-primary-600 transition px-4 py-2 text-base" 'data-wp-on--click' : 'actions.openModal' , 'data-wp-text' : 'state.buttonText'>
             {{ state.buttonText }}
 		</button>
+		{{ ui_button({
+			label: state.buttonText,
+			variant: 'primary',
+			attrs: 'data-wp-on--click="actions.openModal"'
+		}) }}
 	</div>
 </section>

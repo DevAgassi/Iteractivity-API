@@ -2,15 +2,17 @@
 
 namespace App\Blocks\Hero;
 
-use App\Core\BaseBlock;
+use App\Core\Blocks\BaseBlock;
 
 class Block extends BaseBlock
 {
+    public string $blockName = 'hero';
     /**
      * Interactivity API namespace
      */
     protected ?string $interactivity_namespace = 'hero-section';
-    protected array $dependencies = ['interactivity'];
+    protected array $dependencies = ['jquery'];
+    protected array $dependencies_module = ['@wordpress/interactivity'];
 
     /**
      * Per-instance context
@@ -20,7 +22,7 @@ class Block extends BaseBlock
         $fields = $this->timber_context['fields'] ?? [];
 
         return [
-            'buttonText' => $fields['cta_text'] ?? 'Learn More!!',
+            'buttonText' => $fields['cta_text'] ?? 'Learn More!!!1',
             'is_modal_open' => false,
         ];
     }

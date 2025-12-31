@@ -13,10 +13,9 @@
 
 namespace App\Core;
 
-use Illuminate\Support\Facades\App;
-use Timber\Core;
 use Timber\Site;
 use Timber\Timber;
+use App\Core\Assets\Assets;
 
 /**
  * Class StarterSite
@@ -38,7 +37,7 @@ class StarterSite extends Site
         add_action('after_setup_theme', [$this, 'theme_supports']);
         add_action('init', [$this, 'register_post_types']);
         add_action('init', [$this, 'register_taxonomies']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
 
         // Timber filters
         add_filter('timber/context', [$this, 'add_to_context']);
@@ -63,38 +62,12 @@ class StarterSite extends Site
      * @since 1.0.0
      * @return void
      */
-    public function enqueue_styles(): void
+    public function enqueue_assets(): void
     {
-        // $main_stylesheet = '/assets/styles/main.css';
-        // $stylesheet_path = get_template_directory() .$main_stylesheet;
-
-        // if (file_exists($stylesheet_path)) {
-        //     wp_enqueue_style(
-        //         'theme-main-style',
-        //         get_template_directory_uri() .$main_stylesheet,
-        //         [],
-        //         filemtime($stylesheet_path)
-        //     );
-        // }
-
-        $manifest_path = get_template_directory() . '/dist/.vite/manifest.json';
-        $manifest = [];
-
-        if (file_exists($manifest_path)) {
-            $manifest = json_decode(file_get_contents($manifest_path), true);
-        }
-
-        // Завантажуємо глобальні стилі (якщо є)
-        $css_file = $manifest['assets/styles/main.css']['file'];
-        if (isset($manifest['assets/styles/main.css'])) {
-            wp_enqueue_style('main', get_template_directory_uri() . '/dist/' . $css_file);
-        }
-
-        // Завантажуємо глобальні js залежності
-        $js_file = $manifest['assets/scripts/main.js']['file'];
-        if (isset($manifest['assets/scripts/main.js'])) {
-            wp_enqueue_script('main', get_template_directory_uri() . '/dist/' . $js_file);
-        }
+        /**
+         * Main JS file with dependencies and CSS imports
+         */
+        //Assets::enqueueAssets('assets/scripts/app.js', 'app');
     }
 
     /*
@@ -147,7 +120,7 @@ class StarterSite extends Site
     {
         $context['menu'] = Timber::get_menu('primary_navigation');
         $context['site'] = $this;
-        $context['vite'] = new Vite();
+        $context['assets'] = new Assets();
 
         return $context;
     }
@@ -201,16 +174,6 @@ class StarterSite extends Site
             'audio',
         ]);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Twig Filters
-    |--------------------------------------------------------------------------
-    |
-    | Custom Twig filters available in templates.
-    | Usage: {{ variable|filter_name }}
-    |
-    */
 
     /**
      * Register custom Twig filters.
@@ -271,6 +234,40 @@ class StarterSite extends Site
      */
     public function add_functions_to_twig(array $functions): array
     {
+        $ui_dir = get_template_directory() . '/ui';
+
+        $custom_ui = [];
+        $is_debug = defined('WP_DEBUG') && WP_DEBUG;
+
+        if (is_dir($ui_dir)) {
+
+            // Використовуємо transient для списку файлів, щоб не сканувати диск щоразу
+            $components = $is_debug ? false : get_transient('ui_components_list');
+
+            if (false === $components || (defined('WP_DEBUG') && WP_DEBUG)) {
+                $files = scandir($ui_dir);
+                $components = [];
+                foreach ($files as $file) {
+                    if (str_ends_with($file, '.twig')) {
+                        $components[] = str_replace('.twig', '', $file);
+                    }
+                }
+                set_transient('ui_components_list', $components, DAY_IN_SECONDS);
+            }
+
+            // Реєструємо кожен файл як функцію ui_{name}
+            foreach ($components as $name) {
+                $custom_ui["ui_{$name}"] = [
+                    'callable' => function ($props = []) use ($name) {
+                        // Рендеримо через Timber. 
+                        // Twig автоматично використає скомпілений PHP-кеш із папки cache/twig
+                        return Timber::compile("ui/{$name}.twig", $props);
+                    },
+                    'options' => ['is_safe' => ['html']],
+                ];
+            }
+        }
+
         $custom_functions = [
             'get_theme_mod' => [
                 'callable' => 'get_theme_mod',
@@ -299,7 +296,7 @@ class StarterSite extends Site
             ],
         ];
 
-        return array_merge($functions, $custom_functions);
+        return array_merge($functions, $custom_functions, $custom_ui);
     }
 
     /**
@@ -341,21 +338,21 @@ class StarterSite extends Site
      */
     public function update_twig_environment_options(array $options): array
     {
-        // $cache_dir = get_template_directory() . '/cache/twig';
+        $cache_dir = get_template_directory() . '/cache/twig';
 
-        // // Створюємо папку кешу якщо не існує
-        // if (! file_exists($cache_dir)) {
-        //     mkdir($cache_dir, 0777, true);
-        // }
+        // Створюємо папку кешу якщо не існує
+        if (! file_exists($cache_dir)) {
+            mkdir($cache_dir, 0777, true);
+        }
 
-        // // Увімкнути кешування Twig
-        // $options['cache'] = $cache_dir;
+        // Увімкнути кешування Twig
+        $options['cache'] = $cache_dir;
 
-        // // У dev можна додати debug та auto_reload
-        // if (WP_ENVIRONMENT_TYPE === 'local') {
-        //     $options['debug'] = true;
-        //     $options['auto_reload'] = true; // Twig буде перезавантажувати шаблони при зміні файлу
-        // }
+        // У dev можна додати debug та auto_reload
+        if (WP_ENVIRONMENT_TYPE === 'local') {
+            $options['debug'] = true;
+            $options['auto_reload'] = true; // Twig буде перезавантажувати шаблони при зміні файлу
+        }
 
         return $options;
     }

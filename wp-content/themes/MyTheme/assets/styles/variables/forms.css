@@ -1,0 +1,76 @@
+.gutenberg-block .form.form-common {
+    & .gfield_label {
+        @apply text-[12px]/[18px] md:text-[14px]/[24px] font-normal;
+    }
+
+    & input {
+        @apply py-3 border border-gray-600 rounded-md bg-transparent min-h-[56px] text-[12px]/[18px] md:text-[14px]/[24px] font-normal;
+    }
+
+    & input[type=text] {
+        @apply text-[12px]/[18px] md:text-[14px]/[24px] font-normal md:px-5;
+    }
+
+    & select {
+        @apply border border-gray-600 rounded-md cursor-pointer min-h-[56px] text-[12px]/[18px] md:text-[14px]/[24px] font-normal md:px-5;
+    }
+
+    & textarea {
+        @apply py-3 border border-gray-600 rounded-md bg-transparent text-[12px]/[18px] md:text-[14px]/[24px] font-normal md:px-5;
+    }
+
+    & .button {
+        @apply bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 w-full md:w-auto mb-4 md:mb-0 ease-in duration-300 cursor-pointer;
+    }
+
+    & .gfield-choice-input {
+        @apply w-[18px] h-[18px] min-h-auto checked:bg-blue-600;
+    }
+
+    & .gfield--type-checkbox .gfield_description {
+        @apply pt-[10px] pl-[29px] text-[12px]/[18px] md:text-[14px]/[24px] font-normal text-[#525352];
+    }
+
+    & .gfield--type-checkbox .gform-field-label {
+        @apply pl-[5px] text-[14px]/[21px] md:text-[16px]/[27px] font-normal;
+    }
+
+    & .ginput_counter {
+        @apply pt-0 text-right text-[12px]/[18px] md:text-[14px]/[24px] font-normal;
+    }
+
+    & .gfield_select {
+        @apply pr-8 text-[12px]/[18px] md:text-[14px]/[24px] font-normal appearance-none;
+        background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'><path fill-rule='evenodd' clip-rule='evenodd' d='M6.2762 8.65125C6.6345 8.30673 7.20424 8.3179 7.54875 8.6762L12 13.4015L16.4513 8.6762C16.7958 8.3179 17.3655 8.30673 17.7238 8.65125C18.0821 8.99576 18.0933 9.5655 17.7487 9.92379L12.6488 15.3238C12.4791 15.5003 12.2448 15.6 12 15.6C11.7552 15.6 11.5209 15.5003 11.3513 15.3238L6.25125 9.92379C5.90674 9.5655 5.91791 8.99576 6.2762 8.65125Z' fill='%230F172A'/></svg>") no-repeat right 0.5rem center;
+        background-size: 20px;
+        background-position-x: 97%;
+    }
+
+    & .gform-footer {
+        @apply m-0 p-0;
+    }
+}
+
+.form.form-card {
+    @apply my-4 rounded-2xl bg-gray-100 shadow-sm p-4 md:p-6 md:order-1;
+
+    & .gfield {
+        @apply mb-4;
+    }
+
+    & .gform-footer {
+        @apply flex justify-end;
+    }
+}
+
+.form.form-subscribe {
+    @apply w-full;
+
+    & form {
+        @apply flex flex-col md:flex-row gap-4;
+    }
+
+    & .gform-body {
+        @apply grow;
+    }
+}

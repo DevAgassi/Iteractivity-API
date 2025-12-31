@@ -1,1 +1,17 @@
 @import "tailwindcss";
+@import "./variables/breakpoint.css";
+@import "./variables/colors.css";
+@import "./variables/container.css";
+@import "./variables/font.css";
+@import "./variables/text.css";
+@import "./variables/radius.css";
+@import "./variables/blur.css";
+@import "./variables/box-shadow.css";
+@import "./variables/animation.css";
+@import "./variables/forms.css";
+
+@theme {
+  /*p-<number> padding: calc(var(--spacing) * <number>);*/
+  /*m-<number> margin: calc(var(--spacing) * <number>);*/
+  --spacing: 0.5rem;
+}

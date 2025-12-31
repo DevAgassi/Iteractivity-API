@@ -7,6 +7,7 @@ define('DB_HOST', getenv('WORDPRESS_DB_HOST'));
 define('DB_CHARSET', 'utf8mb4');
 define('DB_COLLATE', '');
 
+
 // Визначаємо середовище
 $env = getenv('WP_ENV') ?: 'local';
 define('WP_DEBUG', $env === 'local');

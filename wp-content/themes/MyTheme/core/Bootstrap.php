@@ -12,7 +12,9 @@
 
 namespace App\Core;
 
+use App\Core\Blocks\BlockRegistry;
 use Timber\Timber;
+use App\Core\Assets\Assets;
 
 class Bootstrap
 {
@@ -68,11 +70,11 @@ class Bootstrap
     {
         // Initialize debug mode
         $debug_enabled = $options['debug'] ?? (defined('WP_DEBUG') && WP_DEBUG);
-        
+
         if ($debug_enabled) {
             $this->enableDebugMode();
         }
-        
+
         $this->initTimber();
         $this->registerServices($options);
         $this->bootServices();
@@ -89,7 +91,7 @@ class Bootstrap
     {
         // Define debug constant for use throughout the theme
         define('THEME_DEBUG', true);
-        
+
         // Initialize Debug service
         Debug::init();
     }
@@ -142,7 +144,7 @@ class Bootstrap
     private function bootServices(): void
     {
         // BlockRegistry - register on acf/init with debug timing if enabled
-        if (isset($this->services['blocks']) && function_exists('acf_register_block_type')) {
+        /* if (isset($this->services['blocks']) && function_exists('acf_register_block_type')) {
             if (Debug::isEnabled()) {
                 add_action('acf/init', function() {
                     call_user_func([$this->services['blocks'], 'autoDiscoverAndRegister']);
@@ -153,8 +155,13 @@ class Bootstrap
             } else {
                 add_action('acf/init', [$this->services['blocks'], 'autoDiscoverAndRegister']);
             }
-        }
+        }*/
 
+        // StarterSite - instantiate
+        if (isset($this->services['blocks'])) {
+            $this->services['blocks']::init();
+        }
+        
         // StarterSite - instantiate
         if (isset($this->services['site'])) {
             new $this->services['site']();
