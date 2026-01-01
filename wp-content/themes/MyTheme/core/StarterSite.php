@@ -67,7 +67,23 @@ class StarterSite extends Site
         /**
          * Main JS file with dependencies and CSS imports
          */
-        //Assets::enqueueAssets('assets/scripts/app.js', 'app');
+        Assets::enqueueAssets('assets/scripts/app.js', 'app');
+    }
+
+    /**
+     * Enqueue admin area styles and scripts.
+     * 
+     * Loads admin-specific assets if needed.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public function enqueue_admin_assets(): void
+    {
+        /**
+         * Admin JS file with dependencies and CSS imports
+         */
+        Assets::enqueueEditorAssets('assets/scripts/app.js', 'app-editor');
     }
 
     /*
@@ -173,6 +189,14 @@ class StarterSite extends Site
             'gallery',
             'audio',
         ]);
+
+        /**
+         * Editor styles support //TODO: Need to refactor later
+         */
+        if (is_admin()) {
+            add_theme_support('editor-styles');
+            $this->enqueue_admin_assets();
+        }
     }
 
     /**

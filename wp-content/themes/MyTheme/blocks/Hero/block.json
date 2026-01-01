@@ -6,6 +6,7 @@
   "category": "custom-blocks",
   "icon": "wordpress-alt",
   "apiVersion": 3,
+  "editorStyle": "file:./index.css",
   "supports": {
     "align": true,
     "jsx": true,

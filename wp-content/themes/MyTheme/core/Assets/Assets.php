@@ -14,6 +14,9 @@ namespace App\Core\Assets;
 
 class Assets extends AbstractAssets
 {
+    /**
+     * Enqueue assets based on Vite manifest
+     */
     public static function enqueueAssets(string|array $path, string $name, array $deps = [], array $deps_module = []): void
     {
         $manifest = self::getManifest();
@@ -21,7 +24,7 @@ class Assets extends AbstractAssets
             $manifest !== null && self::hotEnqueue($name, $manifest['url'] . '/' . $path, $deps_module);
             return;
         }
-dd($manifest);
+
         self::setDependencyHandle($deps);
 
         if ($manifest !== null && isset($manifest[$path])) {
@@ -44,6 +47,28 @@ dd($manifest);
         }
     }
 
+    /**
+     * Enqueue editor-specific styles from manifest
+     */
+    public static function enqueueEditorAssets(string|array $path): void
+    {
+        $manifest = self::getManifest();
+
+        if ($manifest !== null && isset($manifest[$path])) {
+            $js_file = $manifest[$path];
+            if (isset($js_file['css'])) {
+                foreach ($js_file['css'] as $css) {
+                    if (is_admin()) {
+                        add_editor_style('/dist/' . $css);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Enqueue assets in development mode
+     */
     protected static function hotEnqueue(string $name, string $file_url, array $deps_module = []): void
     {
         wp_enqueue_script_module($name, $file_url, $deps_module, null, ['footer' => true]);

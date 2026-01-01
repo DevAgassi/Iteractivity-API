@@ -51,6 +51,7 @@ export default defineConfig({
     laravel({
       input: [
         "assets/scripts/app.js",
+        "assets/scripts/admin.js",
         "blocks/Hero/block.js",
         "assets/scripts/swiper.js",
       ],

@@ -159,9 +159,9 @@ class Bootstrap
 
         // StarterSite - instantiate
         if (isset($this->services['blocks'])) {
-            $this->services['blocks']::init();
+            add_action('init', fn() => $this->services['blocks']::init());
         }
-        
+
         // StarterSite - instantiate
         if (isset($this->services['site'])) {
             new $this->services['site']();
