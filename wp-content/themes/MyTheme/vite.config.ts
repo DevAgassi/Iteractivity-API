@@ -37,7 +37,7 @@ export default defineConfig({
     devSourcemap: true,
   },
   plugins: [
-    {
+   /* {
       name: "ignore-wp-imports",
       enforce: "pre",
       resolveId(id) {
@@ -45,7 +45,7 @@ export default defineConfig({
           return id;
         }
       },
-    },
+    },*/
     autoHmrPlugin(),
     tailwindcss(),
     laravel({
@@ -59,6 +59,7 @@ export default defineConfig({
         "blocks/**/*.{twig,php}",
         "templates/**/*.{twig,php}",
         "views/**/*.{twig,php}",
+        "ui/**/*.{twig,php}",
       ],
       publicDirectory: "dist",
       buildDirectory: ".",

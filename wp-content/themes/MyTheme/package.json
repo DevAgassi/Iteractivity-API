@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
+    "@wordpress/interactivity": "^6.37.0",
     "fast-glob": "^3.3.3",
     "laravel-vite-plugin": "^2.0.1",
     "node-fetch": "^3.3.2",

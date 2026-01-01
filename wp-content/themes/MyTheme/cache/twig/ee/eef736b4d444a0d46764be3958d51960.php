@@ -14,8 +14,8 @@ use Twig\Source;
 use Twig\Template;
 use Twig\TemplateWrapper;
 
-/* partials/tease-post.twig */
-class __TwigTemplate_80a4b1ec5d7e220a0fb3c0d780717e0c extends Template
+/* layouts/footer.twig */
+class __TwigTemplate_8ae4e9c25c80b6a2776a322cd40a51dd extends Template
 {
     private Source $source;
     /**
@@ -29,34 +29,19 @@ class __TwigTemplate_80a4b1ec5d7e220a0fb3c0d780717e0c extends Template
 
         $this->source = $this->getSourceContext();
 
-        $this->blocks = [
-            'content' => [$this, 'block_content'],
-        ];
-    }
+        $this->parent = false;
 
-    protected function doGetParent(array $context): bool|string|Template|TemplateWrapper
-    {
-        // line 1
-        return "partials/tease.twig";
+        $this->blocks = [
+        ];
     }
 
     protected function doDisplay(array $context, array $blocks = []): iterable
     {
         $macros = $this->macros;
-        $this->parent = $this->load("partials/tease.twig", 1);
-        yield from $this->parent->unwrap()->yield($context, array_merge($this->blocks, $blocks));
-    }
-
-    // line 3
-    /**
-     * @return iterable<null|scalar|\Stringable>
-     */
-    public function block_content(array $context, array $blocks = []): iterable
-    {
-        $macros = $this->macros;
-        // line 4
-        yield "
-";
+        // line 1
+        yield "<footer id=\"footer\">Copyright ";
+        yield $this->env->getFilter('date')->getCallable()($this->env, "now", "Y");
+        yield "</footer>";
         yield from [];
     }
 
@@ -65,7 +50,7 @@ class __TwigTemplate_80a4b1ec5d7e220a0fb3c0d780717e0c extends Template
      */
     public function getTemplateName(): string
     {
-        return "partials/tease-post.twig";
+        return "layouts/footer.twig";
     }
 
     /**
@@ -81,15 +66,11 @@ class __TwigTemplate_80a4b1ec5d7e220a0fb3c0d780717e0c extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  58 => 4,  51 => 3,  40 => 1,);
+        return array (  42 => 1,);
     }
 
     public function getSourceContext(): Source
     {
-        return new Source("{% extends 'partials/tease.twig' %}
-
-{% block content %}
-
-{% endblock %}", "partials/tease-post.twig", "/var/www/html/wp-content/themes/MyTheme/views/partials/tease-post.twig");
+        return new Source("<footer id=\"footer\">Copyright {{ 'now'|date('Y') }}</footer>", "layouts/footer.twig", "/var/www/html/wp-content/themes/MyTheme/views/layouts/footer.twig");
     }
 }

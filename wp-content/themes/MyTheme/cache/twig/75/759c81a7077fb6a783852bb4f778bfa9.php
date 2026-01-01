@@ -55,15 +55,10 @@ class __TwigTemplate_680d7b4d9a6f6070c99102a47880269e extends Template
     {
         $macros = $this->macros;
         // line 4
-        yield "    <h2>";
-        yield ($context["foo"] ?? null);
-        yield "</h2>
-";
-        // line 5
-        yield $this->env->getFunction('timer_start')->getCallable()(("tease-" . CoreExtension::getAttribute($this->env, $this->source, ($context["loop"] ?? null), "index", [], "any", false, false, false, 5)));
+        yield $this->env->getFunction('timer_start')->getCallable()(("tease-" . CoreExtension::getAttribute($this->env, $this->source, ($context["loop"] ?? null), "index", [], "any", false, false, false, 4)));
         yield "
     ";
-        // line 6
+        // line 5
         $context['_parent'] = $context;
         $context['_seq'] = CoreExtension::ensureTraversable(($context["posts"] ?? null));
         $context['loop'] = [
@@ -80,10 +75,10 @@ class __TwigTemplate_680d7b4d9a6f6070c99102a47880269e extends Template
             $context['loop']['last'] = 1 === $length;
         }
         foreach ($context['_seq'] as $context["_key"] => $context["post"]) {
-            // line 7
+            // line 6
             yield "        ";
-            yield from $this->load([(("partials/tease-" . CoreExtension::getAttribute($this->env, $this->source, $context["post"], "type", [], "any", false, false, false, 7)) . ".twig"), "partials/tease.twig"], 7)->unwrap()->yield($context);
-            // line 8
+            yield from $this->load([(("partials/tease-" . CoreExtension::getAttribute($this->env, $this->source, $context["post"], "type", [], "any", false, false, false, 6)) . ".twig"), "partials/tease.twig"], 6)->unwrap()->yield($context);
+            // line 7
             yield "    ";
             ++$context['loop']['index0'];
             ++$context['loop']['index'];
@@ -97,8 +92,8 @@ class __TwigTemplate_680d7b4d9a6f6070c99102a47880269e extends Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['post'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 9
-        yield $this->env->getFunction('timer_end')->getCallable()(("tease-" . CoreExtension::getAttribute($this->env, $this->source, ($context["loop"] ?? null), "index", [], "any", false, false, false, 9)));
+        // line 8
+        yield $this->env->getFunction('timer_end')->getCallable()(("tease-" . CoreExtension::getAttribute($this->env, $this->source, ($context["loop"] ?? null), "index", [], "any", false, false, false, 8)));
         yield "
 ";
         yield from [];
@@ -125,7 +120,7 @@ class __TwigTemplate_680d7b4d9a6f6070c99102a47880269e extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  101 => 9,  87 => 8,  84 => 7,  67 => 6,  63 => 5,  58 => 4,  51 => 3,  40 => 1,);
+        return array (  96 => 8,  82 => 7,  79 => 6,  62 => 5,  58 => 4,  51 => 3,  40 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -133,7 +128,6 @@ class __TwigTemplate_680d7b4d9a6f6070c99102a47880269e extends Template
         return new Source("{% extends 'layouts/base.twig' %}
 
 {% block content %}
-    <h2>{{ foo }}</h2>
 {{ timer_start('tease-' ~ loop.index) }}
     {% for post in posts %}
         {% include ['partials/tease-' ~ post.type ~ '.twig', 'partials/tease.twig'] %}

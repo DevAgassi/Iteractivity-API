@@ -192,7 +192,7 @@ abstract class BaseBlock
     {
         $start_time = Debug::isEnabled() ? microtime(true) : null;
 
-        $instance = new static($block, get_template_directory(), $post_id, $content);
+        $instance = new static($block, '', $post_id, $content);
 
         $instance->registerAssets();
         $instance->registerContext();

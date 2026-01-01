@@ -14,11 +14,12 @@ store("hero-section", {
   },
 
   actions: {
-    openModal() {
-      console.log("as12dad");
+    openModal(event) {
+      console.log("as12da111d");
+      event.preventDefault(); 
       // Оновлюємо реактивний server-side state
-      const ctx = getContext();
-      ctx.is_modal_open = !ctx.is_modal_open;
+     // const ctx = getContext();
+      //ctx.is_modal_open = !ctx.is_modal_open;
 
       // Не треба дублювати buttonText — getter вже бере ctx.is_modal_open
     },

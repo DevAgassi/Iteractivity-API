@@ -241,9 +241,48 @@ class StarterSite extends Site
             'myfoo' => [
                 'callable' => [$this, 'filter_myfoo'],
             ],
+            'cx' => [
+                'callable' => [$this, 'filter_cx'],
+            ],
         ];
 
         return array_merge($filters, $custom_filters);
+    }
+
+    /**
+     * Умное слияние классов Tailwind (аналог tailwind-merge)
+     * Очищает дубликаты и конфликтующие префиксы (gap-2 vs gap-5)
+     */
+    public function filter_cx($input): string
+    {
+        if (is_array($input)) {
+            $input = implode(' ', array_filter($input));
+        }
+
+        $classes = array_filter(explode(' ', (string)$input));
+        $result = [];
+
+        // Тільки структурні префікси, де ми дійсно хочемо перебивати значення
+        $prefixes = ['px-', 'py-', 'pt-', 'pb-', 'pl-', 'pr-', 'p-', 'm-', 'mt-', 'mb-', 'ml-', 'mr-', 'gap-', 'rounded-', 'ring-', 'shadow-'];
+
+        foreach ($classes as $class) {
+            $matched = false;
+            foreach ($prefixes as $prefix) {
+                if (str_starts_with($class, $prefix)) {
+                    $result[$prefix] = $class; // Перезапис для падінгів/маржинів
+                    $matched = true;
+                    break;
+                }
+            }
+
+            if (!$matched) {
+                // Кожен колір (bg-primary, text-white) тепер зберігається як окремий ключ
+                // Це не дасть їм перемішуватися
+                $result[$class] = $class;
+            }
+        }
+
+        return implode(' ', $result);
     }
 
     /**

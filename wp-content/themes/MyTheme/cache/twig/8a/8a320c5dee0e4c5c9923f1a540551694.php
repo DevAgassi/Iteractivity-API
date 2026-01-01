@@ -14,8 +14,8 @@ use Twig\Source;
 use Twig\Template;
 use Twig\TemplateWrapper;
 
-/* partials/tease-post.twig */
-class __TwigTemplate_80a4b1ec5d7e220a0fb3c0d780717e0c extends Template
+/* partials/tease-page.twig */
+class __TwigTemplate_73c97cb78144f909e1d3a42ebf06ace9 extends Template
 {
     private Source $source;
     /**
@@ -29,33 +29,34 @@ class __TwigTemplate_80a4b1ec5d7e220a0fb3c0d780717e0c extends Template
 
         $this->source = $this->getSourceContext();
 
+        $this->parent = false;
+
         $this->blocks = [
             'content' => [$this, 'block_content'],
         ];
     }
 
-    protected function doGetParent(array $context): bool|string|Template|TemplateWrapper
-    {
-        // line 1
-        return "partials/tease.twig";
-    }
-
     protected function doDisplay(array $context, array $blocks = []): iterable
     {
         $macros = $this->macros;
-        $this->parent = $this->load("partials/tease.twig", 1);
-        yield from $this->parent->unwrap()->yield($context, array_merge($this->blocks, $blocks));
+        // line 1
+        yield from $this->unwrap()->yieldBlock('content', $context, $blocks);
+        yield from [];
     }
 
-    // line 3
     /**
      * @return iterable<null|scalar|\Stringable>
      */
     public function block_content(array $context, array $blocks = []): iterable
     {
         $macros = $this->macros;
-        // line 4
+        // line 2
         yield "
+\t";
+        // line 3
+        yield CoreExtension::getAttribute($this->env, $this->source, ($context["post"] ?? null), "content", [], "any", false, false, false, 3);
+        yield "
+
 ";
         yield from [];
     }
@@ -65,15 +66,7 @@ class __TwigTemplate_80a4b1ec5d7e220a0fb3c0d780717e0c extends Template
      */
     public function getTemplateName(): string
     {
-        return "partials/tease-post.twig";
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function isTraitable(): bool
-    {
-        return false;
+        return "partials/tease-page.twig";
     }
 
     /**
@@ -81,15 +74,15 @@ class __TwigTemplate_80a4b1ec5d7e220a0fb3c0d780717e0c extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  58 => 4,  51 => 3,  40 => 1,);
+        return array (  57 => 3,  54 => 2,  43 => 1,);
     }
 
     public function getSourceContext(): Source
     {
-        return new Source("{% extends 'partials/tease.twig' %}
+        return new Source("{% block content %}
 
-{% block content %}
+\t{{ post.content}}
 
-{% endblock %}", "partials/tease-post.twig", "/var/www/html/wp-content/themes/MyTheme/views/partials/tease-post.twig");
+{% endblock %}", "partials/tease-page.twig", "/var/www/html/wp-content/themes/MyTheme/views/partials/tease-page.twig");
     }
 }

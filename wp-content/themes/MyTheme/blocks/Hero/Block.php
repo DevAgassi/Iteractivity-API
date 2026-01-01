@@ -7,18 +7,21 @@ use App\Core\Blocks\BaseBlock;
 class Block extends BaseBlock
 {
     public string $blockName = 'hero';
+
+    protected array $dependencies = ['jquery'];
+    protected array $dependencies_module = ['@wordpress/interactivity'];
+
     /**
      * Interactivity API namespace
      */
     protected ?string $interactivity_namespace = 'hero-section';
-    protected array $dependencies = ['jquery'];
-    protected array $dependencies_module = ['@wordpress/interactivity'];
 
     /**
      * Per-instance context
      */
     protected function getContext(): array
     {
+        $this->classes = 'hero-content';
         $fields = $this->timber_context['fields'] ?? [];
 
         return [

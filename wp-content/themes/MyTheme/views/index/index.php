@@ -20,16 +20,16 @@ use Timber\Timber;
 $start_time = microtime(true);
 $context = Timber::context(
     [
-        'foo' => 'bar2',
         'posts' => Timber::get_posts(),
     ]
 );
+
 $end_time = microtime(true);
 $duration = $end_time - $start_time;
-echo "<!-- WP Context time: " . round($duration * 1000, 2) . " ms -->";
+echo "<!-- WP Page Context time: " . round($duration * 1000, 2) . " ms -->";
 $start_time = microtime(true);
 Timber::render('index.twig', $context);
 
 $end_time = microtime(true);
 $duration = $end_time - $start_time;
-echo "<!-- WP render time: " . round($duration * 1000, 2) . " ms -->";
+echo "<!-- WP Page render time: " . round($duration * 1000, 2) . " ms -->";

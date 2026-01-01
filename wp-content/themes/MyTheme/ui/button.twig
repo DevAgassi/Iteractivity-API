@@ -1,15 +1,72 @@
-{# ui/button.twig #}
-{% set base_class = "inline-flex items-center justify-center px-4 py-2 font-medium rounded-md transition-shadow elevation-1 hover:elevation-2" %}
-{% set variants = {
-    'primary': 'bg-primary text-white hover:bg-primary-dark',
-    'outlined': 'border border-primary text-primary hover:bg-primary-50',
-    'text': 'text-primary hover:bg-gray-100 shadow-none elevation-0'
+{# 
+  UI COMPONENT: Button
+  
+  АТРИБУТЫ (Arguments):
+  - label      (String)  : Текст на кнопке. По умолчанию: 'Button'.
+  - color      (String)  : Цвет из @theme (primary, secondary, success, error, sk-blue).
+  - variant    (String)  : Стиль ('solid', 'outlined', 'ghost').
+  - size       (String)  : Размер ('sm', 'md', 'lg'). По умолчанию: 'md'.
+  - type       (String)  : HTML тип кнопки ('button', 'submit', 'reset').
+  - disabled   (Boolean) : Состояние активности.
+  - reverse    (Boolean) : Инверсия цветов для темных фонов.
+  - no_bg      (Boolean) : Убирает фоновую подложку.
+  - icon_after (String)  : HTML код иконки (SVG), которая вставится после текста.
+  - attrs      (String)  : Любые HTML атрибуты (data-wp-on--click, aria-controls и т.д.).
+  - class      (String)  : Дополнительные классы Tailwind.
+
+  ПРИМЕРЫ:
+  {{ ui_button({ label: 'Отправить', color: 'success', type: 'submit' }) }}
+  {{ ui_button({ label: 'Удалить', color: 'error', variant: 'outlined', size: 'sm' }) }}
+#}
+
+{% set color    = color|default('primary') %}
+{% set variant  = variant|default('solid') %}
+{% set size     = size|default('md') %}
+{% set type     = type|default('button') %}
+{% set dark_color = color ~ '-dark' %}
+
+{# 1. КАРТА РАЗМЕРОВ #}
+{% set sizes_map = {
+    'sm': "px-3 py-1.5 text-sm gap-1.5",
+    'md': "px-5 py-2.5 text-base gap-2",
+    'lg': "px-6 py-3 text-lg gap-3"
 } %}
 
+{# 2. ЛОГИКА ЦВЕТА #}
+{% if reverse %}
+    {% set color_class = (no_bg ? 'bg-transparent' : 'bg-white hover:bg-gray-50') ~ " text-" ~ color %}
+{% else %}
+    {% if variant == 'solid' %}
+        {% set color_class = (no_bg ? 'bg-transparent' : "bg-" ~ color ~ " hover:bg-" ~ dark_color) ~ " text-white" %}
+    {% else %}
+        {% set color_class = (no_bg ? 'bg-transparent' : "hover:bg-" ~ color ~ "/10") ~ " text-" ~ color %}
+    {% endif %}
+{% endif %}
+
+{# 3. СБОР КЛАССОВ ЧЕРЕЗ ФИЛЬТР CX #}
+{% set button_classes = [
+    "inline-flex items-center justify-center font-medium rounded-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 antialiased",
+    sizes_map[size],
+    color_class,
+    variant == 'solid' ? "shadow-sm hover:shadow-md active:translate-y-px" : "",
+    variant == 'outlined' ? "border-2 border-" ~ (reverse ? 'white' : color) : "",
+    disabled ? "opacity-50 pointer-events-none grayscale-[0.5]" : "cursor-pointer",
+    class|default('')
+]|cx %}
+
 <button 
-    type="{{ type|default('button') }}"
-    class="{{ base_class }} {{ variants[variant|default('primary')] }} {{ class }}"
+    type="{{ type }}"
+    class="{{ button_classes }}"
+    {% if disabled %}disabled aria-disabled="true"{% endif %}
+    {% if id %}id="{{ id }}"{% endif %}
+    {% if title %}title="{{ title }}"{% endif %}
     {{ attrs|raw }}
 >
-    {{ label|default('Button') }}
+    <span class="leading-none">{{ label|default('Button') }}</span>
+
+    {% if icon_after %}
+        <span class="inline-flex shrink-0 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
+            {{ icon_after|raw }}
+        </span>
+    {% endif %}
 </button>

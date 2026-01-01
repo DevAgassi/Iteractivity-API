@@ -1,0 +1,102 @@
+{# 
+  UI COMPONENT: Link (Button-like)
+  
+  АТРИБУТИ (Arguments):
+  - label   (String)  : Текст посилання/кнопки. За замовчуванням: 'Link'.
+  - href    (String)  : URL адреса. За замовчуванням: '#'.
+  - color   (String)  : Колір з теми (primary, secondary, accent, warning, success, error, sk-blue-primary).
+  - variant (String)  : Стиль ('solid' - заливка, 'outlined' - контур, 'ghost' - без рамок).
+  - type    (String)  : Якщо 'link', додається іконка стрілки праворуч.
+  - reverse (Boolean) : Якщо true, фон стає білим, а текст — кольоровим (для темних блоків).
+  - no_bg   (Boolean) : Якщо true, прибирає фон (корисно для ghost або прозорих outlined).
+  - target  (String)  : Атрибут target ('_blank', '_self').
+  - attrs   (String)  : Додаткові HTML атрибути (data-wp, aria-label тощо).
+  - class   (String)  : Додаткові кастомні класи Tailwind.
+  - title      (String)  : Текст підказки при наведенні.
+  - aria_label (String)  : Опис для скрінрідерів (якщо відрізняється від label).
+  - id         (String)  : Унікальний ідентифікатор елемента.
+  - rel        (String)  : Відношення посилання (напр. 'nofollow', 'author').
+  - disabled   (Boolean) : Якщо true, посилання стає неактивним (сірим та інертним).
+  - size (String): 'sm' (малий), 'md' (середній), 'lg' (великий). За замовчуванням: 'md'.
+
+  ПРИКЛАДИ ПІДКЛЮЧЕННЯ:
+  1. Базовий: {{ ui_link({ label: 'Читати', href: '/news' }) }}
+  2. Кнопка успіху: {{ ui_link({ label: 'Готово', color: 'success', variant: 'solid' }) }}
+  3. Контурна на темному: {{ ui_link({ label: 'Інфо', variant: 'outlined', reverse: true, no_bg: true }) }}
+  4. З іконкою та WP Interactivity: {{ ui_link({ label: 'Далі', type: 'link', attrs: 'data-wp-on--click="actions.open"' }) }}
+#}
+
+{% set color   = color|default('primary') %}
+{% set variant = variant|default('solid') %}
+{% set size    = size|default('md') %}
+{% set target  = target|default('_self') %}
+
+{% set dark_color = color == 'sk-blue-primary' ? 'sk-blue-dark' : color ~ '-dark' %}
+{% set disabled_class = disabled ? "opacity-50 pointer-events-none grayscale-[0.5]" : "" %}
+
+{# 1. БАЗОВІ КЛАСИ #}
+{% set base_class = "group inline-flex items-center justify-center font-medium rounded-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 antialiased" %}
+
+{# 2. ЛОГІКА РОЗМІРІВ #}
+{% set sizes_map = {
+    'sm': "px-3 py-1.5 text-sm gap-1.5",
+    'md': "px-5 py-2.5 text-base gap-2",
+    'lg': "px-5.5 py-2.5 text-lg gap-2"
+} %}
+
+{# 3. ЛОГІКА СТРУКТУРИ #}
+{% set structure_map = {
+    'solid': "shadow-sm hover:shadow-md active:translate-y-px",
+    'outlined': "border-2 border-" ~ (reverse ? 'white' : color),
+    'ghost': "shadow-none"
+} %}
+
+{# Корекція падінгів для Ghost #}
+{% set current_size = sizes_map[size] %}
+{% if variant == 'ghost' %}
+    {% set current_size = current_size|replace({'px-5':'px-2', 'px-3':'px-1'}) %}
+{% endif %}
+
+{# 4. ЛОГІКА КОЛЬОРУ (Виправлено синтаксис конкатенації) #}
+{% if reverse %}
+    {% set color_class = (no_bg ? 'bg-transparent' : 'bg-white hover:bg-gray-50') ~ " text-" ~ color %}
+{% else %}
+    {% if variant == 'solid' %}
+        {% set color_class = (no_bg ? 'bg-transparent' : "bg-" ~ color ~ " hover:bg-" ~ dark_color) ~ " text-white" %}
+    {% else %}
+        {% set color_class = (no_bg ? 'bg-transparent' : "hover:bg-" ~ color ~ "/10") ~ " text-" ~ color %}
+    {% endif %}
+{% endif %}
+
+{# 5. ФІНАЛЬНИЙ ЗБІР ЧЕРЕЗ CX #}
+{# Ми просто передаємо всі змінні в масив, а фільтр cx зробить магію #}
+{% set final_classes = [
+    base_class,
+    color_class,
+    structure_map[variant],
+    current_size,
+    disabled_class,
+    class|default('')
+]|cx %}
+
+<a 
+    {% if id %}id="{{ id }}"{% endif %}
+    href="{{ disabled ? 'javascript:void(0)' : href|default('#') }}" 
+    target="{{ target }}"
+    {% if title %}title="{{ title }}"{% endif %}
+    {% if aria_label or title %}aria-label="{{ aria_label|default(title) }}"{% endif %}
+    {% if rel or target == '_blank' %}rel="{{ rel|default(target == '_blank' ? 'noopener noreferrer' : '') }}"{% endif %}
+    {% if disabled %}aria-disabled="true" tabindex="-1"{% endif %}
+    class="{{ final_classes }}"
+    {{ attrs|raw }}
+>
+    <span class="leading-none">{{ label|default('Link') }}</span>
+
+    {% if type == 'link' %}
+        <span class="inline-flex shrink-0 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
+            <svg xmlns="www.w3.org" viewBox="0 -960 960 960" class="w-[1.1em] h-[1.1em] fill-current block">
+                <path d="m560-240-56-58 142-142H160v-80h486L504-662l56-58 240 240-240 240Z"/>
+            </svg>
+        </span>
+    {% endif %}
+</a>

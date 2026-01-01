@@ -1,13 +1,200 @@
-<section id="hero-block" class="hero-section" {{ attrs|raw }} data-wp-interactive="hero-section" data-unique-id="{{ unique_id }}">
-	<div class="hero-content flex flex-col items-center justify-center text-center gap-6">
-		<h1>{{ state.title|striptags|e }}</h1>
-		<button type="button" class="rounded-xl font-semibold text-black bg-primary-500 hover:bg-primary-600 transition px-4 py-2 text-base" 'data-wp-on--click' : 'actions.openModal' , 'data-wp-text' : 'state.buttonText'>
-            {{ state.buttonText }}
-		</button>
-		{{ ui_button({
-			label: state.buttonText,
-			variant: 'primary',
-			attrs: 'data-wp-on--click="actions.openModal"'
-		}) }}
+<section {{ attrs|raw }} data-wp-interactive="hero-section" data-unique-id="{{ unique_id }}" {{ fields.image and fields.background_image ? 'style="background-image: url('~ fields.image.url ~ ');"' : '' }} class="{{ classes }}" id="{{ id }}">
+	<div class="max-w-7xl mx-auto md:px-4">
+		<div class="flex flex-col md:flex-row md:items-center">
+			<div class="{{ classes_block.image_block }} {{ fields.image ?'': 'md:block hidden' }}">
+				{% if fields.image %}
+					{% include 'components/image.twig' with {'id': fields.image.ID, 'classes': classes_block.image, 'sizes': '(max-width: 767px) 500px, 755px', '': true} only %}
+				{% endif %}
+			</div>
+			<div class="{{ classes_block.wrapper_content }}">
+				{% if fields.text %}
+					<div class="{{ classes_block.text }}" {{ fields.image and fields.background_image_mob ? 'style="background-image: url('~ fields.image.url ~ ');"' : '' }}>
+						{{ fields.text }}
+					</div>
+				{% endif %}
+				{% if fields.button_1 or fields.button_1 %}
+					<div class="{{ classes_block.wrapper_buttons }}">
+						{% if fields.button_1 %}
+							<a href="{{ fields.button_1.url }}" target="{{ fields.button_1.target ?: '_self' }}" class="{{ classes_block.button_1 }}">
+								{{ fields.button_1.title ?? 'Link' }}
+							</a>
+						{% endif %}
+						{% if fields.button_2 %}
+							<a href="{{ fields.button_2.url }}" target="{{ fields.button_2.target ?: '_self' }}" class="{{ classes_block.button_2 }}">
+								{{ fields.button_2.title ?: 'Link' }}
+							</a>
+						{% endif %}
+					</div>
+				{% endif %}
+				{{ ui_button({
+					label: '1',
+					color: 'primary',
+					attrs: 'data-wp-on--click="actions.openModal" data-wp-text="context.buttonText"'
+				}) }}
+
+
+				{# Cheat Sheet Panel: UI Link Component #}
+				<section class="p-10 space-y-12 bg-[var(--color-background)] min-h-screen">
+					<h1>Cheat Sheet (2026)</h1>
+					{# SECTION: BUTTONS #}
+					<div class="space-y-8">
+						<header class="border-b border-gray-200 pb-4">
+							<h3 class="text-2xl font-bold">UI Button Component</h3>
+						</header>
+
+						{# Сетка вариантов #}
+						<div
+							class="grid grid-row gap-8">
+							{# Solid #}
+							<div class="space-y-4">
+								<h3 class="text-xl font-semibold uppercase tracking-wider text-[var(--color-text-light)]">1. Solid Colors (Default)</h3>
+								<div class="flex flex-wrap gap-4 p-6 bg-white rounded-xl shadow-sm">
+									{{ ui_button({ label: 'Primary Solid', color: 'primary' }) }}
+									{{ ui_button({ label: 'Success Solid', color: 'success' }) }}
+									{{ ui_button({ label: 'Error Solid', color: 'error' }) }}
+								</div>
+							</div>
+
+							{# Outlined #}
+							<div class="space-y-4">
+								<p class="text-sm font-mono text-gray-500">variant: 'outlined'</p>
+								<div class="flex flex-wrap gap-4 p-6 bg-white rounded-xl shadow-sm">
+									{{ ui_button({ label: 'Primary Outlined', variant: 'outlined', color: 'primary' }) }}
+									{{ ui_button({ label: 'Warning Outlined', variant: 'outlined', color: 'warning' }) }}
+								</div>
+							</div>
+
+							{# Sizes #}
+							<div class="space-y-4">
+								<p class="text-sm font-mono text-gray-500">Sizes (sm, md, lg)</p>
+								<div class="gap-4 p-6 bg-white rounded-xl shadow-sm">
+									{{ ui_button({ label: 'Small', size: 'sm' }) }}
+									{{ ui_button({ label: 'Medium', size: 'md' }) }}
+									{{ ui_button({ label: 'Large', size: 'lg' }) }}
+								</div>
+							</div>
+						</div>
+
+						{# Специальные состояния #}
+						<div class="space-y-4">
+							<p class="text-sm font-mono text-gray-500">States & Features</p>
+							<div class="gap-4 p-6 bg-white rounded-xl shadow-sm">
+								{{ ui_button({ label: 'Disabled Button', disabled: true }) }}
+								{{ ui_button({ label: 'No Background', no_bg: true, color: 'primary', variant: 'ghost' }) }}
+								{{ ui_button({ 
+								label: 'With Custom Icon', 
+								color: 'secondary',
+								icon_after: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>' 
+							}) }}
+							</div>
+						</div>
+					</div>
+
+					<header class="border-b border-[var(--color-border)] pb-6">
+						<h2 class="text-3xl font-bold text-[var(--color-text)]">UI Link Component</h2>
+						<p class="text-[var(--color-text-light)] mt-2">Тестування всіх варіацій, кольорів та станів компонента.</p>
+					</header>
+
+					{# 1. СЕКЦІЯ: ВСІ КОЛЬОРИ (SOLID) #}
+					<div class="space-y-4">
+						<h3 class="text-xl font-semibold uppercase tracking-wider text-[var(--color-text-light)]">1. Solid Colors (Default)</h3>
+						<div class="flex flex-wrap gap-4 p-6 bg-white rounded-xl shadow-sm">
+							{{ ui_link({ label: 'Primary', color: 'primary', attrs: 'data-wp-on--click="actions.openModal"', }) }}
+							{{ ui_link({ label: 'Secondary', color: 'secondary' }) }}
+							{{ ui_link({ label: 'Accent', color: 'accent' }) }}
+							{{ ui_link({ label: 'Success', color: 'success' }) }}
+							{{ ui_link({ label: 'Warning', color: 'warning' }) }}
+							{{ ui_link({ label: 'Error', color: 'error' }) }}
+							{{ ui_link({ label: 'SK Blue', color: 'sk-blue-primary' }) }}
+						</div>
+					</div>
+
+					{# 2. СЕКЦІЯ: ВАРІАНТИ (OUTLINED & GHOST) #}
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+						<div class="space-y-4">
+							<h3 class="text-xl font-semibold text-[var(--color-text-light)] uppercase tracking-wider">2. Outlined Variant</h3>
+							<div class="flex flex-wrap gap-4 p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+								{{ ui_link({ label: 'Outlined', color: 'primary', variant: 'outlined' }) }}
+								{{ ui_link({ label: 'Success', color: 'success', variant: 'outlined' }) }}
+								{{ ui_link({ label: 'Warning', color: 'warning', variant: 'outlined' }) }}
+							</div>
+						</div>
+						<div class="space-y-4">
+							<h3 class="text-xl font-semibold text-[var(--color-text-light)] uppercase tracking-wider">3. Ghost Variant</h3>
+							<div class="flex flex-wrap gap-4 p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+								{{ ui_link({ label: 'Ghost Link', color: 'primary', variant: 'ghost' }) }}
+								{{ ui_link({ label: 'Delete', color: 'error', variant: 'ghost' }) }}
+								{{ ui_link({ label: 'With Icon', color: 'secondary', variant: 'ghost', type: 'link' }) }}
+							</div>
+						</div>
+					</div>
+
+					{# 3. СЕКЦІЯ: REVERSE & NO_BG (ДЛЯ ТЕМНИХ ФОНІВ) #}
+					<div class="space-y-4">
+						<h3 class="text-xl font-semibold text-[var(--color-text-light)] uppercase tracking-wider">4. Reverse Mode (On Dark Background)</h3>
+						<div class="flex flex-wrap gap-4 p-8 bg-[var(--color-primary-dark)] rounded-xl shadow-inner">
+							{{ ui_link({ label: 'Reverse Solid', color: 'primary', reverse: true }) }}
+							{{ ui_link({ label: 'Reverse Outlined', color: 'secondary', variant: 'outlined', reverse: true, no_bg: true }) }}
+							{{ ui_link({ label: 'Reverse Ghost', color: 'error', variant: 'ghost', reverse: true }) }}
+						</div>
+					</div>
+
+					{# 4. СЕКЦІЯ: ТИПИ ТА СТАНИ #}
+					<div class="space-y-4">
+						<h3 class="text-xl font-semibold text-[var(--color-text-light)] uppercase tracking-wider">5. States & Types</h3>
+						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+							<div class="p-1 bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center gap-2">
+								<span class="text-xs text-gray-400 mb-2 italic">Icon Type</span>
+								{{ ui_link({ label: 'Get Started', color: 'primary', type: 'link' }) }}
+							</div>
+							<div class="p-1 bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center gap-2">
+								<span class="text-xs text-gray-400 mb-2 italic">External (_blank)</span>
+								{{ ui_link({ label: 'Open Google', href: 'https://google.com', target: '_blank', color: 'secondary' }) }}
+							</div>
+							<div class="p-1 bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center gap-2">
+								<span class="text-xs text-gray-400 mb-2 italic">Disabled State</span>
+								{{ ui_link({ label: 'Not Allowed', color: 'primary', disabled: true }) }}
+							</div>
+							<div class="p-1 bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center gap-2">
+								<span class="text-xs text-gray-400 mb-2 italic">Custom Class (Rounded None)</span>
+								{{ ui_link({ label: 'Pill Button', color: 'accent', class: 'rounded-none' }) }}
+							</div>
+						</div>
+					</div>
+
+					{# 5. СЕКЦІЯ: СПЕЦІАЛЬНІ КОЛЬОРИ SK #}
+					<div class="space-y-4">
+						<h3 class="text-xl font-semibold text-[var(--color-text-light)] uppercase tracking-wider">6. Brand Specific (SK Blue)</h3>
+						<div class="gap-4 p-6 bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl">
+							{{ ui_link({ label: 'SK Primary', color: 'sk-blue-primary' }) }}
+							{{ ui_link({ label: 'SK Outlined', color: 'sk-blue-primary', variant: 'outlined' }) }}
+							{{ ui_link({ label: 'SK Ghost', color: 'sk-blue-primary', variant: 'ghost', type: 'link' }) }}
+							{{ ui_link({ label: 'SK No BG', color: 'sk-blue-primary', variant: 'ghost', type: 'link', no_bg: true }) }}
+						</div>
+					</div>
+
+					{# 6. СЕКЦІЯ: РОЗМІРИ (SIZES) #}
+					<div class="space-y-4">
+						<h3 class="text-xl font-semibold text-[var(--color-text-light)] uppercase tracking-wider">7. Button Sizes</h3>
+						<div class="flex flex-wrap items-end gap-6 p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+							<div class="flex flex-col items-center gap-2">
+								<span class="text-xs text-gray-400 italic">Small (sm)</span>
+								{{ ui_link({ label: 'Small Button', size: 'sm', color: 'primary' }) }}
+							</div>
+							<div class="flex flex-col items-center gap-2">
+								<span class="text-xs text-gray-400 italic">Medium (md)</span>
+								{{ ui_link({ label: 'Medium Button', size: 'md', color: 'primary' }) }}
+							</div>
+							<div class="flex flex-col items-center gap-2">
+								<span class="text-xs text-gray-400 italic">Large (lg)</span>
+								{{ ui_link({ label: 'Large Button', size: 'lg', color: 'primary', type: 'link' }) }}
+							</div>
+						</div>
+					</div>
+
+				</section>
+
+			</div>
+		</div>
 	</div>
 </section>

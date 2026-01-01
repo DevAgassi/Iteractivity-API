@@ -1,0 +1,17 @@
+<header class="header">
+	{{ timer_start('header') }}
+	{% block header %}
+		<div class="wrapper">
+			<h1 class="hdr-logo">
+				<a class="hdr-logo-link" href="{{ site.url }}">{{ site.name }}</a>
+			</h1>
+			<nav id="nav-main" class="nav-main">
+				{% include 'partials/menu.twig' with {
+                            items: menu.get_items
+                        } %}
+			</nav>
+			<!-- #nav -->
+		</div>
+	{% endblock %}
+	{{ timer_end('header') }}
+</header>
