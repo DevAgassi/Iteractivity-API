@@ -15,6 +15,8 @@ namespace App\Core;
 use App\Core\Blocks\BlockRegistry;
 use Timber\Timber;
 use App\Core\Assets\Assets;
+use App\Core\Timber\StarterSite;
+use App\Core\Timber\TemplateRegistry;
 
 class Bootstrap
 {
@@ -69,7 +71,7 @@ class Bootstrap
     public function boot(array $options = []): void
     {
         // Initialize debug mode
-        $debug_enabled = $options['debug'] ?? (defined('WP_DEBUG') && WP_DEBUG);
+        $debug_enabled = $options['debug'] || (defined('WP_DEBUG') && WP_DEBUG);
 
         if ($debug_enabled) {
             $this->enableDebugMode();

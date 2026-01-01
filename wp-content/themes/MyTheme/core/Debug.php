@@ -214,10 +214,12 @@ class Debug
             $sql = $query[0];
 
             // Look for ACF-related postmeta queries
-            if (strpos($sql, 'postmeta') !== false && 
-                strpos($sql, '_') !== false && 
-                strpos($sql, (string)$post_id) !== false) {
-                
+            if (
+                strpos($sql, 'postmeta') !== false &&
+                strpos($sql, '_') !== false &&
+                strpos($sql, (string)$post_id) !== false
+            ) {
+
                 $acf_queries[] = [
                     'sql' => substr($sql, 0, 150) . (strlen($sql) > 150 ? '...' : ''),
                     'time' => $query[1],
@@ -267,10 +269,9 @@ class Debug
     public static function logBlockRender(
         string $block_name,
         float $duration_ms,
-        int $query_count,
+        float $duration_context,
         array $acf_fields = []
-    ): void
-    {
+    ): void {
         if (!self::$enabled) {
             return;
         }
@@ -285,7 +286,12 @@ class Debug
         }
 
         self::log(
-            sprintf('Render time: %.2f ms | SQL Queries: %d', $duration_ms, $query_count),
+            sprintf('Render time: %.2f ms', $duration_ms),
+            "BLOCK {$block_upper}"
+        );
+
+        self::log(
+            sprintf('Context Render time: %.2f ms', $duration_context),
             "BLOCK {$block_upper}"
         );
     }

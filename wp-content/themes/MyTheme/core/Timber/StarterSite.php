@@ -11,7 +11,7 @@
  * @since 1.0.0
  */
 
-namespace App\Core;
+namespace App\Core\Timber;
 
 use Timber\Site;
 use Timber\Timber;
@@ -38,7 +38,6 @@ class StarterSite extends Site
         add_action('init', [$this, 'register_post_types']);
         add_action('init', [$this, 'register_taxonomies']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
-
         // Timber filters
         add_filter('timber/context', [$this, 'add_to_context']);
         add_filter('timber/twig/filters', [$this, 'add_filters_to_twig']);
@@ -71,17 +70,17 @@ class StarterSite extends Site
     }
 
     /**
-     * Enqueue admin area styles and scripts.
+     * Enqueue editor area styles and scripts.
      * 
-     * Loads admin-specific assets if needed.
+     * Loads editor-specific assets if needed.
      *
      * @since 1.0.0
      * @return void
      */
-    public function enqueue_admin_assets(): void
+    public function enqueue_editor_assets(): void
     {
         /**
-         * Admin JS file with dependencies and CSS imports
+         * Editor JS file with dependencies and CSS imports
          */
         Assets::enqueueEditorAssets('assets/scripts/app.js', 'app-editor');
     }
@@ -158,45 +157,71 @@ class StarterSite extends Site
      */
     public function theme_supports(): void
     {
-        // Navigation menus
+        // Навігаційні меню
         register_nav_menus([
             'primary_navigation' => __('Primary Navigation', 'theme'),
             'footer_navigation'  => __('Footer Navigation', 'theme'),
         ]);
 
-        // Core theme supports
+        // Стандартна підтримка ядра WordPress
         add_theme_support('automatic-feed-links');
         add_theme_support('title-tag');
         add_theme_support('post-thumbnails');
         add_theme_support('menus');
+        add_theme_support('html5', ['comment-form', 'comment-list', 'gallery', 'caption', 'search-form']);
 
-        // HTML5 markup
-        add_theme_support('html5', [
-            'comment-form',
-            'comment-list',
-            'gallery',
-            'caption',
-            'search-form',
-        ]);
+        // Вмикаємо підтримку стилів редактора (Gutenberg)
+        add_theme_support('editor-styles');
 
-        // Post formats
-        add_theme_support('post-formats', [
-            'aside',
-            'image',
-            'video',
-            'quote',
-            'link',
-            'gallery',
-            'audio',
-        ]);
+        // Ініціалізуємо логіку ACF Local JSON
+        $this->setup_acf_local_json();
+        $this->enqueue_editor_assets();
+    }
+
+    /**
+     * Налаштування ACF Local JSON: автоматичне завантаження та дублювання в папки блоків.
+     * Актуально для WordPress 2026: забезпечує портативність полів через Git.
+     */
+    private function setup_acf_local_json(): void
+    {
+        /**
+         * 1. Вказуємо ACF, звідки автоматично завантажувати поля (Load JSON).
+         * Це дозволяє синхронізувати поля на різних серверах без імпорту БД.
+         */
+        add_filter('acf/settings/load_json', function ($paths) {
+            $paths[] = get_template_directory() . '/acf-json';
+            return $paths;
+        });
 
         /**
-         * Editor styles support //TODO: Need to refactor later
+         * 2. Дублювання JSON-файлу в папку конкретного блоку після збереження.
+         * Допомагає тримати всю логіку блока (стилі, шаблони, поля) в одному місці.
          */
-        if (is_admin()) {
-            add_theme_support('editor-styles');
-            $this->enqueue_admin_assets();
-        }
+        add_action('acf/update_field_group', function ($group) {
+            $block_name = '';
+
+            // Шукаємо, чи прив'язана ця група до ACF блоку
+            if (!empty($group['location'])) {
+                foreach ($group['location'] as $location_group) {
+                    foreach ($location_group as $rule) {
+                        if ($rule['param'] === 'block') {
+                            $block_name = str_replace('acf/', '', $rule['value']);
+                            break 2;
+                        }
+                    }
+                }
+            }
+
+            if (empty($block_name)) return;
+
+            $source_file = get_template_directory() . '/acf-json/' . $group['key'] . '.json';
+            $target_dir  = get_template_directory() . '/blocks/' . $block_name;
+
+            // Якщо папка блока існує (там лежить block.json), копіюємо туди JSON полів
+            if (is_dir($target_dir) && file_exists($source_file)) {
+                copy($source_file, $target_dir . '/' . $group['key'] . '.json');
+            }
+        }, 20);
     }
 
     /**

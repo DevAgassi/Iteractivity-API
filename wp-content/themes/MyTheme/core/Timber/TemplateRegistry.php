@@ -15,7 +15,7 @@
  * @since 1.0.0
  */
 
-namespace App\Core;
+namespace App\Core\Timber;
 
 class TemplateRegistry
 {

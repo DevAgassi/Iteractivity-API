@@ -166,7 +166,7 @@ abstract class BaseBlock
 
     protected function registerAssets()
     {
-        BlockAssets::enqueueBlockDependency($this->dependencies,$this->dependencies_module, $this->blockName . '/block.js');
+        BlockAssets::enqueueBlockDependency($this->dependencies, $this->dependencies_module, $this->blockName . '/block.js');
     }
 
     protected function registerState()
@@ -190,10 +190,21 @@ abstract class BaseBlock
 
     public static function renderCallback($block, $content = '', $is_preview = false, $post_id = 0)
     {
+        $start_time = Debug::isEnabled() ? microtime(true) : null;
+
         $instance = new static($block, get_template_directory(), $post_id, $content);
+
         $instance->registerAssets();
         $instance->registerContext();
 
+        $context_time = Debug::isEnabled() ? microtime(true) : null;
+
         Timber::render($instance->getTemplate(), $instance->timber_context);
+
+        if (Debug::isEnabled()) {
+            $duration = (microtime(true) - $start_time) * 1000;
+            $context_duration = ($context_time - $start_time) * 1000;
+            Debug::logBlockRender($instance->blockName, $duration, $context_duration);
+        }
     }
 }
