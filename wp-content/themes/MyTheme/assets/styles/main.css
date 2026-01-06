@@ -1,17 +1,28 @@
-@import "tailwindcss";
-@import "./variables/breakpoint.css";
-@import "./variables/colors.css";
-@import "./variables/container.css";
-@import "./variables/font.css";
-@import "./variables/text.css";
-@import "./variables/radius.css";
-@import "./variables/blur.css";
-@import "./variables/box-shadow.css";
-@import "./variables/animation.css";
-@import "./variables/forms.css";
+@import 'tailwindcss';
+@import './theme.css';
+@import './utilities.css';
+@import './custom.css' layer(utilities);
 
-@theme {
-  /*p-<number> padding: calc(var(--spacing) * <number>);*/
-  /*m-<number> margin: calc(var(--spacing) * <number>);*/
-  --spacing: 0.5rem;
+
+@utility container {
+    margin-inline: auto;
+    padding-inline: 2rem;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-sync-200, currentColor);
+  }
 }

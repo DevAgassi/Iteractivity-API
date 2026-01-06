@@ -82,7 +82,8 @@ class StarterSite extends Site
         /**
          * Editor JS file with dependencies and CSS imports
          */
-        Assets::enqueueEditorAssets('assets/scripts/app.js', 'app-editor');
+        Assets::enqueueEditorStyles('assets/styles/admin.css', 'app-editor');
+         Assets::enqueueEditorAssets('assets/scripts/admin.js', 'app-editor');
     }
 
     /*
@@ -133,7 +134,9 @@ class StarterSite extends Site
      */
     public function add_to_context(array $context): array
     {
-        $context['menu'] = Timber::get_menu('primary_navigation');
+        $context['menu'] = Timber::get_menu();
+        $context['header_menu'] = Timber::get_menu('header_menu');
+        $context['footer_menu'] = Timber::get_menu('footer_menu');
         $context['site'] = $this;
         $context['assets'] = new Assets();
 
@@ -159,8 +162,8 @@ class StarterSite extends Site
     {
         // Навігаційні меню
         register_nav_menus([
-            'primary_navigation' => __('Primary Navigation', 'theme'),
-            'footer_navigation'  => __('Footer Navigation', 'theme'),
+            'header_menu' => __('Header Menu', 'theme'),
+            'footer_menu'  => __('Footer Menu', 'theme'),
         ]);
 
         // Стандартна підтримка ядра WordPress
@@ -255,35 +258,78 @@ class StarterSite extends Site
      */
     public function filter_cx($input): string
     {
-        if (is_array($input)) {
-            $input = implode(' ', array_filter($input));
+        if (empty($input)) return '';
+
+        // 1. Приводим всё к плоскому списку активных классов за один проход
+        $rawClasses = [];
+        $items = is_array($input) ? $input : [$input];
+
+        foreach ($items as $key => $value) {
+            if (is_string($key)) {
+                if ($value) $rawClasses[] = $key;
+            } elseif (is_array($value)) {
+                // Рекурсивно обрабатываем вложенные массивы, если нужно
+                foreach ($value as $k => $v) {
+                    if (is_string($k)) {
+                        if ($v) $rawClasses[] = $k;
+                    } elseif ($v) $rawClasses[] = $v;
+                }
+            } elseif ($value) {
+                $rawClasses[] = $value;
+            }
         }
 
-        $classes = array_filter(explode(' ', (string)$input));
+        // 2. Разбиваем строку на отдельные классы
+        // Используем " " как разделитель, array_filter уберет лишние пробелы
+        $allClasses = explode(' ', implode(' ', $rawClasses));
+
         $result = [];
+        // Список префиксов для быстрой проверки (O(1) вместо O(n))
+        // Ключ — это префикс, значение — признак того, что его нужно проверять
+        $toTrack = [
+            'p' => 1,
+            'px' => 1,
+            'py' => 1,
+            'pt' => 1,
+            'pb' => 1,
+            'pl' => 1,
+            'pr' => 1,
+            'm' => 1,
+            'mx' => 1,
+            'my' => 1,
+            'mt' => 1,
+            'mb' => 1,
+            'ml' => 1,
+            'mr' => 1,
+            'gap' => 1,
+            'rounded' => 1,
+            'ring' => 1,
+            'shadow' => 1
+        ];
 
-        // Тільки структурні префікси, де ми дійсно хочемо перебивати значення
-        $prefixes = ['px-', 'py-', 'pt-', 'pb-', 'pl-', 'pr-', 'p-', 'm-', 'mt-', 'mb-', 'ml-', 'mr-', 'gap-', 'rounded-', 'ring-', 'shadow-'];
+        foreach ($allClasses as $class) {
+            if ($class === '') continue;
 
-        foreach ($classes as $class) {
-            $matched = false;
-            foreach ($prefixes as $prefix) {
-                if (str_starts_with($class, $prefix)) {
-                    $result[$prefix] = $class; // Перезапис для падінгів/маржинів
-                    $matched = true;
-                    break;
+            // Ищем дефис для быстрого определения префикса (например, "px-4")
+            $dashPos = strpos($class, '-');
+
+            if ($dashPos !== false) {
+                $prefix = substr($class, 0, $dashPos);
+
+                // Если префикс в нашем списке отслеживания — перезаписываем по ключу
+                if (isset($toTrack[$prefix])) {
+                    $result[$prefix] = $class;
+                    continue;
                 }
             }
 
-            if (!$matched) {
-                // Кожен колір (bg-primary, text-white) тепер зберігається як окремий ключ
-                // Це не дасть їм перемішуватися
-                $result[$class] = $class;
-            }
+            // Если не префикс (или не тот, что мы отслеживаем), сохраняем как есть
+            $result[$class] = $class;
         }
 
         return implode(' ', $result);
     }
+
 
     /**
      * Example Twig filter: Append " bar!" to string.

@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@import "./theme/base.css";
+
+@theme {
+  --color-header-link: #fff;
+  --spacing-section: 0.5rem;
+  /*--spacing: 0.25rem;*/
+  --radius-base: 0.375rem;
+}
+
+@layer base {
+  body {
+    /* 1. Наслідуємо твої семантичні змінні */
+    background-color: var(--color-ground);
+    color: var(--color-text);
+
+    /* 2. Наслідуємо твій основний шрифт */
+    font-family: var(--font-primary);
+
+    /* 3. Оптимізація тексту (Preflight v4) */
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* 4. Плавний перехід при зміні теми */
+    @apply transition-colors duration-300;
+  }
+}

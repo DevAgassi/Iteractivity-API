@@ -1,0 +1,149 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "styles": {
+    "elements": {
+      "link": {
+        "typography": {
+          "textDecoration": "none"
+        }
+      }
+    }
+  },
+  "settings": {
+    "layout": {
+      "contentSize": "960px",
+      "wideSize": "1280px"
+    },
+
+    "color": {
+      "palette": [
+        {
+          "name": "Text",
+          "slug": "text",
+          "color": "#333333"
+        },
+        {
+          "name": "Ground",
+          "slug": "ground",
+          "color": "#ffffff"
+        },
+        {
+          "name": "Border",
+          "slug": "border",
+          "color": "#334155"
+        },
+        {
+          "name": "Background Alt",
+          "slug": "background-alt",
+          "color": "#f3f4f6"
+        },
+        {
+          "name": "Primary",
+          "slug": "primary",
+          "color": "#1d4ed8"
+        },
+        {
+          "name": "Secondary",
+          "slug": "secondary",
+          "color": "#9333ea"
+        },
+        {
+          "name": "Accent",
+          "slug": "accent",
+          "color": "#f59e0b"
+        },
+        {
+          "name": "Success",
+          "slug": "success",
+          "color": "#16a34a"
+        },
+        {
+          "name": "Warning",
+          "slug": "warning",
+          "color": "#f97316"
+        },
+        {
+          "name": "Error",
+          "slug": "error",
+          "color": "#dc2626"
+        }
+      ]
+    },
+    "typography": {
+      "fontSizes": [
+        {
+          "name": "Extra Small",
+          "slug": "xs",
+          "size": "0.75rem"
+        },
+        {
+          "name": "Small",
+          "slug": "sm",
+          "size": "0.875rem"
+        },
+        {
+          "name": "Base",
+          "slug": "base",
+          "size": "1rem"
+        },
+        {
+          "name": "Large",
+          "slug": "lg",
+          "size": "1.125rem"
+        },
+        {
+          "name": "Extra Large",
+          "slug": "xl",
+          "size": "1.25rem"
+        },
+        {
+          "name": "2XL",
+          "slug": "2xl",
+          "size": "1.5rem"
+        },
+        {
+          "name": "3XL",
+          "slug": "3xl",
+          "size": "1.875rem"
+        },
+        {
+          "name": "4XL",
+          "slug": "4xl",
+          "size": "2.25rem"
+        },
+        {
+          "name": "5XL",
+          "slug": "5xl",
+          "size": "3rem"
+        },
+        {
+          "name": "6XL",
+          "slug": "6xl",
+          "size": "3.75rem"
+        },
+        {
+          "name": "7XL",
+          "slug": "7xl",
+          "size": "4.5rem"
+        },
+        {
+          "name": "8XL",
+          "slug": "8xl",
+          "size": "6rem"
+        },
+        {
+          "name": "9XL",
+          "slug": "9xl",
+          "size": "8rem"
+        }
+      ]
+    },
+    "blocks": {
+      "core/heading": {
+        "typography": {
+        }
+      }
+    }
+  }
+}

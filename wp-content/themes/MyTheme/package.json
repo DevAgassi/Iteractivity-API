@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "esbuild": "^0.25.12",
+    "postcss-prefix-selector": "^2.1.1",
     "rimraf": "^6.1.2",
     "rollup-plugin-external-globals": "^0.13.0",
     "sass-embedded": "^1.96.0",

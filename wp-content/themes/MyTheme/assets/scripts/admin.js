@@ -1,5 +1,19 @@
-// Основний JS файл теми12123212221121
-// Тут можна додdeавати глобdd322212альні скрипвати які 1потрібні для всієї теми
+// js/editor-modifications.js
+function unregisterStretchyVariations() {
+    const blocks = ['core/paragraph', 'core/heading'];
+    const variations = ['stretchy-paragraph', 'stretchy-heading'];
 
-console.log("✅ Theme mai2n.jse loade2asвdd1dв12d2");
-import '../styles/main.css';
+    blocks.forEach((block, index) => {
+        if (wp.blocks.getBlockType(block)) {
+            wp.blocks.unregisterBlockVariation(block, variations[index]);
+        }
+    });
+}
+
+wp.domReady(() => {
+    // Перша спроба
+    unregisterStretchyVariations();
+    
+    // Запасна спроба через 500мс для WP 6.9
+    setTimeout(unregisterStretchyVariations, 500);
+});

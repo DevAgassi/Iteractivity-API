@@ -1,0 +1,67 @@
+@theme {
+  --color-text: var(--wp--preset--color--primary);
+  --color-ground: var(--wp--preset--color--ground);
+  --color-border: var(--wp--preset--color--border);
+  --color-background-alt: var(--wp--preset--color--background-alt);
+
+  /* --- 1. ПУЛЬТ КЕРУВАННЯ (Змінюєш тільки ці HEX) --- */
+  --color-primary: var(--wp--preset--color--primary);
+  --color-secondary: var(--wp--preset--color--secondary);
+  --color-accent: var(--wp--preset--color--accent);
+
+  --color-success: var(--wp--preset--color--success);
+  --color-warning: var(--wp--preset--color--warning);
+  --color-error: var(--wp--preset--color--error);
+  /* Text */
+  --color-text-muted: color-mix(in srgb, var(--color-text), white 40%);
+
+  /* Primary & Accents */
+  --color-primary-dark: color-mix(in srgb, var(--color-primary), black 15%);
+  --color-primary-light: color-mix(in srgb, var(--color-primary), white 20%);
+
+  --color-secondary-dark: color-mix(in srgb, var(--color-secondary), black 15%);
+  --color-secondary-light: color-mix(
+    in srgb,
+    var(--color-secondary),
+    white 20%
+  );
+
+  /* Borders */
+  --color-border-subtle: color-mix(in srgb, var(--color-border), white 50%);
+  /* Статуси */
+  --color-success-dark: color-mix(in srgb, var(--color-success), black 15%);
+  --color-success-light: color-mix(
+    in srgb,
+    var(--color-success),
+    white 80%
+  ); /* ніжний фон для алертів */
+
+  --color-error-dark: color-mix(in srgb, var(--color-error), black 15%);
+  --color-error-light: color-mix(in srgb, var(--color-error), white 80%);
+
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 782px;
+  --breakpoint-lg: 960px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+
+  --color-primary: var(--wp--preset--color--primary);
+  --color-secondary: var(--wp--preset--color--secondary);
+  --color-dark: var(--wp--preset--color--dark);
+  --color-light: var(--wp--preset--color--light);
+
+  --text-xs: var(--wp--preset--font-size--xs, 0.75rem);
+  --text-sm: var(--wp--preset--font-size--sm, 0.875rem);
+  --text-base: var(--wp--preset--font-size--base, 1rem);
+  --text-lg: var(--wp--preset--font-size--lg, 1.125rem);
+  --text-xl: var(--wp--preset--font-size--xl, 1.25rem);
+  --text-2xl: var(--wp--preset--font-size--2-xl, 1.5rem);
+  --text-3xl: var(--wp--preset--font-size--3-xl, 1.875rem);
+  --text-4xl: var(--wp--preset--font-size--4-xl, 2.25rem);
+  --text-5xl: var(--wp--preset--font-size--5-xl, 3rem);
+  --text-6xl: var(--wp--preset--font-size--6-xl, 3.75rem);
+  --text-7xl: var(--wp--preset--font-size--7-xl, 4.5rem);
+  --text-8xl: var(--wp--preset--font-size--8-xl, 6rem);
+  --text-9xl: var(--wp--preset--font-size--9-xl, 8rem);
+}

@@ -27,7 +27,7 @@ class Assets extends AbstractAssets
 
         self::setDependencyHandle($deps);
 
-        if ($manifest !== null && isset($manifest[$path])) {
+        if (!empty($path) && $manifest !== null && isset($manifest[$path])) {
             $js_file = $manifest[$path];
 
 
@@ -50,17 +50,34 @@ class Assets extends AbstractAssets
     /**
      * Enqueue editor-specific styles from manifest
      */
+    public static function enqueueEditorStyles(string|array $path): void
+    {
+        $manifest = self::getManifest();
+
+        if ($manifest !== null && isset($manifest[$path])) {
+            $file = $manifest[$path];
+
+            if (isset($file)) {
+                if (is_admin()) {
+                    add_editor_style('/dist/' . $file['file']);
+                }
+            }
+        }
+    }
+
+    /**
+     * Enqueue editor-specific styles from manifest
+     */
     public static function enqueueEditorAssets(string|array $path): void
     {
         $manifest = self::getManifest();
 
         if ($manifest !== null && isset($manifest[$path])) {
-            $js_file = $manifest[$path];
-            if (isset($js_file['css'])) {
-                foreach ($js_file['css'] as $css) {
-                    if (is_admin()) {
-                        add_editor_style('/dist/' . $css);
-                    }
+            $file = $manifest[$path];
+
+            if (isset($file)) {
+                if (is_admin()) {
+                   
                 }
             }
         }

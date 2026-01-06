@@ -4,7 +4,7 @@
   АТРИБУТИ (Arguments):
   - label   (String)  : Текст посилання/кнопки. За замовчуванням: 'Link'.
   - href    (String)  : URL адреса. За замовчуванням: '#'.
-  - color   (String)  : Колір з теми (primary, secondary, accent, warning, success, error, sk-blue-primary).
+  - color   (String)  : Колір з теми (primary, secondary, accent, warning, success, error).
   - variant (String)  : Стиль ('solid' - заливка, 'outlined' - контур, 'ghost' - без рамок).
   - type    (String)  : Якщо 'link', додається іконка стрілки праворуч.
   - reverse (Boolean) : Якщо true, фон стає білим, а текст — кольоровим (для темних блоків).
@@ -31,7 +31,6 @@
 {% set size    = size|default('md') %}
 {% set target  = target|default('_self') %}
 
-{% set dark_color = color == 'sk-blue-primary' ? 'sk-blue-dark' : color ~ '-dark' %}
 {% set disabled_class = disabled ? "opacity-50 pointer-events-none grayscale-[0.5]" : "" %}
 
 {# 1. БАЗОВІ КЛАСИ #}

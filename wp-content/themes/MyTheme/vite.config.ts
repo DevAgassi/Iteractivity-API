@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 import laravel from "laravel-vite-plugin";
+import prefixSelector from "postcss-prefix-selector";
 
 const autoHmrPlugin = () => {
   return {
@@ -26,18 +27,43 @@ const autoHmrPlugin = () => {
   };
 };
 
-export default defineConfig({
-  resolve: {
-    alias: {
-      // Це перенаправляє імпорт на зовнішній браузерний модуль
-      "@wordpress/interactivity": "@wordpress/interactivity",
+export default defineConfig(({ command }) => {
+  const isBuild = command === "build";
+  console.log(`Vite is running in ${isBuild ? "production" : "development"} mode.`);
+  return {
+    resolve: {
+      alias: {
+        // Це перенаправляє імпорт на зовнішній браузерний модуль
+        "@wordpress/interactivity": "@wordpress/interactivity",
+      },
     },
-  },
-  css: {
-    devSourcemap: true,
-  },
-  plugins: [
-   /* {
+    css: {
+     /* devSourcemap: true,
+      postcss: {
+        plugins: [
+          prefixSelector({
+            prefix: ":where(.editor-styles-wrapper)",
+            includeFiles: [/admin\.css$/],
+
+            transform(prefix, selector) {
+              // НЕ чіпаємо html, body — Gutenberg iframe їх ігнорує
+              if (selector.startsWith("html") || selector.startsWith("body")) {
+                return selector;
+              }
+
+              // НЕ ламаємо keyframes, :root, etc
+              if (selector.startsWith("@")) {
+                return selector;
+              }
+
+              return `${prefix} ${selector}`;
+            },
+          }),
+        ],
+      },*/
+    },
+    plugins: [
+      /* {
       name: "ignore-wp-imports",
       enforce: "pre",
       resolveId(id) {
@@ -46,50 +72,52 @@ export default defineConfig({
         }
       },
     },*/
-    autoHmrPlugin(),
-    tailwindcss(),
-    laravel({
-      input: [
-        "assets/scripts/app.js",
-        "assets/scripts/admin.js",
-        "blocks/Hero/block.js",
-        "assets/scripts/swiper.js",
-      ],
-      refresh: [
-        "blocks/**/*.{twig,php}",
-        "templates/**/*.{twig,php}",
-        "views/**/*.{twig,php}",
-        "ui/**/*.{twig,php}",
-      ],
-      publicDirectory: "dist",
-      buildDirectory: ".",
-    }),
-  ],
-  build: {
-    rollupOptions: {
-      external: ["@wordpress/interactivity", "swiper"],
-      output: {
-        globals: {
-          "@wordpress/interactivity": "wp.interactivity",
-          swiper: "Swiper",
+      autoHmrPlugin(),
+      tailwindcss(),
+      laravel({
+        input: [
+          "assets/scripts/app.js",
+           "assets/scripts/admin.js",
+          "blocks/Hero/block.js",
+          "assets/scripts/swiper.js",
+          "assets/styles/admin.css",
+        ],
+        refresh: [
+          "blocks/**/*.{twig,php}",
+          "templates/**/*.{twig,php}",
+          "views/**/*.{twig,php}",
+          "ui/**/*.{twig,php}",
+        ],
+        publicDirectory: "dist",
+        buildDirectory: ".",
+      }),
+    ],
+    build: {
+      rollupOptions: {
+        external: ["@wordpress/interactivity", "swiper"],
+        output: {
+          globals: {
+            "@wordpress/interactivity": "wp.interactivity",
+            swiper: "Swiper",
+          },
         },
       },
     },
-  },
-  optimizeDeps: {
-    exclude: ["@wordpress/interactivity", "swiper"],
-  },
-  server: {
-    host: "0.0.0.0",
-    port: 3000,
-    strictPort: true,
-    origin: "http://localhost:3000",
-    hmr: {
-      host: "localhost", // Браузер на хості стукає сюди для оновлень
+    optimizeDeps: {
+      exclude: ["@wordpress/interactivity", "swiper"],
     },
-    cors: true,
-    watch: {
-      usePolling: true, // Критично для Docker (особливо Windows/macOS)
+    server: {
+      host: "0.0.0.0",
+      port: 3000,
+      strictPort: true,
+      origin: "http://localhost:3000",
+      hmr: {
+        host: "localhost", // Браузер на хості стукає сюди для оновлень
+      },
+      cors: true,
+      watch: {
+        usePolling: true, // Критично для Docker (особливо Windows/macOS)
+      },
     },
-  },
+  };
 });

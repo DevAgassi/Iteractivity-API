@@ -1,0 +1,115 @@
+/* ========================
+   BASE BUTTON
+   ======================== */
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btn-icon-gap);
+
+  font-family: var(--btn-font-family);
+  font-weight: var(--btn-font-weight);
+
+  border-radius: var(--btn-radius);
+  border-width: var(--btn-border-width);
+  border-style: solid;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    background-color var(--btn-transition-duration) var(--btn-transition-easing),
+    color var(--btn-transition-duration) var(--btn-transition-easing),
+    border-color var(--btn-transition-duration) var(--btn-transition-easing);
+}
+
+/* ========================
+   SIZE MAPPING
+   ======================== */
+.ui-btn--sm {
+  padding: var(--btn-sm-padding-y) var(--btn-sm-padding-x);
+  font-size: var(--btn-sm-font-size);
+}
+
+.ui-btn--md {
+  padding: var(--btn-md-padding-y) var(--btn-md-padding-x);
+  font-size: var(--btn-md-font-size);
+}
+
+.ui-btn--lg {
+  padding: var(--btn-lg-padding-y) var(--btn-lg-padding-x);
+  font-size: var(--btn-lg-font-size);
+}
+
+/* ========================
+   INTENT MAPPING
+   ======================== */
+.ui-btn--primary {
+  --btn-intent-bg: var(--btn-primary-bg);
+  --btn-intent-bg-hover: var(--btn-primary-bg-hover);
+  --btn-intent-text: var(--btn-primary-text);
+  --btn-intent-border: var(--btn-primary-border);
+}
+
+.ui-btn--secondary {
+  --btn-intent-bg: var(--btn-secondary-bg);
+  --btn-intent-bg-hover: var(--btn-secondary-bg-hover);
+  --btn-intent-text: var(--btn-secondary-text);
+  --btn-intent-border: var(--btn-secondary-border);
+}
+
+.ui-btn--success {
+  --btn-intent-bg: var(--btn-success-bg);
+  --btn-intent-bg-hover: var(--btn-success-bg-hover);
+  --btn-intent-text: var(--btn-success-text);
+  --btn-intent-border: var(--btn-success-border);
+}
+
+.ui-btn--error {
+  --btn-intent-bg: var(--btn-error-bg);
+  --btn-intent-bg-hover: var(--btn-error-bg-hover);
+  --btn-intent-text: var(--btn-error-text);
+  --btn-intent-border: var(--btn-error-border);
+}
+
+/* ========================
+   VARIANTS
+   ======================== */
+.ui-btn--solid {
+  background-color: var(--btn-intent-bg);
+  color: var(--btn-intent-text);
+  border-color: var(--btn-intent-border);
+}
+
+.ui-btn--solid:hover {
+  background-color: var(--btn-intent-bg-hover);
+}
+
+.ui-btn--outlined {
+  background-color: transparent;
+  color: var(--btn-intent-bg);
+  border-color: var(--btn-intent-bg);
+}
+
+.ui-btn--outlined:hover {
+  background-color: color-mix(in srgb, var(--btn-intent-bg) 10%, transparent);
+}
+
+.ui-btn--ghost {
+  background-color: transparent;
+  color: var(--btn-intent-bg);
+  border-color: transparent;
+}
+
+.ui-btn--ghost:hover {
+  background-color: color-mix(in srgb, var(--btn-intent-bg) 8%, transparent);
+}
+
+/* ========================
+   STATES
+   ======================== */
+.ui-btn--disabled,
+.ui-btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

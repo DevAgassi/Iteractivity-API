@@ -1,0 +1,53 @@
+@theme {
+  /* ========================
+     BUTTON BASE
+     ======================== */
+  --btn-font-family: var(--font-base);
+  --btn-font-weight: 500;
+
+  --btn-radius: var(--radius-md);
+  --btn-border-width: 2px;
+
+  --btn-transition-duration: var(--motion-base);
+  --btn-transition-easing: var(--motion-ease);
+
+  --btn-icon-gap: 0.5rem;
+
+  /* ========================
+     BUTTON SIZES
+     ======================== */
+  --btn-sm-padding-x: 0.75rem;
+  --btn-sm-padding-y: 0.375rem;
+  --btn-sm-font-size: var(--font-size-sm);
+
+  --btn-md-padding-x: 1.25rem;
+  --btn-md-padding-y: 0.625rem;
+  --btn-md-font-size: var(--font-size-md);
+
+  --btn-lg-padding-x: 1.5rem;
+  --btn-lg-padding-y: 0.75rem;
+  --btn-lg-font-size: var(--font-size-lg);
+
+  /* ========================
+     BUTTON INTENTS
+     ======================== */
+  --btn-primary-bg: var(--color-primary);
+  --btn-primary-bg-hover: var(--color-primary-dark);
+  --btn-primary-text: #ffffff;
+  --btn-primary-border: transparent;
+
+  --btn-secondary-bg: var(--color-secondary);
+  --btn-secondary-bg-hover: var(--color-secondary-dark);
+  --btn-secondary-text: #ffffff;
+  --btn-secondary-border: transparent;
+
+  --btn-success-bg: var(--color-success);
+  --btn-success-bg-hover: var(--color-success-dark);
+  --btn-success-text: #ffffff;
+  --btn-success-border: transparent;
+
+  --btn-error-bg: var(--color-error);
+  --btn-error-bg-hover: var(--color-error-dark);
+  --btn-error-text: #ffffff;
+  --btn-error-border: transparent;
+}

@@ -47,7 +47,7 @@ class __TwigTemplate_cd43c717c86b00a99fab3c8a4380c0ca extends Template
 <html ";
         // line 2
         yield CoreExtension::getAttribute($this->env, $this->source, ($context["site"] ?? null), "language_attributes", [], "any", false, false, false, 2);
-        yield ">
+        yield " data-theme=\"1dark\">
 \t";
         // line 3
         if ((($tmp = CoreExtension::getAttribute($this->env, $this->source, ($context["assets"] ?? null), "isHot", [], "method", false, false, false, 3)) && $tmp instanceof Markup ? (string) $tmp : $tmp)) {
@@ -200,7 +200,7 @@ class __TwigTemplate_cd43c717c86b00a99fab3c8a4380c0ca extends Template
     public function getSourceContext(): Source
     {
         return new Source("<!DOCTYPE html>
-<html {{ site.language_attributes }}>
+<html {{ site.language_attributes }} data-theme=\"1dark\">
 \t{% if assets.isHot() %}
 \t\t<script id=\"hot-client\" type=\"module\" src=\"{{ assets.render().client }}\"></script>
 \t{% endif %}
