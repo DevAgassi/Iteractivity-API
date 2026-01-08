@@ -1,3 +1,5 @@
+import '../styles/admin.css';
+
 // js/editor-modifications.js
 function unregisterStretchyVariations() {
     const blocks = ['core/paragraph', 'core/heading'];

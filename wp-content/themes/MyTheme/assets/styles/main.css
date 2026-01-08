@@ -1,28 +1,82 @@
-@import 'tailwindcss';
-@import './theme.css';
-@import './utilities.css';
-@import './custom.css' layer(utilities);
+@import "tailwindcss";
+@import "./theme.css";
+@import "./utilities.css";
+@import "./custom.css" layer(utilities);
 
+@theme {
+  --spacing-section: 0.5rem;
 
-@utility container {
-    margin-inline: auto;
-    padding-inline: 2rem;
+  --breakpoint-sm: 40rem; /* 640px */
+  --breakpoint-md: 48rem; /* 768px */
+
+  /* LG — це початок десктопу (зазвичай 1024px) */
+  --breakpoint-lg: 64rem;
+
+  --breakpoint-xl: 80rem; /* 1280px */
+
+  --breakpoint-2xl: 98rem; /* px */
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-sync-200, currentColor);
+  body {
+    /* 1. Наслідуємо твої семантичні змінні */
+    background-color: var(--color-ground);
+    color: var(--color-text);
+
+    /* 2. Наслідуємо твій основний шрифт */
+    font-family: var(--font-primary);
+
+    /* 3. Оптимізація тексту (Preflight v4) */
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /**************** Мобільне меню з поповером */
+  /* Убираем стандартную стрелку summary в Safari/Chrome */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary {
+    list-style: none;
+    outline: none;
+  }
+
+  /* Предотвращаем открытие details при клике на саму ссылку внутри summary */
+  /* В 2026 году это решается через pointer-events на ссылке, 
+     но чтобы ссылка работала, мы просто делаем её z-index выше */
+  summary a {
+    position: relative;
+    z-index: 2;
+  }
+
+  body:has(#mobile-menu:popover-open) {
+    overflow: hidden;
+  }
+
+  /* Налаштування нативного поповера */
+  #mobile-menu[popover] {
+    position: fixed;
+    inset: auto 0 0 0;
+    top: 0;
+    width: 100vw;
+    height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: white;
+
+    /* Плавна анімація виїзду */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  /* Стан відкритого меню */
+  #mobile-menu:popover-open {
+    transform: translateX(0);
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
   }
 }

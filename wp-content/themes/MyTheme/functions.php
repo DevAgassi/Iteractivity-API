@@ -29,14 +29,6 @@ add_filter('allowed_block_types_all', function ($allowed_block_types, $block_edi
     return $allowed_block_types;
 }, 10, 2);
 
-add_action('enqueue_block_editor_assets', function () {
-    wp_enqueue_script(
-        'my-editor-fix',
-        get_template_directory_uri() . '/dist/assets/admin-bVi4K-LI.js',
-        array('wp-blocks', 'wp-dom-ready', 'wp-edit-post', 'wp-editor'), // Додано wp-editor
-        filemtime(get_template_directory() . '/dist/assets/admin-bVi4K-LI.js')
-    );
-});
 
 add_action('init', function() {
     // 1. Реєструємо категорію (опціонально)

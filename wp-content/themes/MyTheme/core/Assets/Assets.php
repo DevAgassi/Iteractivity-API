@@ -77,7 +77,18 @@ class Assets extends AbstractAssets
 
             if (isset($file)) {
                 if (is_admin()) {
-                   
+                    wp_enqueue_script(
+                        'editor-fix',
+                        get_template_directory_uri() . '/dist/' . $file['file'],
+                        array('wp-blocks', 'wp-dom-ready', 'wp-edit-post', 'wp-editor'),
+                        filemtime(get_template_directory() . '/dist/' . $file['file'])
+                    );
+
+                    if (isset($file['css'])) {
+                        foreach ($file['css'] as $css) {
+                            add_editor_style('/dist/' . $css);
+                        }
+                    }
                 }
             }
         }

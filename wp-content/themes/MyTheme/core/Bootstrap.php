@@ -17,6 +17,7 @@ use Timber\Timber;
 use App\Core\Assets\Assets;
 use App\Core\Timber\StarterSite;
 use App\Core\Timber\TemplateRegistry;
+use App\Core\FileLoader;
 
 class Bootstrap
 {
@@ -120,14 +121,22 @@ class Bootstrap
      *
      * @return void
      */
-    private function registerServices(array $options = []): void
+    private function registerServices(array $config = []): void
     {
+        $default_config = [
+            'requireFolders' => ['functions'],
+        ];
+
+        $config = array_merge($default_config, $config);
+
+
         $this->services = [
-            'site'      => StarterSite::class,
+            'site'      => new StarterSite(),
             'assets'    => Assets::class,
             'blocks'    => BlockRegistry::class,
             'templates' => TemplateRegistry::class,
-            'tailwind'  => $options['tailwind'] ?? Tailwind::class,
+            'tailwind'  => $config['tailwind'] ?? Tailwind::class,
+            'fileloader' => new FileLoader($default_config['requireFolders'])
         ];
 
         /**
@@ -162,11 +171,6 @@ class Bootstrap
         // StarterSite - instantiate
         if (isset($this->services['blocks'])) {
             add_action('init', fn() => $this->services['blocks']::init());
-        }
-
-        // StarterSite - instantiate
-        if (isset($this->services['site'])) {
-            new $this->services['site']();
         }
 
         // TemplateRegistry - register immediately

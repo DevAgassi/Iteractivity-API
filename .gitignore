@@ -31,3 +31,4 @@ node_modules/
 .pnpm-store/
 .cache/
 plugins
+wp-content/themes/*/cache/

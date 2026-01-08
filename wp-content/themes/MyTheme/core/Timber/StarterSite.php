@@ -35,6 +35,8 @@ class StarterSite extends Site
     {
         // WordPress core actions
         add_action('after_setup_theme', [$this, 'theme_supports']);
+        add_action('enqueue_block_editor_assets', [$this, 'enqueue_editor_assets']);
+
         add_action('init', [$this, 'register_post_types']);
         add_action('init', [$this, 'register_taxonomies']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
@@ -82,8 +84,8 @@ class StarterSite extends Site
         /**
          * Editor JS file with dependencies and CSS imports
          */
-        Assets::enqueueEditorStyles('assets/styles/admin.css', 'app-editor');
-         Assets::enqueueEditorAssets('assets/scripts/admin.js', 'app-editor');
+        //Assets::enqueueEditorStyles('assets/styles/admin.css', 'app-editor');
+        Assets::enqueueEditorAssets('assets/scripts/admin.js', 'app-editor');
     }
 
     /*
@@ -178,7 +180,6 @@ class StarterSite extends Site
 
         // Ініціалізуємо логіку ACF Local JSON
         $this->setup_acf_local_json();
-        $this->enqueue_editor_assets();
     }
 
     /**
@@ -329,7 +330,6 @@ class StarterSite extends Site
 
         return implode(' ', $result);
     }
-
 
     /**
      * Example Twig filter: Append " bar!" to string.
