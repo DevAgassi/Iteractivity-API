@@ -20,6 +20,7 @@ add_filter('allowed_block_types_all', function ($allowed_block_types, $block_edi
     $allowed_block_types = array(
         'acf/hero',
         'acf/section',
+        'acf/latest-posts',
         'core/heading',
         'core/video',
         'core/group',

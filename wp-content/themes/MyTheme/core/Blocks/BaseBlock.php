@@ -165,7 +165,7 @@ abstract class BaseBlock
     }
 
     protected function registerAssets()
-    {
+    { 
         BlockAssets::enqueueBlockDependency($this->dependencies, $this->dependencies_module, $this->blockName . '/block.js');
     }
 
@@ -175,14 +175,20 @@ abstract class BaseBlock
             // autoregister interactivity dependency
             $this->dependencies[] = 'interactivity';
 
+            // Додаємо unique_id в контекст для JavaScript
+            $contextData = $this->timber_context['context'];
+            $contextData['unique_id'] = $this->unique_id;
+            $contextData['offset'] = $contextData['offset'] ?? 0;
+            $contextData['isLoading'] = false;
+
             $this->timber_context['attrs'] .= ' '
-                . wp_interactivity_data_wp_context($this->timber_context['context'])
+                . wp_interactivity_data_wp_context($contextData)
                 . ' data-wp-interactive="' . esc_attr($this->interactivity_namespace) . '"';
 
             if (function_exists('wp_interactivity_state')) {
                 wp_interactivity_state(
                     $this->interactivity_namespace,
-                    $this->timber_context['context']
+                    $contextData
                 );
             }
         }

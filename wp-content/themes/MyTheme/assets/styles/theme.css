@@ -40,9 +40,9 @@
   --color-error-light: color-mix(in srgb, var(--color-error), white 80%);
 
   --breakpoint-xs: 480px;
-  --breakpoint-sm: 600px;
-  --breakpoint-md: 782px;
-  --breakpoint-lg: 960px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1440px;
 
@@ -69,4 +69,24 @@
   --color-header-link: var(--color-white, #fff);
   --color-header-bg: var(--color-gray-800, --wp--preset--color--primary);
   --color-mobile-bg: #f8f9fa;
+
+  /* Стандартні spacing значення */
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-7: 1.75rem;
+  --spacing-8: 2rem;
+  --spacing-9: 2.25rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-14: 3.5rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  --spacing-28: 7rem;
+  --spacing-32: 8rem;
 }

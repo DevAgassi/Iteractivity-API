@@ -12,16 +12,17 @@ class BlockAssets
         $start_time = Debug::isEnabled() ? microtime(true) : null;
         $manifest = Assets::getManifest();
         $assets = [];
-        $path = 'blocks/' . ucfirst($script_path);
+
 
         if (Assets::$isDevCache) {
             $assets = 'blocks/' . $script_path;
         } else {
+            $path = 'blocks/' . $script_path;
             isset($manifest[$path]) ?
                 $assets = $path : null;
         }
 
-        Assets::enqueueAssets($assets, 'block-' . str_replace(['/', '.'], '-', $script_path), $dependencies, $dependencies_module);
+        Assets::enqueueAssets($assets, 'blocks/' . $script_path, $dependencies, $dependencies_module);
 
         if ($start_time !== null) {
             $duration = (microtime(true) - $start_time) * 1000;

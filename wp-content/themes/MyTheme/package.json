@@ -12,8 +12,11 @@
     "core": "node core/.vite/index.js"
   },
   "devDependencies": {
+    "@preact/preset-vite": "^2.10.2",
+    "@preact/signals": "^2.5.1",
     "esbuild": "^0.25.12",
     "postcss-prefix-selector": "^2.1.1",
+    "preact": "^10.28.2",
     "rimraf": "^6.1.2",
     "rollup-plugin-external-globals": "^0.13.0",
     "sass-embedded": "^1.96.0",

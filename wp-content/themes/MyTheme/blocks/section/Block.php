@@ -16,6 +16,8 @@ class Block extends BaseBlock
 
         $this->classes = 'section-block';
 
-        return [];
+        return [
+            'container_size' => $this->timber_context['fields']['container_size'] ?? 'normal',
+        ];
     }
 }

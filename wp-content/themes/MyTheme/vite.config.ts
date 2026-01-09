@@ -1,7 +1,10 @@
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 import laravel from "laravel-vite-plugin";
-import prefixSelector from "postcss-prefix-selector";
+import { glob } from "glob";
+
+// Динамічно знаходимо всі block.js файли
+const blockFiles = glob.sync("blocks/*/block.js", { cwd: __dirname });
 
 const autoHmrPlugin = () => {
   return {
@@ -77,8 +80,8 @@ export default defineConfig(({ command }) => {
       laravel({
         input: [
           "assets/scripts/app.js",
-           "assets/scripts/admin.js",
-          "blocks/Hero/block.js",
+          "assets/scripts/admin.js",
+          ...blockFiles,
           "assets/scripts/swiper.js",
           "assets/styles/admin.css",
         ],
