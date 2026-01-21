@@ -36,3 +36,5 @@ wp-content/uploads/
 wp-content/uploads/*
 
 wp-content/themes/*/old/
+
+migration/
