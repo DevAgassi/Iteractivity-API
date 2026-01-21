@@ -1,0 +1,19 @@
+{
+  "$schema": "https://advancedcustomfields.com/schemas/json/main/block.json",
+  "name": "acf/latest-posts",
+  "title": "Latest Posts",
+  "description": "Display latest posts in a grid with load more functionality",
+  "category": "custom-content",
+  "icon": "admin-post",
+  "apiVersion": 3,
+  "editorStyle": "file:./index.css",
+  "supports": {
+    "align": false,
+    "jsx": true,
+    "interactive": true
+  },
+  "acf": {
+    "blockVersion": 3,
+    "renderCallback": "App\\Blocks\\LatestPosts\\Block::renderCallback"
+  }
+}

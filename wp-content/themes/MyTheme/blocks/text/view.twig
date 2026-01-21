@@ -1,0 +1,15 @@
+<section class="text container pb-8">
+	<div class="grid {% if context.has_inner_blocks %}grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12{% else %}grid-cols-1{% endif %}">
+		{# Main content: 65% width if sidebar exists, full width otherwise #}
+		<div class="{% if context.has_inner_blocks %}lg:col-span-8{% else %}col-span-full{% endif %} wysiwyg-editor">
+			{{ context.text }}
+		</div>
+		
+		{% if context.has_inner_blocks %}
+			{# Sidebar: 35% width #}
+			<aside class="group/sidebar lg:col-span-4">
+				<InnerBlocks />
+			</aside>
+		{% endif %}
+	</div>
+</section>

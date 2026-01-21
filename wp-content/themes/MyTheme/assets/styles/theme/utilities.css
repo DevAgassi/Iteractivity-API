@@ -1,0 +1,55 @@
+/* Убираем @utility и используем обычные селекторы */
+.container {
+  max-width: var(--wp--style--global--content-size);
+  margin-inline: auto;
+  padding-inline: 2rem;
+}
+
+.container .container {
+  max-width: initial;
+  padding-inline: initial;
+  margin-inline: initial;
+}
+
+.alignfull {
+  width: 100%;
+}
+
+.alignwide {
+  width: 100%;
+  max-width: var(--wp--style--global--content-size);
+  position: relative;
+  margin-inline: auto;
+  padding-inline: 2rem;
+}
+
+.alignwide :where(figure) {
+  margin: 0 auto !important;
+}
+
+.alignwide img {
+  width: calc(100% + 320px) !important;
+  max-width: none !important;
+  margin-left: -160px;
+  margin-right: -160px;
+  display: block;
+}
+
+@media (max-width: 768px) { /* или используйте theme(screens.md) */
+  .alignwide img {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100% !important;
+  }
+}
+
+.alignnone {
+  height: auto;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.aligncenter {
+  margin: 0.5rem auto !important;
+}

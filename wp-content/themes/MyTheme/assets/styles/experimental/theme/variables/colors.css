@@ -1,0 +1,42 @@
+@theme {
+  --color-text: #333;
+  --color-ground: #fff;
+  --color-border: #334155;
+  --color-background-alt: #f3f4f6;
+
+  /* --- 1. ПУЛЬТ КЕРУВАННЯ (Змінюєш тільки ці HEX) --- */
+  --color-primary: #1d4ed8;
+  --color-secondary: #9333ea;
+  --color-accent: #f59e0b;
+
+  --color-success: #16a34a;
+  --color-warning: #f97316;
+  --color-error: #dc2626;
+
+  /* Text */
+  --color-text-muted: color-mix(in srgb, var(--color-text), white 40%);
+
+  /* Primary & Accents */
+  --color-primary-dark: color-mix(in srgb, var(--color-primary), black 15%);
+  --color-primary-light: color-mix(in srgb, var(--color-primary), white 20%);
+
+  --color-secondary-dark: color-mix(in srgb, var(--color-secondary), black 15%);
+  --color-secondary-light: color-mix(
+    in srgb,
+    var(--color-secondary),
+    white 20%
+  );
+
+  /* Borders */
+  --color-border-subtle: color-mix(in srgb, var(--color-border), white 50%);
+  /* Статуси */
+  --color-success-dark: color-mix(in srgb, var(--color-success), black 15%);
+  --color-success-light: color-mix(
+    in srgb,
+    var(--color-success),
+    white 80%
+  ); /* ніжний фон для алертів */
+
+  --color-error-dark: color-mix(in srgb, var(--color-error), black 15%);
+  --color-error-light: color-mix(in srgb, var(--color-error), white 80%);
+}

@@ -1,0 +1,10 @@
+/* Регистрация варианта для использования в классах (dark:block) */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Переопределение значений переменных */
+[data-theme="dark"] {
+  --color-text: #fff;
+  --color-ground: #333;
+  --color-border: #334155;
+  --color-background-alt: #f3f4f6;
+}

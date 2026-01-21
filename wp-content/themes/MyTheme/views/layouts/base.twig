@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html {{ site.language_attributes }} data-theme="1dark">
+    {% include 'layouts/safelist.twig' %}
+	{% if assets.isHot() %}
+		<script id="hot-client" type="module" src="{{ assets.render().client }}"></script>
+	{% endif %}
+	{{ timer_start('head') }}
+	{% block head %}
+		{% include 'layouts/head.twig' %}
+	{% endblock %}
+	{{ timer_end('head') }}
+	<body class="{{ body_class }}">
+		{{ function('wp_body_open') }}
+		<a class="skip-link screen-reader-text" href="#content">{{ _e('Skip to content') }}</a>
+		{% block header %}
+			{% include 'layouts/header.twig' %}
+		{% endblock %}
+
+		<main class="content-wrapper" role="main">
+			{% block content %}
+				Sorry, no content
+			{% endblock %}
+		</main>
+
+		{{ timer_start('footer') }}
+		{% block footer %}
+			{% include 'layouts/footer.twig' %}
+		{% endblock %}
+
+		{{ function('wp_footer') }}
+		{{ timer_end('footer') }}
+	</body>
+</html>

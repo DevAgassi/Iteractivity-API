@@ -1,0 +1,26 @@
+{
+  "$schema": "https://advancedcustomfields.com/schemas/json/main/block.json",
+  "name": "acf/text",
+  "title": "Text",
+  "description": "Text block",
+  "category": "custom-content",
+  "icon": "wordpress-alt",
+  "keywords": ["text", "content"],
+  "apiVersion": 3,
+  "editorStyle": "file:./index.css",
+  "allowedBlocks": ["acf/lead", "core/heading"],
+  "supports": {
+    "jsx": true
+  },
+  "example": {
+    "attributes": {
+      "data": {
+        "is_preview_example": true
+      }
+    }
+  },
+  "acf": {
+    "blockVersion": 3,
+    "renderCallback": "App\\Blocks\\Text\\Block::renderCallback"
+  }
+}

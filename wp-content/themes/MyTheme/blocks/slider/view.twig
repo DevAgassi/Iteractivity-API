@@ -1,0 +1,58 @@
+{% set limit = is_preview ? 1 : null %}
+<!-- Slider -->
+<section class="swiper swiper-slider">
+	<div class="swiper-wrapper">
+		{% for slide in fields.slides %}
+			<div class="swiper-slide relative">
+				{% if slide.image %}
+					<div class="slider-overlay w-full absolute left-0 h-full">
+						<img src="{{ slide.image.url }}" alt="{{ slide.image.alt|default('') }}">
+					</div>
+				{% endif %}
+				{% if slide.title %}
+					<h3>{{ slide.title }}</h3>
+				{% endif %}
+				{% if slide.description %}
+					<p>{{ slide.description }}</p>
+				{% endif %}
+				{% if slide.cta_link and slide.cta_text %}
+					<a href="{{ slide.cta_link }}" class="btn btn-primary">{{ slide.cta_text }}</a>
+				{% endif %}
+			</div>
+		{% endfor %}
+	</div>
+
+	<!-- Optional navigation -->
+	<div class="swiper-button-next"></div>
+	<div class="swiper-button-prev"></div>
+	<div class="swiper-pagination"></div>
+</section>
+{#
+
+
+						{% if slide.banner_image %}
+							<div class="slide-banner w-full max-w-sm mx-auto">
+								<img src="{{ slide.banner_image.url }}" alt="{{ slide.banner_image.alt|default('') }}" class="banner-img w-full h-auto block">
+							</div>
+						{% endif %}
+						
+						<div class="slide-info flex flex-col items-center gap-4 px-5">
+							{% if slide.logo %}
+								<div class="slide-logo max-w-xs">
+									<img src="{{ slide.logo.url }}" alt="{{ slide.logo.alt|default('') }}" class="logo-img w-full h-auto">
+								</div>
+							{% endif %}
+							
+							{% if slide.title %}
+								<h3 class="slide-title text-2xl font-bold m-0 leading-tight">{{ slide.title }}</h3>
+							{% endif %}
+							
+							{% if slide.description %}
+								<div class="slide-description text-base leading-relaxed text-gray-600">
+									{{ slide.description }}
+								</div>
+							{% endif %}
+							
+							{% if slide.cta_link and slide.cta_text %}
+								<a href="{{ slide.cta_link }}" class="slide-cta inline-block mt-2.5 px-7.5 py-2.5 bg-blue-500 text-white no-underline rounded transition-colors duration-300 hover:bg-blue-700">{{ slide.cta_text }}</a>
+							{% endif %}#}

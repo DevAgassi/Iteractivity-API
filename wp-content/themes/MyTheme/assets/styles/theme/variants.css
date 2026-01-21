@@ -1,0 +1,13 @@
+/* Варіант кнопки, що використовує системні змінні */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-ground); /* Автоматично стане темним/світлим */
+  border: 1px solid var(--color-border);
+}
+
+/* Специфічний варіант для акценту */
+.card-featured {
+  border: 2px solid var(--color-border);
+  background-color: var(--color-background-alt);
+  @apply shadow-xl scale-105;
+}

@@ -1,0 +1,36 @@
+body:has(#mobile-menu:popover-open) {
+  overflow: hidden;
+}
+
+/* Налаштування нативного поповера */
+#mobile-menu[popover] {
+  position: fixed;
+  inset: auto 0 0 0;
+  top: 0;
+  width: 100vw;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: white;
+
+  /* Плавна анімація виїзду */
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+/* Стан відкритого меню */
+#mobile-menu:popover-open {
+  transform: translateX(0);
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+@starting-style {
+  #mobile-menu:popover-open {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}

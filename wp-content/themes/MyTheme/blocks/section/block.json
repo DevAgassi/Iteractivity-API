@@ -1,0 +1,23 @@
+{
+  "$schema": "https://advancedcustomfields.com/schemas/json/main/block.json",
+  "name": "acf/section",
+  "title": "Section",
+  "description": "SectionBlock block",
+  "category": "custom-layout",
+  "keywords": ["layout", "section"],
+  "icon": "feedback",
+  "apiVersion": 3,
+  "editorStyle": "file:./index.css",
+  "supports": {
+    "jsx": true,
+    "align": [],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "acf": {
+    "blockVersion": 3,
+    "renderCallback": "App\\Blocks\\Section\\Block::renderCallback"
+  }
+}

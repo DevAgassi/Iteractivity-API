@@ -1,0 +1,19 @@
+{
+  "$schema": "https://advancedcustomfields.com/schemas/json/main/block.json",
+  "name": "acf/slider",
+  "title": "Slider",
+  "description": "Slider block",
+  "category": "custom-layout",
+  "keywords": ["layout", "slider"],
+  "icon": "feedback",
+  "apiVersion": 3,
+  "editorStyle": "file:./index.css",
+  "supports": {
+    "jsx": false,
+    "align": []
+  },
+  "acf": {
+    "blockVersion": 3,
+    "renderCallback": "App\\Blocks\\Slider\\Block::renderCallback"
+  }
+}

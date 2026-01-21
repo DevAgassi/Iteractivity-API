@@ -1,0 +1,6 @@
+@theme {
+  --font-primary: "Inter", sans-serif;
+  --font-display: "Inter", sans-serif, system-ui; /* Окремий важіль для заголовків */
+
+  --default-font-family: var(--font-primary);
+}

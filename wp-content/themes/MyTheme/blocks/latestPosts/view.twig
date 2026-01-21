@@ -1,0 +1,26 @@
+<div {{ attrs }} data-posts-per-page="{{ context.postsPerPage }}" data-total-posts="{{ context.totalPosts }}">
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 latest-posts-grid">
+		{% for post in context.posts %}
+			{% set cardPost = {
+				title: post.title,
+				link: post.link,
+				imageUrl: post.thumbnail.src,
+				excerpt: post.excerpt,
+				date: post.post_date | date('j F Y')
+			} %}
+			{% include 'blocks/latestPosts/_post-card.twig' with {'post': cardPost} %}
+		{% endfor %}
+	</div>
+
+	<template id="post-card-template">
+		{% include 'blocks/latestPosts/_post-card.twig' with {'post': {}} %}
+	</template>
+
+
+	{% set hasMorePosts = context.offset < context.totalPosts %}
+	{% if hasMorePosts %}
+		<div class="flex justify-center mt-8" data-wp-run="callbacks.logInView">
+			{% include 'partials/_load-more-button.twig' %}
+		</div>
+	{% endif %}
+</div>

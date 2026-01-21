@@ -1,0 +1,9 @@
+{% extends 'layouts/base.twig' %}
+
+{% block content %}
+{{ timer_start('tease-' ~ loop.index) }}
+    {% for post in posts %}
+        {% include ['partials/tease-' ~ post.type ~ '.twig', 'partials/tease.twig'] %}
+    {% endfor %}
+{{ timer_end('tease-' ~ loop.index) }}
+{% endblock %}

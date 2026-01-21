@@ -1,0 +1,31 @@
+@reference "../../assets/styles/main.css";
+
+/* Section Block Styles - основні стилі для контейнера */
+.section-block {
+  width: 100%;
+}
+
+.container.container-- {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Padding для блоків всередині секції через InnerBlocks */
+[data-block-wrapper] > * {
+  @apply py-8;
+}
+
+/* Першому блоку не треба верхнього padding */
+[data-block-wrapper] > *:first-child {
+  @apply pt-0 pb-8;
+}
+
+/* Останньому блоку не треба нижнього padding */
+[data-block-wrapper] > *:last-child {
+  @apply pt-8 pb-0;
+}
+
+/* Якщо один блок - не треба ні зверху ні знизу */
+[data-block-wrapper] > *:only-child {
+  @apply py-0;
+}

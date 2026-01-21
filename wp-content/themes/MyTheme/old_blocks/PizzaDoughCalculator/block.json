@@ -1,0 +1,17 @@
+{
+  "$schema": "https://advancedcustomfields.com/schemas/json/main/block.json",
+  "name": "acf/calculator",
+  "title": "Pizza Dough Calculator",
+  "description": "Pizza Dough Calculator block",
+  "category": "custom-blocks",
+  "icon": "wordpress-alt",
+  "apiVersion": 3,
+  "acf_block_version": 3,
+  "mode": "preview",
+  "supports": {
+    "align": true,
+    "mode": false,
+    "jsx": true,
+    "interactive": true
+  }
+}

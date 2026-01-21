@@ -1,0 +1,33 @@
+@import "tailwindcss";
+/* 1. Тема (Theme) */
+/* Основні налаштування теми, кольори, шрифти тощо */
+@import "./theme/theme.css";
+
+/* 1.1  Якщо потрібно, можна додати власні змінні CSS тут */
+@theme {
+  /* --spacing-section: 0.5rem; */
+}
+
+/* 1.2. Логика темной темы (варианты и переопределение переменных) */
+/* Без слоя, так как это глобальная настройка переменных */
+/* @import "./theme/dark-mode.css"; */
+
+/* 2. Базові стилі (Base) */
+/* Тут живуть скидання (Preflight) та глобальні стилі для тегів <body>, <h1> тощо */
+@import "./theme/base.css" layer(base);
+
+/* 3. Компоненти (Components) */
+/* Ваші класи на кшталт .btn, .card або логіка #mobile-menu */
+@import "./theme/components.css" layer(components);
+
+/* 4. Варіанти компонентів (Variants) */
+/* @import "./theme/variants.css" layer(components); */
+
+/* 5. Утиліти (Utilities) */
+/* Мають бути ОСТАННІМИ, щоб перебивати стилі компонентів та бази */
+@import "./theme/utilities.css" layer(utilities);
+
+/* 6. Ваші кастомні стилі (якщо вони не в шарах) */
+/* Краще теж загорнути в шар, щоб утиліти могли їх перебити за потреби */
+@import "./custom.css" layer(components);
+@import "./vendor/swiper.css" layer(components);

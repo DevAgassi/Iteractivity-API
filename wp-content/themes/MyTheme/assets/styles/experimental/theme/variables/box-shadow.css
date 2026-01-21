@@ -1,0 +1,38 @@
+@theme {
+  --shadow-base-color: color-mix(
+    in srgb,
+    var(--color-primary, black),
+    black 80%
+  );
+
+  /* Прозорість (сила тіні) */
+  --shadow-opacity-soft: 0.08;
+  --shadow-opacity-strong: 0.15;
+
+  /* --- 2. ГЕНЕРАЦІЯ ТІНЕЙ (calculation) --- */
+
+  --shadow-sm: 0 1px 2px 0
+    rgb(from var(--shadow-base-color) r g b / var(--shadow-opacity-soft));
+
+  --shadow-md: 0 4px 6px -1px rgb(from var(--shadow-base-color) r g b /
+          var(--shadow-opacity-soft)),
+    0 2px 4px -2px rgb(from var(--shadow-base-color) r g b /
+          var(--shadow-opacity-soft));
+
+  --shadow-lg: 0 10px 15px -3px rgb(from var(--shadow-base-color) r g b /
+          var(--shadow-opacity-soft)),
+    0 4px 6px -4px rgb(from var(--shadow-base-color) r g b /
+          var(--shadow-opacity-soft));
+
+  --shadow-xl: 0 20px 25px -5px rgb(from var(--shadow-base-color) r g b /
+          var(--shadow-opacity-strong)),
+    0 8px 10px -6px rgb(from var(--shadow-base-color) r g b /
+          var(--shadow-opacity-soft));
+
+  --shadow-2xl: 0 25px 50px -12px rgb(from var(--shadow-base-color) r g b /
+        0.25);
+
+  /* Drop Shadows (для SVG та прозорих елементів) */
+  --drop-shadow-md: 0 4px 3px rgb(from var(--shadow-base-color) r g b / 0.1);
+  --drop-shadow-lg: 0 10px 8px rgb(from var(--shadow-base-color) r g b / 0.1);
+}

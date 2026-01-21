@@ -1,0 +1,13 @@
+<button 
+	data-wp-on--click="actions.loadMorePosts"
+	data-wp-bind--disabled="state.isLoading"
+	class="cursor-pointer latest-posts-load-more px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+	aria-label="Завантажити більше постів"
+>
+	<span class="inline-block">
+		{{ context.loadMoreText }}
+	</span>
+	<span data-wp-bind--hidden="!state.isLoading" class="inline-flex items-center gap-2">
+		<span class="inline-block animate-spin">⟳</span>
+	</span>
+</button>

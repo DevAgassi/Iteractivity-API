@@ -1,0 +1,14 @@
+@theme {
+  /* Головний важіль: ширина макета з Figma */
+  --container-base-width: 80rem; /* 1280px */
+
+  /* Семантичні контейнери */
+  --container-standard: var(--container-base-width);
+  --container-narrow: calc(var(--container-base-width) * 0.625); /* ~800px */
+  --container-wide: calc(var(--container-base-width) * 1.2);    /* ~1536px */
+
+  /* Залишаємо лише 3-4 базових кроки, якщо вони реально потрібні */
+  --container-sm: 24rem;
+  --container-md: 40rem;
+  --container-lg: 64rem;
+}

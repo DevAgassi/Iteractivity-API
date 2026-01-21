@@ -1,0 +1,67 @@
+@theme {
+  --color-text: #333;
+  --color-ground: #fff;
+  --color-border: #334155;
+  --color-background-alt: #f3f4f6;
+
+  /* --- 1. --- */
+  --color-primary: #1d4ed8;
+  --color-secondary: #9333ea;
+  --color-accent: #f59e0b;
+
+  --color-success: #16a34a;
+  --color-warning: #f97316;
+  --color-error: #dc2626;
+
+  --color-text-muted: color-mix(in srgb, var(--color-text), white 40%);
+
+  /* Primary & Accents */
+  --color-primary-dark: color-mix(in srgb, var(--color-primary), black 15%);
+  --color-primary-light: color-mix(in srgb, var(--color-primary), white 20%);
+
+  --color-secondary-dark: color-mix(in srgb, var(--color-secondary), black 15%);
+  --color-secondary-light: color-mix(
+    in srgb,
+    var(--color-secondary),
+    white 20%
+  );
+
+  /* Borders */
+  --color-border-subtle: color-mix(in srgb, var(--color-border), white 50%);
+  --color-success-dark: color-mix(in srgb, var(--color-success), black 15%);
+  --color-success-light: color-mix(in srgb, var(--color-success), white 80%);
+
+  --color-error-dark: color-mix(in srgb, var(--color-error), black 15%);
+  --color-error-light: color-mix(in srgb, var(--color-error), white 80%);
+
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+
+  --color-primary: var(--wp--preset--color--primary);
+  --color-secondary: var(--wp--preset--color--secondary);
+  --color-dark: var(--wp--preset--color--dark);
+  --color-light: var(--wp--preset--color--light);
+
+  --text-xs: var(--wp--preset--font-size--xs, 0.75rem);
+  --text-sm: var(--wp--preset--font-size--sm, 0.875rem);
+  --text-base: var(--wp--preset--font-size--base, 1rem);
+  --text-lg: var(--wp--preset--font-size--lg, 1.125rem);
+  --text-xl: var(--wp--preset--font-size--xl, 1.25rem);
+  --text-2xl: var(--wp--preset--font-size--2-xl, 1.5rem);
+  --text-3xl: var(--wp--preset--font-size--3-xl, 1.875rem);
+  --text-4xl: var(--wp--preset--font-size--4-xl, 2.25rem);
+  --text-5xl: var(--wp--preset--font-size--5-xl, 3rem);
+  --text-6xl: var(--wp--preset--font-size--6-xl, 3.75rem);
+  --text-7xl: var(--wp--preset--font-size--7-xl, 4.5rem);
+  --text-8xl: var(--wp--preset--font-size--8-xl, 6rem);
+  --text-9xl: var(--wp--preset--font-size--9-xl, 8rem);
+
+  /* Header Link */
+  --color-header-link: var(--color-white, #fff);
+  --color-header-bg: var(--color-gray-800, --wp--preset--color--primary);
+  --color-mobile-bg: #f8f9fa;
+}

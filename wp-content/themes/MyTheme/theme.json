@@ -1,0 +1,29 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "styles": {
+    "elements": {
+      "link": {
+        "typography": {
+          "textDecoration": "none"
+        }
+      }
+    }
+  },
+  
+  "settings": {
+    "layout": {
+      "contentSize": "1280px"
+    },
+    "color": {
+    },
+    "typography": {
+    },
+    "blocks": {
+      "core/heading": {
+        "typography": {
+        }
+      }
+    }
+  }
+}
