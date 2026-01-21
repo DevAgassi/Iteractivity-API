@@ -38,3 +38,4 @@ wp-content/uploads/*
 wp-content/themes/*/old/
 
 migration/
+wp-content/mu-plugins/wp-migrate-db-pro-compatibility.php
