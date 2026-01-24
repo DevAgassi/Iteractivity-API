@@ -1,12 +1,19 @@
 <?php
 
-namespace App\Blocks\PizzaDoughCalculator;
+namespace App\Blocks\Calculator;
 
-use App\Core\BaseBlock;
+use App\Core\Blocks\BaseBlock;
 
 class Block extends BaseBlock
 {
-    protected ?string $interactivity_namespace = 'pizza-dough-calculator';
+    /** @var string Block unique identifier */
+    public string $blockName = 'calculator';
+
+    /** @var string Interactivity API store namespace */
+    protected ?string $interactivity_namespace = 'calculator';
+
+    /** @var array WordPress script dependencies */
+    protected array $dependencies_module = ['@wordpress/interactivity'];
 
     // Per-instance context (ACF slides)
     protected function getContext(): array
@@ -14,7 +21,6 @@ class Block extends BaseBlock
         // $fields = $this->timber_context['fields'];
 
         return [
-            //'slides' => $fields['slides'] ?? [],
             'activeSlide' => 0,
             "calculations" => [
                 "numberOf" => 0,

@@ -9,11 +9,6 @@ class Block extends BaseBlock
     public string $blockName = 'text';
 
     /**
-     * Interactivity API namespace
-     */
-    protected ?string $interactivity_namespace = 'text-section';
-
-    /**
      * Per-instance context
      */
     protected function getContext(): array

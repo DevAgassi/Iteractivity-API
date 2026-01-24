@@ -15,7 +15,7 @@ const autoHmrPlugin = () => {
       if (
         id.includes("blocks/") ||
         id.includes("templates/") ||
-        id.includes("assets/")
+        id.includes("resources/")
       ) {
         // Перевіряємо, чи файл вже має hot.accept, щоб не дублювати
         if (!code.includes("import.meta.hot.accept")) {
@@ -47,10 +47,10 @@ export default defineConfig(({ command }) => {
       tailwindcss(),
       laravel({
         input: [
-          "assets/scripts/app.js",
-          "assets/scripts/admin.js",
+          "resources/scripts/app.js",
+          "resources/scripts/admin.js",
           ...blockFiles,
-          "assets/styles/admin.css",
+          "resources/css/admin.css",
         ],
         refresh: [
           "blocks/**/*.{twig,php}",

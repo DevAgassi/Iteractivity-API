@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Blocks\Section;
+namespace App\Blocks\MainColumn;
 
 use App\Core\Blocks\BaseBlock;
 
 class Block extends BaseBlock
 {
-    public string $blockName = 'section';
+    public string $blockName = 'mainColumn';
 
     /**
      * Per-instance context
      */
     protected function getContext(): array
     {
-        $this->classes = 'section-block';
+        $this->classes = 'mainColumn-block';
 
         return [
             'container_size' => $this->timber_context['fields']['container_size'] ?? 'normal',

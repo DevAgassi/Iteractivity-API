@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Core\Assets;
+namespace App\Core\Vite;
 
-abstract class AbstractAssets
+abstract class BaseVite
 {
-    protected static ?array $manifestCache = null;
-    public static ?bool  $isDevCache    = null;
+    protected ?array $manifestCache = null;
+    public ?bool  $isDevCache    = null;
 
-    protected static function manifest(): array|null
+    protected function manifest(): array|null
     {
         try {
-            if (self::$manifestCache !== null) {
-                return self::$manifestCache;
+            if ($this->manifestCache !== null) {
+                return $this->manifestCache;
             }
 
-            $path = static::isHot()
+            $path = $this->isHot()
                 ? get_stylesheet_directory() . '/dist/hot'
                 : get_stylesheet_directory() . '/dist/manifest.json';
 
@@ -30,37 +30,37 @@ abstract class AbstractAssets
                 $data['url'] = $json;
             }
 
-            return self::$manifestCache = $data;
+            return $this->manifestCache = $data;
         } catch (\RuntimeException $e) {
-            AssetsErrorHandler::handle($e);
+            ViteErrorHandler::handle($e);
             return null;
         }
     }
 
-    public static function getManifest(): array|null
+    public function getManifest(): array|null
     {
-        return static::manifest();
+        return $this->manifest();
     }
 
-    public static function render(): array
+    public function render(): array
     {
         $assets = [];
-        $manifest = static::manifest();
+        $manifest = $this->manifest();
 
-        if (static::isHot() && isset($manifest['url'])) {
+        if ($this->isHot() && isset($manifest['url'])) {
             $assets['client'] = $manifest['url'] . '/@vite/client';
         }
 
         return $assets;
     }
 
-    public static function isHot(): bool
+    public function isHot(): bool
     {
-        if (self::$isDevCache !== null) {
-            return self::$isDevCache;
+        if ($this->isDevCache !== null) {
+            return $this->isDevCache;
         }
 
-        return self::$isDevCache = file_exists(
+        return $this->isDevCache = file_exists(
             get_stylesheet_directory() . '/dist/hot'
         );
     }

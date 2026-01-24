@@ -1,5 +1,5 @@
 // Block script depends on 'swiper' global dependency
-// Swiper is loaded from assets/scripts/vendor/swiper.js entry point
+// Swiper is loaded from resources/scripts/vendor/swiper.js entry point
 import "./index.css";
 import Swiper from "swiper";
 import { Navigation, Pagination, EffectCoverflow } from "swiper/modules";
@@ -20,7 +20,7 @@ const slider = new Swiper(".swiper-slider", {
   spaceBetween: 30,
   loop: false,
 });
-console.log(slider);
+
 const sliderEl = document.querySelectorAll(".swiper-wrapper");
 if (sliderEl) {
   console.log('sliderEl', sliderEl);

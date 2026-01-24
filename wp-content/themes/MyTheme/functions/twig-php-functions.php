@@ -64,7 +64,7 @@ class TwigThemeExtension extends AbstractExtension
 
     public function getimage($filename)
     {
-        echo get_template_directory_uri() . '/assets/media/' . $filename;
+        echo get_template_directory_uri() . '/resources/images/' . $filename;
     }
 
     public function display_copyright(): string
@@ -79,7 +79,7 @@ class TwigThemeExtension extends AbstractExtension
             if ($is_fromlibrary) {
                 echo file_get_contents($attached_file);
             } else {
-                echo file_get_contents(get_template_directory() . '/assets/media/' . $attached_file);
+                echo file_get_contents(get_template_directory() . '/resources/images/' . $attached_file);
             }
         }
     }

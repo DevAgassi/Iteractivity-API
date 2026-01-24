@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Assets;
+namespace App\Core\Vite;
 
-class AssetsErrorHandler
+class ViteErrorHandler
 {
     public static function handle(\Throwable $e): void
     {
@@ -34,7 +34,7 @@ class AssetsErrorHandler
     protected static function disableAssets(): void
     {
         // Глобальний флаг — assets просто не підключаться
-        AbstractAssets::$isDevCache = false;
+        BaseVite::$isDevCache = false;
 
         add_filter('app/assets/enabled', '__return_false');
     }

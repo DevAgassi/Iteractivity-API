@@ -14,7 +14,7 @@ namespace App\Core;
 
 use App\Core\Blocks\BlockRegistry;
 use Timber\Timber;
-use App\Core\Assets\Assets;
+use App\Core\Vite\Vite;
 use App\Core\Timber\StarterSite;
 use App\Core\Timber\TemplateRegistry;
 use App\Core\FileLoader;
@@ -71,14 +71,17 @@ class Bootstrap
      */
     public function boot(array $options = []): void
     {
+        add_filter('theme/container', fn() => self::$instance);
+
         // Initialize debug mode
-        $debug_enabled = $options['debug'] || (defined('WP_DEBUG') && WP_DEBUG);
+        $debug_enabled = $options['debug'] ?? (defined('WP_DEBUG') && WP_DEBUG);
 
         if ($debug_enabled) {
             $this->enableDebugMode();
         }
 
         $this->initTimber();
+
         $this->registerServices($options);
         $this->bootServices();
     }
@@ -129,10 +132,12 @@ class Bootstrap
 
         $config = array_merge($default_config, $config);
 
+        // Initialize Vite service
+        $vite = new Vite();
 
         $this->services = [
-            'site'      => new StarterSite(),
-            'assets'    => Assets::class,
+            'assets'    => $vite,
+            'site'      => new StarterSite($vite),
             'blocks'    => BlockRegistry::class,
             'templates' => TemplateRegistry::class,
             'tailwind'  => $config['tailwind'] ?? Tailwind::class,
@@ -169,10 +174,16 @@ class Bootstrap
      * Get a registered service class
      *
      * @param string $name Service name
-     * @return string|null Service class name or null
+     * @return string|mixed
      */
-    public function getService(string $name): ?string
+    public function getService(string $name): mixed
     {
         return $this->services[$name] ?? null;
+    }
+
+
+    static function theme_service(string $name)
+    {
+        return apply_filters('theme/container', null)?->getService($name);
     }
 }

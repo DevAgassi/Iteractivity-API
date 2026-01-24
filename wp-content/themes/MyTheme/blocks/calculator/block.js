@@ -64,7 +64,7 @@ function calculate_dough(context) {
 
 }
 
-store( 'pizza-dough-calculator', {
+store( 'calculator', {
 	actions: {
 		pizzas: ( event ) => {
 			const context = getContext();

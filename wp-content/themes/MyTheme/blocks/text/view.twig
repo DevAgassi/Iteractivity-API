@@ -1,15 +1,18 @@
-<section class="text container pb-8">
-	<div class="grid {% if context.has_inner_blocks %}grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12{% else %}grid-cols-1{% endif %}">
+
+{% set has_inner_blocks = context.has_inner_blocks and context.inner_content|length > 0 %}
+<section class="text container px-6 py-6">
+	<div class="grid {% if has_inner_blocks %}grid-cols-4 lg:grid-cols-12 gap-8 lg:gap-12{% else %}grid-cols-1{% endif %}">
 		{# Main content: 65% width if sidebar exists, full width otherwise #}
-		<div class="{% if context.has_inner_blocks %}lg:col-span-8{% else %}col-span-full{% endif %} wysiwyg-editor">
+		<div class="{% if has_inner_blocks %}col-span-4 lg:col-span-7{% else %}col-span-full{% endif %} wysiwyg">
 			{{ context.text }}
 		</div>
 		
-		{% if context.has_inner_blocks %}
+		{% if has_inner_blocks %}
 			{# Sidebar: 35% width #}
-			<aside class="group/sidebar lg:col-span-4">
+			<aside class="group/sidebar col-span-4 lg:col-span-5">
 				<InnerBlocks />
 			</aside>
 		{% endif %}
+		
 	</div>
 </section>

@@ -1,0 +1,7 @@
+<section id="{{ context.id }}" class="{{ classes }} container">
+	<div class="grid grid-cols-4 lg:grid-cols-12 gap-8 lg:gap-12" data-block-wrapper>
+		<InnerBlocks allowedblocks='{{ ["acf/main-column", "acf/sidebar-column"]|json_encode|raw }}' 
+        template='{{ [ ["acf/main-column", {}], ["acf/sidebar-column", {}] ]|json_encode|raw }}' 
+        />
+    </div>
+</section>

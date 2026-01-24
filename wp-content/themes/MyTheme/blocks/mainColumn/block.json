@@ -1,0 +1,19 @@
+{
+  "$schema": "https://advancedcustomfields.com/schemas/json/main/block.json",
+  "name": "acf/main-column",
+  "title": "Main Column",
+  "description": "Main Column block",
+  "category": "custom-layout",
+  "keywords": ["layout", "content", "main"],
+  "icon": "wordpress",
+  "apiVersion": 3,
+  "editorStyle": "file:./index.css",
+  "supports": {
+    "jsx": true,
+    "align": []
+  },
+  "acf": {
+    "blockVersion": 3,
+    "renderCallback": "App\\Blocks\\MainColumn\\Block::renderCallback"
+  }
+}

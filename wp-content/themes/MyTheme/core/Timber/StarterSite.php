@@ -15,7 +15,6 @@ namespace App\Core\Timber;
 
 use Timber\Site;
 use Timber\Timber;
-use App\Core\Assets\Assets;
 
 /**
  * Class StarterSite
@@ -24,6 +23,7 @@ use App\Core\Assets\Assets;
  */
 class StarterSite extends Site
 {
+    private $vite;
     /**
      * StarterSite constructor.
      * 
@@ -31,8 +31,10 @@ class StarterSite extends Site
      *
      * @since 1.0.0
      */
-    public function __construct()
+    public function __construct($vite)
     {
+        $this->vite = $vite;
+
         // WordPress core actions
         add_action('after_setup_theme', [$this, 'theme_supports']);
         add_action('enqueue_block_editor_assets', [$this, 'enqueue_editor_assets']);
@@ -68,23 +70,37 @@ class StarterSite extends Site
         /**
          * Main JS file with dependencies and CSS imports
          */
-        Assets::enqueueAssets('assets/scripts/app.js', 'app');
+        $this->vite->enqueueAssets('resources/scripts/app.js', 'app');
     }
 
     /**
-     * Enqueue editor area styles and scripts.
-     * 
-     * Loads editor-specific assets if needed.
+     * Inject styles into the block editor.
      *
      * @since 1.0.0
      * @return void
      */
     public function enqueue_editor_assets(): void
     {
-        /**
-         * Editor JS file with dependencies and CSS imports
-         */
-        Assets::enqueueEditorAssets('assets/scripts/admin.js', 'app-editor');
+
+        add_filter('block_editor_settings_all', function ($settings) {
+            $path = 'resources/scripts/admin.js';
+            $manifest = $this->vite->getManifest();
+
+            if (!isset($manifest[$path])) {
+                return $settings;
+            }
+
+            $file = $manifest[$path];
+            if (isset($file['css'])) {
+                foreach ($file['css'] as $css) {
+                    $settings['styles'][] = [
+                        'css' => "@import url('" . get_template_directory_uri() . "/dist/{$css}')",
+                    ];
+                }
+            }
+
+            return $settings;
+        });
     }
 
     /*
@@ -139,7 +155,7 @@ class StarterSite extends Site
         $context['header_menu'] = Timber::get_menu('header_menu');
         $context['footer_menu'] = Timber::get_menu('footer_menu');
         $context['site'] = $this;
-        $context['assets'] = new Assets();
+        $context['assets'] = $this->vite;
 
         return $context;
     }

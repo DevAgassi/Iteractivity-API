@@ -2,13 +2,19 @@
 .container {
   max-width: var(--wp--style--global--content-size);
   margin-inline: auto;
-  padding-inline: 2rem;
+  /* padding-inline: 1.25rem;
+  padding-block: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem); */
 }
 
 .container .container {
   max-width: initial;
-  padding-inline: initial;
   margin-inline: initial;
+  /* padding-inline: initial;
+  padding-block: initial; */
+}
+
+.text + .text {
+  padding-top: 0;
 }
 
 .alignfull {
@@ -35,7 +41,8 @@
   display: block;
 }
 
-@media (max-width: 768px) { /* или используйте theme(screens.md) */
+@media (max-width: 768px) {
+  /* или используйте theme(screens.md) */
   .alignwide img {
     margin-left: 0;
     margin-right: 0;

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://advancedcustomfields.com/schemas/json/main/block.json",
+  "name": "acf/content-sidebar",
+  "title": "Content with Sidebar",
+  "description": "Content with Sidebar block",
+  "category": "custom-layout",
+  "keywords": ["layout", "content", "sidebar"],
+  "icon": "wordpress",
+  "apiVersion": 3,
+  "editorStyle": "file:./index.css",
+  "supports": {
+    "jsx": true,
+    "align": [],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "acf": {
+    "blockVersion": 3,
+    "renderCallback": "App\\Blocks\\ContentSidebar\\Block::renderCallback"
+  }
+}

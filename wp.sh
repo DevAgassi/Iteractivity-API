@@ -141,6 +141,17 @@ case "$1" in
     ;;
 
   ##
+  # Compile autoload files
+  #
+  # Usage:
+  #   ./wp.sh dump-autoload
+  ##
+  dump-autoload)
+    $DC exec wordpress composer dump-autoload
+    echo "Cleanup complete!"
+    ;;
+    
+  ##
   # Clean default themes and plugins
   #
   # Usage:

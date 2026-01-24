@@ -2,7 +2,7 @@
 // Тут можна додdeавати глобdd322212альні скрипвати які 1потрібні для всієї теми
 
 console.log("✅ Theme App.js");
-import "../styles/main.css";
+import "../css/main.css";
 
 
 document.addEventListener("DOMContentLoaded", () => {

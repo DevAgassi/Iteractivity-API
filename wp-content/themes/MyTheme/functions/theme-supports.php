@@ -261,13 +261,17 @@ class ThemeSupports
     {
         add_filter('allowed_block_types_all', function ($allowed_block_types, $block_editor_context) {
 
-          /*  $allowed_block_types = array(
+            $allowed_block_types = array(
                 'acf/lead',
                 'acf/text',
                 'acf/hero',
                 'acf/section',
                 'acf/slider',
                 'acf/latest-posts',
+                'acf/content-sidebar',
+                'acf/main-column',
+                'acf/sidebar-column',
+                'acf/calculator',
 
 
                 'core/shortcode',
@@ -278,7 +282,7 @@ class ThemeSupports
                 //'core/video', 
                 //'core/group',
                 //'core/paragraph',
-            );*/
+            );
 
             return $allowed_block_types;
         }, 10, 2);

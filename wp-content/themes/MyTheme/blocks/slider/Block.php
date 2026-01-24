@@ -7,7 +7,6 @@ use App\Core\Blocks\BaseBlock;
 class Block extends BaseBlock
 {
     public string $blockName = 'slider';
-    protected array $dependencies = [];
 
     // Per-instance context (ACF slides)
     protected function getContext(): array

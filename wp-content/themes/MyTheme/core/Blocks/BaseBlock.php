@@ -77,7 +77,7 @@ abstract class BaseBlock
         return "{$this->folder}/view.twig";
     }
 
-    public function __construct($block, $folder_name, $id, $content = '', $is_preview)
+    public function __construct($block, $folder_name, $id, $content, $is_preview)
     {
         if (!isset($this->blockName)) {
             throw new \Exception("Властивість \$blockName має бути визначена в класі " . static::class);

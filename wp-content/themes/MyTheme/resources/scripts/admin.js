@@ -1,4 +1,4 @@
-import '../styles/admin.css';
+import '../css/admin.css';
 
 // js/editor-modifications.js
 function unregisterStretchyVariations() {
