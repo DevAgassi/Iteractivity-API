@@ -1,3 +1,5 @@
+import "./index.css";
+import "preact/debug";
 import {
   store,
   getContext,
@@ -5,8 +7,6 @@ import {
   useEffect,
   useState,
 } from "@wordpress/interactivity";
-import "./index.css";
-import "preact/debug";
 
 /**
  * WordPress Interactivity API store for latest posts block.
@@ -44,7 +44,7 @@ const { state } = store("latestposts", {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -64,7 +64,7 @@ const { state } = store("latestposts", {
             if (post.featured_media) {
               try {
                 const mediaResponse = await fetch(
-                  `/wp-json/wp/v2/media/${post.featured_media}`
+                  `/wp-json/wp/v2/media/${post.featured_media}`,
                 );
                 if (mediaResponse.ok) {
                   const media = await mediaResponse.json();
@@ -73,12 +73,12 @@ const { state } = store("latestposts", {
               } catch (error) {
                 console.warn(
                   `Failed to fetch featured image for post ${post.id}:`,
-                  error
+                  error,
                 );
               }
             }
             return { ...post, imageUrl };
-          })
+          }),
         );
 
         postsWithImages.forEach((post) => {

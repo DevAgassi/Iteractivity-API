@@ -18,16 +18,7 @@
   margin: 0;
 }
 
-.section-block {
-  position: relative;
-  padding-bottom: 35px;
-
-  @media (min-width: 768px) {
-    padding-bottom: 70px;
-  }
-}
-
-.section-block:first-of-type > [data-block-wrapper] {
+.content-wrapper > .section-block:first-of-type > [data-block-wrapper] {
   padding-top: 35px;
 
   @media (min-width: 768px) {

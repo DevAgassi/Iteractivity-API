@@ -154,6 +154,8 @@ class StarterSite extends Site
         $context['menu'] = Timber::get_menu();
         $context['header_menu'] = Timber::get_menu('header_menu');
         $context['footer_menu'] = Timber::get_menu('footer_menu');
+        $context['is_mobile'] = wp_is_mobile();
+        $context['options'] = get_fields('options');
         $context['site'] = $this;
         $context['assets'] = $this->vite;
 
@@ -195,6 +197,10 @@ class StarterSite extends Site
 
         // Ініціалізуємо логіку ACF Local JSON
         $this->setup_acf_local_json();
+
+        if (function_exists('acf_add_options_page')) {
+            acf_add_options_page();
+        }
     }
 
     /**

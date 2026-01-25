@@ -1,0 +1,31 @@
+{% if pagination_items and pagination_items.pages|length > 0 %}
+        {% if pagination_items.prev %}
+            <a href="{{ pagination_items.prev.link }}" data-params={{ (pagination_items.current - 1) }} class="prev page-number">
+                {% include "parts/svg/CourdesComptes_Icon_Arrow.twig" %}
+            </a>
+        {% else %}
+            <span class="prev invisible">
+                {% include "parts/svg/CourdesComptes_Icon_Arrow.twig" %}
+            </span>
+        {% endif %}
+        <ul class="pages">
+            {% for page in pagination_items.pages %}
+                <li>
+                    {% if page.link %}
+                        <a href="{{ page.link }}" data-params={{ page.name }} class="{{ page.class }}">{{ page.title }}</a>
+                    {% else %}
+                        <span class="{{ page.class }}">{{ page.title }}</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% if pagination_items.next %}
+            <a href="{{ pagination_items.next.link }}" data-params={{ (pagination_items.current + 1) }} class="next page-number">
+                {% include "parts/svg/CourdesComptes_Icon_Arrow.twig" %}
+            </a>
+        {% else %}
+            <span class="next invisible">
+                {% include "parts/svg/CourdesComptes_Icon_Arrow.twig" %}
+            </span>
+        {% endif %}
+{% endif %}

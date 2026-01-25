@@ -39,7 +39,7 @@ export default defineConfig(({ command }) => {
     resolve: {
       alias: {
         // Це перенаправляє імпорт на зовнішній браузерний модуль
-        "@wordpress/interactivity": "@wordpress/interactivity",
+        //"@wordpress/interactivity": "@wordpress/interactivity",
       },
     },
     plugins: [
@@ -66,12 +66,12 @@ export default defineConfig(({ command }) => {
       minify: "terser",
       terserOptions: {
         compress: {
-        //  drop_console: true,
+          //  drop_console: true,
           drop_debugger: true,
         },
       },
       rollupOptions: {
-        external: ["@wordpress/interactivity"],
+        external: [/^@wordpress\/.*/],
         output: {
           manualChunks(id) {
             if (id.includes("node_modules/gsap")) {
@@ -81,14 +81,11 @@ export default defineConfig(({ command }) => {
               return "swiper"; // окремий chunk swiper.js
             }
           },
-          globals: {
-            "@wordpress/interactivity": "wp.interactivity",
-          },
         },
       },
     },
     optimizeDeps: {
-     // include: ["swiper", "swiper/modules"],
+      // include: ["swiper", "swiper/modules"],
       exclude: ["gsap", "@wordpress/interactivity"],
     },
     server: {

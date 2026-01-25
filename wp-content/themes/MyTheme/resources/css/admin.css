@@ -1,7 +1,7 @@
 @import "./main.css";
 
 @import "./vendor/editor.css";
-
+/*
 .block-editor-block-list__block {
   & .contentSidebar-block {
     [data-block-wrapper] {
@@ -18,7 +18,7 @@
         gap: 3rem;
       }
 
-      & > .wp-block-acf-main-column {
+      & > .wp-block-acf-section {
         grid-column: span 4 / span 4;
 
         @media (min-width: 1024px) {
@@ -35,4 +35,4 @@
       }
     }
   }
-}
+}*/

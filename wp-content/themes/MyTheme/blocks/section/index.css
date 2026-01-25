@@ -1,29 +1,36 @@
 /* Section Block Styles - основні стилі для контейнера */
 .section-block {
   width: 100%;
+  position: relative;
+  padding-bottom: clamp(var(--section-spacing-sm), 1.259rem + 3.81vw, var(--section-spacing-lg));
+
+  .contentSidebar-block & {
+    grid-column: span 4 / span 4;
+
+    @media (min-width: 1024px) {
+      grid-column: span 7 / span 7;
+    }
+  }
 }
 
-.container.container-- {
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Padding для блоків всередині секції через InnerBlocks */
+/*
+/* Padding для блоків всередині секції через InnerBlocks 
 [data-block-wrapper] > * {
   @apply py-8;
 }
 
-/* Першому блоку не треба верхнього padding */
+/* Першому блоку не треба верхнього padding 
 [data-block-wrapper] > *:first-child {
   @apply pt-0 pb-8;
 }
 
-/* Останньому блоку не треба нижнього padding */
+/* Останньому блоку не треба нижнього padding 
 [data-block-wrapper] > *:last-child {
   @apply pt-8 pb-0;
 }
 
-/* Якщо один блок - не треба ні зверху ні знизу */
+/ Якщо один блок - не треба ні зверху ні знизу 
 [data-block-wrapper] > *:only-child {
   @apply py-0;
 }
+*/

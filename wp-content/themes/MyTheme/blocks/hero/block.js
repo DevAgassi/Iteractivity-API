@@ -1,6 +1,5 @@
-import { store, getContext, useCallback } from "@wordpress/interactivity";
 import "./index.css";
-
+import { store, getContext } from "@wordpress/interactivity";
 
 store("hero-section", {
   state: {
@@ -16,9 +15,9 @@ store("hero-section", {
   actions: {
     openModal(event) {
       console.log("as12da111d");
-      event.preventDefault(); 
+      event.preventDefault();
       // Оновлюємо реактивний server-side state
-     // const ctx = getContext();
+      // const ctx = getContext();
       //ctx.is_modal_open = !ctx.is_modal_open;
 
       // Не треба дублювати buttonText — getter вже бере ctx.is_modal_open

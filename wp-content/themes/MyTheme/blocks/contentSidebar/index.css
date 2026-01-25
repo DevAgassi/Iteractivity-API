@@ -1,0 +1,9 @@
+.contentSidebar-block {
+  width: 100%;
+  position: relative;
+  padding-bottom: 35px;
+
+  @media (min-width: 768px) {
+    padding-bottom: 70px;
+  }
+}

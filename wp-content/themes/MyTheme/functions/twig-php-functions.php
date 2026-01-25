@@ -2,6 +2,10 @@
 
 namespace MyTheme\Functions;
 
+if (!defined('ABSPATH')) {
+    die();
+}
+
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Twig\TwigFilter;

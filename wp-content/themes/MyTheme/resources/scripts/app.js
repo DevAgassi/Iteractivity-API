@@ -4,6 +4,14 @@
 console.log("✅ Theme App.js");
 import "../css/main.css";
 
+function getModuleData(handle) {
+  const el = document.getElementById(`wp-script-module-data-${handle}`);
+  return el ? JSON.parse(el.textContent) : {};
+}
+
+const { home, isHome, nonce, root } = getModuleData("app");
+
+console.log({ home, isHome, nonce, root });
 
 document.addEventListener("DOMContentLoaded", () => {
   const menuItems = document.querySelectorAll(".js-menu-item");
@@ -21,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       grandContents.forEach((c) => c.classList.replace("flex", "hidden"));
       subLinks.forEach((l) =>
-        l.classList.remove("bg-white", "text-blue-600", "shadow-sm")
+        l.classList.remove("bg-white", "text-blue-600", "shadow-sm"),
       );
     };
 
@@ -31,13 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "invisible",
         "opacity-0",
         "pointer-events-none",
-        "-translate-y-1"
+        "-translate-y-1",
       );
       mega.classList.add(
         "visible",
         "opacity-100",
         "pointer-events-auto",
-        "translate-y-0"
+        "translate-y-0",
       );
 
       // Авто-активація першого пункту другого рівня
@@ -53,13 +61,13 @@ document.addEventListener("DOMContentLoaded", () => {
           "visible",
           "opacity-100",
           "pointer-events-auto",
-          "translate-y-0"
+          "translate-y-0",
         );
         mega.classList.add(
           "invisible",
           "opacity-0",
           "pointer-events-none",
-          "-translate-y-1"
+          "-translate-y-1",
         );
         resetSubLevels();
       }, 150); // Затримка 150мс вирішує проблему розриву ховеру

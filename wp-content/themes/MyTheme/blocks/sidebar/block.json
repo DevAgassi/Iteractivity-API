@@ -1,8 +1,8 @@
 {
   "$schema": "https://advancedcustomfields.com/schemas/json/main/block.json",
-  "name": "acf/sidebar-column",
-  "title": "Sidebar Column",
-  "description": "Sidebar Column block",
+  "name": "acf/sidebar",
+  "title": "Sidebar",
+  "description": "Sidebar block",
   "category": "custom-layout",
   "keywords": ["layout", "content", "sidebar"],
   "icon": "wordpress",
@@ -14,6 +14,6 @@
   },
   "acf": {
     "blockVersion": 3,
-    "renderCallback": "App\\Blocks\\SidebarColumn\\Block::renderCallback"
+    "renderCallback": "App\\Blocks\\Sidebar\\Block::renderCallback"
   }
 }

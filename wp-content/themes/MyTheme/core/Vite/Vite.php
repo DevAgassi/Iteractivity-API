@@ -70,7 +70,7 @@ class Vite extends BaseVite
         wp_enqueue_script_module(
             $name,
             get_template_directory_uri() . '/dist/' . $asset['file'],
-            $deps_module,
+            [...$deps_module],
             null,
             ['footer' => true]
         );
