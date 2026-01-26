@@ -14,9 +14,10 @@ class Block extends BaseBlock
     protected function getContext(): array
     {
         $this->classes = 'sidebar-block';
-
+        //dd($this->block);
         return [
             'id' => $this->timber_context['fields']['id'] ?? uniqid(),
+            'parentBlockName' => $this->block['parentName'] ?? '',
         ];
     }
 }

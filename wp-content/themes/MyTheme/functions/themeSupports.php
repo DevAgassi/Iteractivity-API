@@ -19,7 +19,7 @@ class ThemeSupports
         add_action('after_setup_theme', [$this, 'after_setup_theme']);
 
         /** Disable REST API for users */
-        add_filter('rest_pre_dispatch', [$this, 'disable_rest_api_for_users'], 10, 3);
+        //add_filter('rest_pre_dispatch', [$this, 'disable_rest_api_for_users'], 10, 3);
 
         /** Control dashboard widgets */
         add_action('wp_dashboard_setup', [$this, 'dashboard_add_widgets']);

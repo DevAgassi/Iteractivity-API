@@ -1,3 +1,7 @@
+{% if context.parentBlockName == 'acf/section' %}
+    {% set classes = classes ~ '' %}
+{% endif %}
+
 <aside class="{{ classes }} sidebar-block group/sidebar px-6 py-6">
-    <InnerBlocks allowedBlocks='{{ ["acf/lead"]|json_encode|raw }}' />
+    <InnerBlocks class="_" allowedBlocks='{{ ["acf/lead"]|json_encode|raw }}' />
 </aside>

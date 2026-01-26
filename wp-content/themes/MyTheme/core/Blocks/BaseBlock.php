@@ -199,7 +199,7 @@ abstract class BaseBlock
 
     public static function renderCallback($block, $content = '', $is_preview = false, $post_id = 0)
     {
-      // dd($block,  $content);
+
         $start_time = Debug::isEnabled() ? microtime(true) : null;
 
         $instance = new static($block, '', $post_id, $content, $is_preview);

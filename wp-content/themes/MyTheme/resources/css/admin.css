@@ -1,7 +1,7 @@
 @import "./main.css";
 
 @import "./vendor/editor.css";
-/*
+
 .block-editor-block-list__block {
   & .contentSidebar-block {
     [data-block-wrapper] {
@@ -26,7 +26,7 @@
         }
       }
 
-      & > .wp-block-acf-sidebar-column {
+      & > .wp-block-acf-sidebar {
         grid-column: span 4 / span 4;
 
         @media (min-width: 1024px) {
@@ -35,4 +35,4 @@
       }
     }
   }
-}*/
+}
